@@ -6,230 +6,315 @@
   <title>connec+a</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;600;700&family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --ink: #1c2340; --ink-mid: #2a3d7a; --ink-soft: #5a6a9a; --ink-pale: #c4ceec;
-      --bg: #f7f8fc; --bg2: #eef0f8; --white: #ffffff;
-      --rose: #e8a0b8; --violet: #7060a8; --amber: #c85a20; --sky: #7aa8cc;
-      --green: #3d6640; --gold: #a8842c;
-      --border: rgba(42,61,122,.12);
-      --s1: 0 2px 12px rgba(28,35,64,.07);
-      --s2: 0 6px 28px rgba(28,35,64,.12);
-      --s3: 0 16px 48px rgba(28,35,64,.18);
-      --r: 16px; --rs: 10px;
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    :root{
+      --ink:#1c2340;--ink-mid:#2a3d7a;--ink-soft:#5a6a9a;--ink-pale:#c4ceec;
+      --bg:#f7f8fc;--bg2:#eef0f8;--white:#ffffff;
+      --rose:#e8a0b8;--violet:#7060a8;--amber:#c85a20;--sky:#7aa8cc;
+      --green:#3d6640;--gold:#a8842c;
+      --border:rgba(42,61,122,.12);
+      --s1:0 2px 12px rgba(28,35,64,.07);
+      --s2:0 6px 28px rgba(28,35,64,.12);
+      --s3:0 16px 48px rgba(28,35,64,.18);
+      --r:16px;--rs:10px;
     }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; overflow-x: hidden; line-height: 1.6; }
+    html{scroll-behavior:smooth;}
+    body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden;line-height:1.6;}
 
-    /* BG */
-    .bg-wrap { position: fixed; inset: 0; z-index: 0; pointer-events: none;
-      background: radial-gradient(ellipse 70% 50% at 10% 0%, rgba(232,160,184,.16) 0%, transparent 55%),
-                  radial-gradient(ellipse 60% 50% at 90% 100%, rgba(122,168,204,.14) 0%, transparent 55%),
-                  var(--bg); }
-    .bg-noise { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .03;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      background-size: 200px; }
-    .petals { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
-    .petal { position: absolute; opacity: 0; animation: petalFall linear infinite; }
-    @keyframes petalFall { 0%{transform:translateY(-10px) rotate(0deg);opacity:0;} 6%{opacity:.4;} 94%{opacity:.2;} 100%{transform:translateY(105vh) rotate(600deg) translateX(30px);opacity:0;} }
+    /* ── BACKGROUND ── */
+    .bg-wrap{position:fixed;inset:0;z-index:0;pointer-events:none;
+      background:radial-gradient(ellipse 70% 50% at 10% 0%,rgba(232,160,184,.16) 0%,transparent 55%),
+                 radial-gradient(ellipse 60% 50% at 90% 100%,rgba(122,168,204,.14) 0%,transparent 55%),var(--bg);}
+    .bg-noise{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.03;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px;}
+    .petals{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden;}
+    .petal{position:absolute;opacity:0;animation:petalFall linear infinite;}
+    @keyframes petalFall{0%{transform:translateY(-10px) rotate(0deg);opacity:0;}6%{opacity:.4;}94%{opacity:.2;}100%{transform:translateY(105vh) rotate(600deg) translateX(30px);opacity:0;}}
 
-    /* SEASON BAR */
-    .season-bar { height: 3px; background: linear-gradient(90deg, var(--rose) 0%, var(--violet) 33%, var(--amber) 66%, var(--sky) 100%); position: relative; z-index: 101; }
+    /* ── SEASON BAR ── */
+    .season-bar{height:3px;background:linear-gradient(90deg,var(--rose) 0%,var(--violet) 33%,var(--amber) 66%,var(--sky) 100%);position:relative;z-index:101;}
 
-    /* HEADER */
-    .header { position: sticky; top: 0; z-index: 100; background: rgba(247,248,252,.94); backdrop-filter: blur(18px); border-bottom: 1px solid var(--border); height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; }
-    .logo { display: flex; align-items: center; gap: 9px; cursor: pointer; }
-    .logo-icon { width: 30px; height: 30px; background: var(--ink); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-family: 'Noto Serif JP', serif; font-size: .55rem; color: #fff; font-weight: 700; letter-spacing: -.02em; }
-    .logo-name { font-family: 'Noto Serif JP', serif; font-size: .95rem; color: var(--ink); font-weight: 700; letter-spacing: .06em; }
-    .logo-name span { color: var(--violet); }
-    .header-right { display: flex; align-items: center; gap: 8px; }
-    .lang-sel { padding: 4px 9px; border-radius: 99px; font-size: .7rem; border: 1.5px solid var(--border); background: transparent; color: var(--ink-mid); cursor: pointer; outline: none; font-family: 'Noto Sans JP', sans-serif; transition: border-color .2s; }
-    .lang-sel:hover { border-color: var(--ink-mid); }
-    .avatar-btn { width: 32px; height: 32px; border-radius: 50%; background: var(--ink); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-family: 'Noto Serif JP', serif; font-size: .72rem; color: #fff; font-weight: 700; transition: transform .2s, box-shadow .2s; position: relative; }
-    .avatar-btn:hover { transform: scale(1.08); box-shadow: 0 3px 12px rgba(28,35,64,.24); }
-    .avatar-badge { position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; background: #f59e0b; border-radius: 50%; border: 2px solid var(--bg); display: none; }
+    /* ── HEADER ── */
+    .header{position:sticky;top:0;z-index:100;background:rgba(247,248,252,.94);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;}
+    .logo{display:flex;align-items:center;gap:9px;cursor:pointer;}
+    .logo-icon{width:30px;height:30px;background:var(--ink);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Noto Serif JP',serif;font-size:.55rem;color:#fff;font-weight:700;}
+    .logo-name{font-family:'Noto Serif JP',serif;font-size:.95rem;color:var(--ink);font-weight:700;letter-spacing:.06em;}
+    .logo-name span{color:var(--violet);}
+    .header-right{display:flex;align-items:center;gap:8px;}
+    .lang-sel{padding:4px 9px;border-radius:99px;font-size:.7rem;border:1.5px solid var(--border);background:transparent;color:var(--ink-mid);cursor:pointer;outline:none;font-family:'Noto Sans JP',sans-serif;transition:border-color .2s;}
+    .lang-sel:hover{border-color:var(--ink-mid);}
+    .avatar-btn{width:32px;height:32px;border-radius:50%;background:var(--ink);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'Noto Serif JP',serif;font-size:.72rem;color:#fff;font-weight:700;transition:transform .2s,box-shadow .2s;position:relative;}
+    .avatar-btn:hover{transform:scale(1.08);box-shadow:0 3px 12px rgba(28,35,64,.24);}
+    .avatar-badge{position:absolute;top:-2px;right:-2px;width:8px;height:8px;background:#f59e0b;border-radius:50%;border:2px solid var(--bg);display:none;}
 
-    /* PAGE SYSTEM */
-    .page { display: none; position: relative; z-index: 2; }
-    .page.active { display: block; animation: fadeUp .35s ease both; }
-    @keyframes fadeUp { from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:translateY(0);} }
+    /* ── BOTTOM NAV ── */
+    .bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:99;background:rgba(247,248,252,.96);backdrop-filter:blur(18px);border-top:1px solid var(--border);height:62px;display:flex;align-items:center;justify-content:space-around;}
+    .bnav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 14px;cursor:pointer;border:none;background:none;color:var(--ink-soft);font-family:'Noto Sans JP',sans-serif;border-radius:var(--rs);transition:all .2s;position:relative;}
+    .bnav-item svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+    .bnav-item span{font-size:.6rem;font-weight:600;letter-spacing:.03em;}
+    .bnav-item.active{color:var(--violet);}
+    .bnav-item.active svg{stroke:var(--violet);}
+    .bnav-dot{position:absolute;top:6px;right:10px;width:7px;height:7px;background:#f59e0b;border-radius:50%;border:2px solid var(--bg);display:none;}
+    .bnav-dot.show{display:block;}
 
-    /* ─── LANDING ─── */
-    .hero { text-align: center; padding: 52px 20px 32px; }
-    .hero-label { font-size: .62rem; letter-spacing: .38em; color: var(--ink-soft); text-transform: uppercase; margin-bottom: 14px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-    .hero-label::before, .hero-label::after { content:''; width: 40px; height: 1px; background: linear-gradient(90deg, transparent, var(--ink-pale)); }
-    .hero-label::after { background: linear-gradient(90deg, var(--ink-pale), transparent); }
-    .hero-title { font-family: 'Noto Serif JP', serif; font-size: clamp(1.7rem, 5vw, 2.8rem); font-weight: 700; color: var(--ink); line-height: 1.25; margin-bottom: 12px; letter-spacing: .02em; }
-    .hero-title em { font-style: normal; color: var(--violet); }
-    .hero-desc { font-size: .88rem; color: var(--ink-soft); line-height: 1.9; max-width: 360px; margin: 0 auto 24px; }
-    .season-dots { display: flex; height: 4px; max-width: 200px; margin: 0 auto 32px; gap: 3px; }
-    .sd { flex: 1; border-radius: 99px; }
+    /* ── PAGE SYSTEM ── */
+    .page{display:none;position:relative;z-index:2;padding-bottom:80px;}
+    .page.active{display:block;animation:fadeUp .32s ease both;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 
-    /* Auth CTA buttons */
-    .auth-cta { display: flex; justify-content: center; gap: 12px; margin-bottom: 48px; flex-wrap: wrap; }
-    .btn-cta-primary { padding: 12px 32px; border-radius: 99px; font-size: .9rem; font-weight: 700; border: none; cursor: pointer; background: var(--ink); color: #fff; box-shadow: 0 4px 16px rgba(28,35,64,.22); transition: all .25s; font-family: 'Noto Sans JP', sans-serif; }
-    .btn-cta-primary:hover { background: var(--ink-mid); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(28,35,64,.28); }
-    .btn-cta-outline { padding: 12px 32px; border-radius: 99px; font-size: .9rem; font-weight: 700; border: 2px solid var(--ink); cursor: pointer; background: transparent; color: var(--ink); transition: all .25s; font-family: 'Noto Sans JP', sans-serif; }
-    .btn-cta-outline:hover { background: var(--ink); color: #fff; transform: translateY(-1px); }
+    /* ── SHARED UTILS ── */
+    .spinner{width:34px;height:34px;border:3px solid var(--bg2);border-top-color:var(--violet);border-radius:50%;animation:spin .8s linear infinite;margin:28px auto;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+    .loading-text{text-align:center;color:var(--ink-soft);font-size:.82rem;}
+    .section-head{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+    .section-head-text{font-family:'Noto Serif JP',serif;font-size:.85rem;font-weight:700;color:var(--ink-soft);letter-spacing:.2em;text-transform:uppercase;white-space:nowrap;}
+    .section-head-line{flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);}
+    .card{background:var(--white);border-radius:var(--r);box-shadow:var(--s1);padding:22px;margin-bottom:16px;border:1px solid var(--border);}
+    .badge{display:inline-block;padding:2px 9px;border-radius:99px;font-size:.68rem;font-weight:700;}
+    .badge-free{background:rgba(61,102,64,.1);color:var(--green);}
+    .badge-paid{background:rgba(112,96,168,.1);color:var(--violet);}
+    .badge-full{background:rgba(200,90,32,.1);color:var(--amber);}
+    .badge-new{background:linear-gradient(135deg,var(--violet),var(--rose));color:#fff;}
+    .badge-global{background:rgba(112,96,168,.1);color:var(--violet);}
+    .badge-personal{background:rgba(232,160,184,.25);color:#c06080;}
+    .alert{padding:11px 14px;border-radius:var(--rs);font-size:.82rem;margin-bottom:14px;line-height:1.7;}
+    .alert-ok{background:#f0fdf4;border-left:3px solid #22c55e;color:#15803d;}
+    .alert-err{background:rgba(200,90,32,.06);border-left:3px solid var(--amber);color:#7a2010;}
+    .alert-info{background:rgba(112,96,168,.07);border-left:3px solid var(--violet);color:var(--ink-mid);}
+    .form-group{margin-bottom:16px;}
+    .form-label{display:block;font-size:.74rem;font-weight:700;color:var(--ink-mid);margin-bottom:6px;letter-spacing:.04em;}
+    .form-control{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:.9rem;color:var(--ink);background:var(--bg);outline:none;transition:all .2s;font-family:'Noto Sans JP',sans-serif;}
+    .form-control:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(112,96,168,.12);background:var(--white);}
+    .form-control::placeholder{color:rgba(90,106,154,.4);}
+    .form-control[readonly]{background:var(--bg2);cursor:default;}
+    .btn-primary{width:100%;padding:12px;border-radius:99px;font-size:.9rem;font-weight:700;border:none;cursor:pointer;background:var(--ink);color:#fff;box-shadow:0 4px 16px rgba(28,35,64,.2);transition:all .28s cubic-bezier(.34,1.56,.64,1);font-family:'Noto Sans JP',sans-serif;}
+    .btn-primary:hover{background:var(--ink-mid);transform:translateY(-1px);}
+    .btn-primary:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none;}
+    .btn-back{display:inline-flex;align-items:center;gap:4px;padding:7px 14px;border-radius:99px;border:1.5px solid var(--border);background:transparent;color:var(--ink-soft);cursor:pointer;font-family:'Noto Sans JP',sans-serif;font-size:.76rem;margin-bottom:14px;transition:all .18s;}
+    .btn-back:hover{border-color:var(--ink-mid);color:var(--ink);}
+    .pw-wrap{position:relative;}
+    .pw-toggle{position:absolute;right:11px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--ink-soft);font-size:.7rem;padding:2px 4px;font-family:'Noto Sans JP',sans-serif;}
+    .auth-divider{border:none;border-top:1px solid var(--border);margin:20px 0;}
 
-    /* User welcome bar (logged in) */
-    .user-bar { max-width: 680px; margin: 0 auto 32px; background: var(--white); border-radius: var(--r); border: 1px solid var(--border); box-shadow: var(--s1); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-    .user-bar-left { display: flex; align-items: center; gap: 12px; }
-    .user-bar-avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--ink); display: flex; align-items: center; justify-content: center; font-family: 'Noto Serif JP', serif; font-size: .85rem; color: #fff; font-weight: 700; flex-shrink: 0; }
-    .user-bar-name { font-weight: 700; font-size: .9rem; color: var(--ink); }
-    .user-bar-email { font-size: .72rem; color: var(--ink-soft); }
-    .user-bar-right { display: flex; gap: 8px; }
+    /* ── MODAL ── */
+    .modal-overlay{position:fixed;inset:0;background:rgba(28,35,64,.6);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px);animation:mfade .2s ease;}
+    @keyframes mfade{from{opacity:0;}to{opacity:1;}}
+    .modal{background:var(--white);border-radius:var(--r);padding:26px;max-width:420px;width:100%;box-shadow:var(--s3);animation:mpop .28s cubic-bezier(.34,1.56,.64,1);max-height:90vh;overflow-y:auto;}
+    @keyframes mpop{from{transform:scale(.9);opacity:0;}to{transform:scale(1);opacity:1;}}
+    .modal-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
+    .modal-title{font-family:'Noto Serif JP',serif;font-size:1rem;font-weight:700;color:var(--ink);}
+    .modal-close-btn{background:none;border:none;cursor:pointer;color:var(--ink-soft);font-size:1.4rem;line-height:1;padding:0 4px;}
+    .modal-close{display:block;margin:14px auto 0;padding:7px 26px;border-radius:99px;border:1.5px solid var(--border);background:transparent;color:var(--ink-mid);font-size:.8rem;font-weight:700;cursor:pointer;font-family:'Noto Sans JP',sans-serif;}
+    .modal-close:hover{background:var(--ink);color:#fff;border-color:var(--ink);}
 
-    /* Event section */
-    .events-wrap { max-width: 720px; margin: 0 auto; padding: 0 20px 80px; }
-    .section-head { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
-    .section-head-text { font-family: 'Noto Serif JP', serif; font-size: .85rem; font-weight: 700; color: var(--ink-soft); letter-spacing: .2em; text-transform: uppercase; white-space: nowrap; }
-    .section-head-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
+    /* ── AUTH PAGES ── */
+    .auth-wrap{min-height:calc(100vh - 59px);display:flex;align-items:center;justify-content:center;padding:24px 16px;}
+    .auth-card{background:var(--white);border-radius:var(--r);box-shadow:var(--s3);border:1px solid var(--border);width:100%;max-width:420px;overflow:hidden;}
+    .auth-card-bar{height:4px;background:linear-gradient(90deg,var(--rose),var(--violet),var(--amber),var(--sky));}
+    .auth-card-body{padding:36px 36px 32px;}
+    .auth-logo{text-align:center;margin-bottom:24px;}
+    .auth-logo-icon{width:48px;height:48px;background:var(--ink);border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Noto Serif JP',serif;font-size:.72rem;color:#fff;font-weight:700;margin:0 auto 10px;box-shadow:0 4px 16px rgba(28,35,64,.2);}
+    .auth-logo-name{font-family:'Noto Serif JP',serif;font-size:1.35rem;font-weight:700;color:var(--ink);letter-spacing:.06em;}
+    .auth-logo-name span{color:var(--violet);}
+    .auth-logo-sub{font-size:.68rem;color:var(--ink-soft);letter-spacing:.2em;margin-top:2px;}
+    .auth-title{font-family:'Noto Serif JP',serif;font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:20px;text-align:center;}
+    .auth-footer{text-align:center;margin-top:16px;font-size:.74rem;color:var(--ink-soft);}
+    .auth-link{color:var(--violet);cursor:pointer;font-weight:700;}
+    .auth-link:hover{text-decoration:underline;}
 
-    .event-grid { display: flex; flex-direction: column; gap: 14px; }
-    .event-card { background: var(--white); border-radius: var(--r); box-shadow: var(--s1); border: 1px solid var(--border); overflow: hidden; transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s; animation: cardIn .45s ease both; display: flex; }
-    .event-card:hover { transform: translateY(-3px); box-shadow: var(--s2); }
-    @keyframes cardIn { from{opacity:0;transform:translateY(14px);} to{opacity:1;transform:translateY(0);} }
-    .event-card:nth-child(1){animation-delay:.04s;}.event-card:nth-child(2){animation-delay:.08s;}.event-card:nth-child(3){animation-delay:.12s;}.event-card:nth-child(4){animation-delay:.16s;}
-    .ev-accent { width: 5px; flex-shrink: 0; }
-    .event-card:nth-child(4n+1) .ev-accent { background: linear-gradient(180deg, var(--rose), #c06080); }
-    .event-card:nth-child(4n+2) .ev-accent { background: linear-gradient(180deg, var(--violet), #402880); }
-    .event-card:nth-child(4n+3) .ev-accent { background: linear-gradient(180deg, var(--amber), #803010); }
-    .event-card:nth-child(4n)   .ev-accent { background: linear-gradient(180deg, var(--sky), #3870a8); }
-    .ev-body { padding: 16px 18px; flex: 1; min-width: 0; }
-    .ev-season { font-size: .58rem; letter-spacing: .22em; color: var(--ink-soft); text-transform: uppercase; font-weight: 600; margin-bottom: 3px; }
-    .ev-name { font-family: 'Noto Serif JP', serif; font-size: 1.02rem; font-weight: 700; color: var(--ink); margin-bottom: 3px; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .ev-date { font-size: .74rem; color: var(--ink-soft); margin-bottom: 10px; }
-    .ev-meta { display: flex; gap: 16px; flex-wrap: wrap; }
-    .ev-kv { display: flex; flex-direction: column; }
-    .ev-k { font-size: .66rem; color: var(--ink-soft); }
-    .ev-v { font-size: .8rem; font-weight: 600; color: var(--ink-mid); }
-    .ev-actions { padding: 14px 14px 14px 0; display: flex; align-items: center; flex-shrink: 0; }
-    .reg-badge { font-size: .63rem; font-weight: 700; padding: 4px 10px; border-radius: 99px; cursor: pointer; white-space: nowrap; }
-    .reg-badge-pending { background: var(--ink); color: #fff; }
-    .reg-badge-checked { background: var(--green); color: #fff; }
-    .btn-ev { padding: 9px 16px; border-radius: 99px; font-size: .76rem; font-weight: 700; border: none; cursor: pointer; transition: all .22s; font-family: 'Noto Sans JP', sans-serif; white-space: nowrap; }
-    .btn-ev:hover { filter: brightness(1.1); transform: translateY(-1px); }
-    .btn-ev-rose   { background: linear-gradient(135deg, var(--rose), #c06080); color: #fff; }
-    .btn-ev-violet { background: linear-gradient(135deg, var(--violet), #402880); color: #fff; }
-    .btn-ev-amber  { background: linear-gradient(135deg, var(--amber), #803010); color: #fff; }
-    .btn-ev-sky    { background: linear-gradient(135deg, var(--sky), #3870a8); color: #fff; }
-    .btn-ev-green  { background: linear-gradient(135deg, var(--green), #1e3a20); color: #fff; }
-    .btn-ev-outline { padding: 8px 14px; border-radius: 99px; font-size: .74rem; font-weight: 600; border: 1.5px solid var(--border); background: transparent; color: var(--ink-soft); cursor: default; font-family: 'Noto Sans JP', sans-serif; }
+    /* ── LANDING ── */
+    .hero{text-align:center;padding:52px 20px 32px;}
+    .hero-label{font-size:.62rem;letter-spacing:.38em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:10px;}
+    .hero-label::before,.hero-label::after{content:'';width:40px;height:1px;background:linear-gradient(90deg,transparent,var(--ink-pale));}
+    .hero-label::after{background:linear-gradient(90deg,var(--ink-pale),transparent);}
+    .hero-title{font-family:'Noto Serif JP',serif;font-size:clamp(1.7rem,5vw,2.8rem);font-weight:700;color:var(--ink);line-height:1.25;margin-bottom:12px;}
+    .hero-title em{font-style:normal;color:var(--violet);}
+    .hero-desc{font-size:.88rem;color:var(--ink-soft);line-height:1.9;max-width:360px;margin:0 auto 24px;}
+    .season-dots{display:flex;height:4px;max-width:200px;margin:0 auto 32px;gap:3px;}
+    .sd{flex:1;border-radius:99px;}
+    .auth-cta{display:flex;justify-content:center;gap:12px;margin-bottom:48px;flex-wrap:wrap;}
+    .btn-cta-primary{padding:12px 32px;border-radius:99px;font-size:.9rem;font-weight:700;border:none;cursor:pointer;background:var(--ink);color:#fff;box-shadow:0 4px 16px rgba(28,35,64,.22);transition:all .25s;font-family:'Noto Sans JP',sans-serif;}
+    .btn-cta-primary:hover{background:var(--ink-mid);transform:translateY(-1px);}
+    .btn-cta-outline{padding:12px 32px;border-radius:99px;font-size:.9rem;font-weight:700;border:2px solid var(--ink);cursor:pointer;background:transparent;color:var(--ink);transition:all .25s;font-family:'Noto Sans JP',sans-serif;}
+    .btn-cta-outline:hover{background:var(--ink);color:#fff;}
+    .events-wrap{max-width:720px;margin:0 auto;padding:0 20px 80px;}
+    .user-bar{max-width:680px;margin:0 auto 32px;background:var(--white);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--s1);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+    .user-bar-left{display:flex;align-items:center;gap:12px;}
+    .user-bar-avatar{width:38px;height:38px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;font-family:'Noto Serif JP',serif;font-size:.85rem;color:#fff;font-weight:700;flex-shrink:0;}
+    .user-bar-name{font-weight:700;font-size:.9rem;color:var(--ink);}
+    .user-bar-email{font-size:.72rem;color:var(--ink-soft);}
+    .user-bar-right{display:flex;gap:8px;}
+    .event-grid{display:flex;flex-direction:column;gap:14px;}
+    .event-card{background:var(--white);border-radius:var(--r);box-shadow:var(--s1);border:1px solid var(--border);overflow:hidden;transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;animation:cardIn .45s ease both;display:flex;}
+    .event-card:hover{transform:translateY(-3px);box-shadow:var(--s2);}
+    @keyframes cardIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+    .event-card:nth-child(1){animation-delay:.04s;}.event-card:nth-child(2){animation-delay:.08s;}.event-card:nth-child(3){animation-delay:.12s;}
+    .ev-accent{width:5px;flex-shrink:0;}
+    .event-card:nth-child(4n+1) .ev-accent{background:linear-gradient(180deg,var(--rose),#c06080);}
+    .event-card:nth-child(4n+2) .ev-accent{background:linear-gradient(180deg,var(--violet),#402880);}
+    .event-card:nth-child(4n+3) .ev-accent{background:linear-gradient(180deg,var(--amber),#803010);}
+    .event-card:nth-child(4n) .ev-accent{background:linear-gradient(180deg,var(--sky),#3870a8);}
+    .ev-body{padding:16px 18px;flex:1;min-width:0;}
+    .ev-season{font-size:.58rem;letter-spacing:.22em;color:var(--ink-soft);text-transform:uppercase;font-weight:600;margin-bottom:3px;}
+    .ev-name{font-family:'Noto Serif JP',serif;font-size:1.02rem;font-weight:700;color:var(--ink);margin-bottom:3px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .ev-date{font-size:.74rem;color:var(--ink-soft);margin-bottom:10px;}
+    .ev-meta{display:flex;gap:16px;flex-wrap:wrap;}
+    .ev-kv{display:flex;flex-direction:column;}
+    .ev-k{font-size:.66rem;color:var(--ink-soft);}
+    .ev-v{font-size:.8rem;font-weight:600;color:var(--ink-mid);}
+    .ev-actions{padding:14px 14px 14px 0;display:flex;align-items:center;flex-shrink:0;}
+    .reg-badge{font-size:.63rem;font-weight:700;padding:4px 10px;border-radius:99px;cursor:pointer;white-space:nowrap;}
+    .reg-badge-pending{background:var(--ink);color:#fff;}
+    .reg-badge-checked{background:var(--green);color:#fff;}
+    .btn-ev{padding:9px 16px;border-radius:99px;font-size:.76rem;font-weight:700;border:none;cursor:pointer;transition:all .22s;font-family:'Noto Sans JP',sans-serif;white-space:nowrap;}
+    .btn-ev:hover{filter:brightness(1.1);transform:translateY(-1px);}
+    .btn-ev-rose{background:linear-gradient(135deg,var(--rose),#c06080);color:#fff;}
+    .btn-ev-violet{background:linear-gradient(135deg,var(--violet),#402880);color:#fff;}
+    .btn-ev-amber{background:linear-gradient(135deg,var(--amber),#803010);color:#fff;}
+    .btn-ev-sky{background:linear-gradient(135deg,var(--sky),#3870a8);color:#fff;}
+    .btn-ev-outline{padding:8px 14px;border-radius:99px;font-size:.74rem;font-weight:600;border:1.5px solid var(--border);background:transparent;color:var(--ink-soft);cursor:default;font-family:'Noto Sans JP',sans-serif;}
 
-    /* ─── AUTH PAGES ─── */
-    .auth-wrap { min-height: calc(100vh - 59px); display: flex; align-items: center; justify-content: center; padding: 24px 16px; }
-    .auth-card { background: var(--white); border-radius: var(--r); box-shadow: var(--s3); border: 1px solid var(--border); width: 100%; max-width: 420px; overflow: hidden; position: relative; }
-    .auth-card-bar { height: 4px; background: linear-gradient(90deg, var(--rose), var(--violet), var(--amber), var(--sky)); }
-    .auth-card-body { padding: 36px 36px 32px; }
-    .auth-logo { text-align: center; margin-bottom: 24px; }
-    .auth-logo-icon { width: 48px; height: 48px; background: var(--ink); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-family: 'Noto Serif JP', serif; font-size: .72rem; color: #fff; font-weight: 700; margin: 0 auto 10px; box-shadow: 0 4px 16px rgba(28,35,64,.2); }
-    .auth-logo-name { font-family: 'Noto Serif JP', serif; font-size: 1.35rem; font-weight: 700; color: var(--ink); letter-spacing: .06em; }
-    .auth-logo-name span { color: var(--violet); }
-    .auth-logo-sub { font-size: .68rem; color: var(--ink-soft); letter-spacing: .2em; margin-top: 2px; }
-    .auth-title { font-family: 'Noto Serif JP', serif; font-size: 1.05rem; font-weight: 700; color: var(--ink); margin-bottom: 20px; text-align: center; }
+    /* ── EVENT REGISTER ── */
+    .reg-wrap{max-width:480px;margin:0 auto;padding:24px 20px 80px;}
+    .ev-hero-block{border-radius:var(--r);padding:18px 20px;margin-bottom:16px;}
+    .ev-hero-name{font-family:'Noto Serif JP',serif;font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:5px;}
+    .ev-hero-meta{font-size:.82rem;color:var(--ink-soft);line-height:2;}
+    .ticket-box{border:1.5px dashed rgba(28,35,64,.18);border-radius:var(--r);padding:22px;text-align:center;margin:16px 0;position:relative;}
+    .ticket-box::before,.ticket-box::after{content:'';position:absolute;width:18px;height:18px;background:var(--bg);border-radius:50%;top:50%;transform:translateY(-50%);border:1.5px dashed rgba(28,35,64,.18);}
+    .ticket-box::before{left:-10px;}.ticket-box::after{right:-10px;}
+    .ticket-label{font-family:'Noto Serif JP',serif;font-size:.7rem;font-weight:700;color:var(--ink-soft);margin-bottom:12px;letter-spacing:.18em;}
+    .ticket-id{font-size:.62rem;color:var(--ink-soft);font-family:monospace;word-break:break-all;background:var(--bg2);padding:5px 9px;border-radius:6px;display:block;text-align:center;margin:6px 0;}
+    .payment-box{background:rgba(112,96,168,.06);border:1px solid rgba(112,96,168,.16);border-radius:var(--rs);padding:13px;margin-bottom:13px;font-size:.82rem;}
+    .payment-box h4{color:var(--ink-mid);margin-bottom:4px;font-weight:700;}
+    .payment-box p{color:var(--ink-soft);line-height:1.8;}
+    .btn-season-rose{width:100%;padding:12px;border-radius:99px;font-size:.9rem;font-weight:700;border:none;cursor:pointer;background:linear-gradient(135deg,var(--rose),#c06080);color:#fff;transition:all .25s;font-family:'Noto Sans JP',sans-serif;}
+    .btn-season-violet{width:100%;padding:12px;border-radius:99px;font-size:.9rem;font-weight:700;border:none;cursor:pointer;background:linear-gradient(135deg,var(--violet),#402880);color:#fff;transition:all .25s;font-family:'Noto Sans JP',sans-serif;}
+    .btn-season-amber{width:100%;padding:12px;border-radius:99px;font-size:.9rem;font-weight:700;border:none;cursor:pointer;background:linear-gradient(135deg,var(--amber),#803010);color:#fff;transition:all .25s;font-family:'Noto Sans JP',sans-serif;}
+    .btn-season-sky{width:100%;padding:12px;border-radius:99px;font-size:.9rem;font-weight:700;border:none;cursor:pointer;background:linear-gradient(135deg,var(--sky),#3870a8);color:#fff;transition:all .25s;font-family:'Noto Sans JP',sans-serif;}
+    .btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--ink-soft);border-radius:99px;padding:10px 20px;font-size:.86rem;font-weight:700;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:all .18s;margin-top:10px;}
+    .btn-outline:hover{border-color:var(--ink-mid);color:var(--ink);}
 
-    .form-group { margin-bottom: 16px; }
-    .form-label { display: block; font-size: .74rem; font-weight: 700; color: var(--ink-mid); margin-bottom: 6px; letter-spacing: .04em; }
-    .form-control { width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: var(--rs); font-size: .9rem; color: var(--ink); background: var(--bg); outline: none; transition: all .2s; font-family: 'Noto Sans JP', sans-serif; }
-    .form-control:focus { border-color: var(--violet); box-shadow: 0 0 0 3px rgba(112,96,168,.12); background: var(--white); }
-    .form-control::placeholder { color: rgba(90,106,154,.4); }
-    .form-control[readonly] { background: var(--bg2); cursor: default; }
-    .pw-wrap { position: relative; }
-    .pw-toggle { position: absolute; right: 11px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--ink-soft); font-size: .7rem; padding: 2px 4px; font-family: 'Noto Sans JP', sans-serif; }
+    /* ── NEWS PAGE ── */
+    .page-inner{max-width:680px;margin:0 auto;padding:24px 20px;}
+    .news-filters{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+    .filter-chip{padding:6px 16px;border-radius:99px;border:1.5px solid var(--border);background:transparent;color:var(--ink-soft);font-size:.74rem;font-weight:600;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:all .2s;}
+    .filter-chip.active{background:var(--ink);color:#fff;border-color:var(--ink);}
+    .news-card{background:var(--white);border-radius:var(--r);box-shadow:var(--s1);border:1px solid var(--border);padding:20px;margin-bottom:12px;transition:all .25s;cursor:pointer;position:relative;overflow:hidden;animation:cardIn .4s ease both;}
+    .news-card:hover{transform:translateY(-2px);box-shadow:var(--s2);}
+    .news-card.unread::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--violet),var(--rose));}
+    .news-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:10px;}
+    .news-card-badges{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+    .news-card-date{font-size:.68rem;color:var(--ink-soft);white-space:nowrap;flex-shrink:0;}
+    .news-card-title{font-family:'Noto Serif JP',serif;font-size:.95rem;font-weight:700;color:var(--ink);margin-bottom:6px;line-height:1.4;}
+    .news-card-body{font-size:.82rem;color:var(--ink-soft);line-height:1.8;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+    .news-empty{text-align:center;padding:60px 20px;color:var(--ink-soft);}
+    .news-empty-icon{font-size:3rem;margin-bottom:12px;}
+    /* news detail modal */
+    .news-detail-title{font-family:'Noto Serif JP',serif;font-size:1.1rem;font-weight:700;color:var(--ink);line-height:1.4;margin-bottom:10px;}
+    .news-detail-meta{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+    .news-detail-body{font-size:.88rem;color:var(--ink-soft);line-height:2;white-space:pre-wrap;word-break:break-word;}
 
-    .btn-primary { width: 100%; padding: 12px; border-radius: 99px; font-size: .9rem; font-weight: 700; border: none; cursor: pointer; background: var(--ink); color: #fff; box-shadow: 0 4px 16px rgba(28,35,64,.2); transition: all .28s cubic-bezier(.34,1.56,.64,1); font-family: 'Noto Sans JP', sans-serif; }
-    .btn-primary:hover { background: var(--ink-mid); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(28,35,64,.26); }
-    .btn-primary:disabled { opacity: .45; cursor: not-allowed; transform: none; box-shadow: none; }
+    /* ── MY PAGE ── */
+    .mypage-wrap{max-width:620px;margin:0 auto;padding:24px 20px 80px;}
+    .profile-card{border-radius:var(--r);padding:22px 24px;margin-bottom:18px;background:var(--ink);color:#fff;position:relative;overflow:hidden;}
+    .profile-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 65% 70% at 5% 15%,rgba(232,160,184,.22) 0%,transparent 60%),radial-gradient(ellipse 55% 60% at 92% 85%,rgba(112,96,168,.22) 0%,transparent 60%);}
+    .profile-card-z{position:relative;z-index:1;}
+    .profile-name{font-family:'Noto Serif JP',serif;font-size:1.18rem;font-weight:700;margin-bottom:2px;}
+    .profile-email{font-size:.75rem;opacity:.52;margin-bottom:14px;}
+    .profile-stats{display:flex;gap:20px;}
+    .ps-num{font-size:1.55rem;font-weight:800;line-height:1;}
+    .ps-label{font-size:.62rem;opacity:.52;margin-top:2px;}
+    .tabs{display:flex;gap:2px;margin-bottom:16px;background:var(--bg2);padding:3px;border-radius:var(--rs);overflow-x:auto;}
+    .tab-btn{flex:1;min-width:fit-content;padding:8px 12px;border:none;background:none;font-size:.76rem;font-weight:700;color:var(--ink-soft);cursor:pointer;border-radius:8px;transition:all .18s;font-family:'Noto Sans JP',sans-serif;white-space:nowrap;}
+    .tab-btn.active{background:var(--white);color:var(--ink);box-shadow:var(--s1);}
+    .tab-logout{color:var(--amber)!important;}
+    .tab-pane{display:none;}.tab-pane.active{display:block;}
+    table{width:100%;border-collapse:collapse;font-size:.8rem;}
+    th{padding:8px 10px;text-align:left;color:var(--ink-soft);font-weight:700;border-bottom:2px solid var(--bg2);white-space:nowrap;font-size:.7rem;letter-spacing:.04em;}
+    td{padding:9px 10px;border-bottom:1px solid var(--bg2);}
+    tr:hover>td{background:rgba(112,96,168,.03);}
+    /* survey charts */
+    .chart-wrap{position:relative;height:220px;margin-top:8px;}
+    .survey-form{background:linear-gradient(135deg,rgba(232,160,184,.1),rgba(112,96,168,.07));border:1px solid rgba(232,160,184,.28);border-radius:var(--rs);padding:14px;margin-bottom:12px;}
+    .survey-form h4{font-family:'Noto Serif JP',serif;font-size:.86rem;font-weight:700;color:var(--ink);margin-bottom:8px;}
+    .star-rating{display:flex;gap:4px;margin-bottom:8px;flex-direction:row-reverse;justify-content:flex-end;}
+    .star-rating input{display:none;}
+    .star-rating label{font-size:1.65rem;cursor:pointer;color:#e0e2ec;transition:color .15s;}
+    .star-rating input:checked~label,.star-rating label:hover,.star-rating label:hover~label{color:#f59e0b;}
+    .survey-done{background:rgba(61,102,64,.07);border:1px solid rgba(61,102,64,.2);border-radius:var(--rs);padding:10px 14px;font-size:.78rem;color:var(--green);margin-bottom:10px;}
+    .star-display{color:#f59e0b;}
+    /* timeline */
+    .timeline{display:flex;flex-direction:column;}
+    .tl-item{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--bg2);}
+    .tl-item:last-child{border-bottom:none;}
+    .tl-left{display:flex;flex-direction:column;align-items:center;gap:4px;}
+    .tl-dot{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--violet),var(--rose));display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .tl-dot-inner{width:8px;height:8px;border-radius:50%;background:#fff;}
+    .tl-line{width:2px;flex:1;background:var(--bg2);min-height:16px;}
+    .tl-body{flex:1;}
+    .tl-event{font-weight:700;font-size:.88rem;color:var(--ink);margin-bottom:2px;}
+    .tl-date{font-size:.72rem;color:var(--ink-soft);}
+    .tl-badge-done{display:inline-block;padding:2px 8px;border-radius:99px;font-size:.64rem;font-weight:700;background:rgba(61,102,64,.1);color:var(--green);margin-top:4px;}
 
-    .auth-footer { text-align: center; margin-top: 16px; font-size: .74rem; color: var(--ink-soft); }
-    .auth-link { color: var(--violet); cursor: pointer; font-weight: 700; }
-    .auth-link:hover { text-decoration: underline; }
-    .auth-divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+    /* ── CHAT / DM ── */
+    .chat-area{display:flex;flex-direction:column;height:380px;border-radius:var(--r);overflow:hidden;border:1px solid var(--border);}
+    .chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;background:var(--bg2);}
+    .chat-bubble{max-width:78%;display:flex;flex-direction:column;gap:3px;}
+    .chat-bubble.mine{align-self:flex-end;align-items:flex-end;}
+    .chat-bubble.theirs{align-self:flex-start;align-items:flex-start;}
+    .bubble-sender{font-size:.66rem;font-weight:700;color:var(--ink-soft);margin-bottom:2px;padding:0 4px;}
+    .bubble-text{padding:10px 14px;border-radius:var(--r);font-size:.88rem;line-height:1.6;word-break:break-word;}
+    .chat-bubble.mine .bubble-text{background:var(--ink);color:#fff;border-radius:var(--r) var(--r) 4px var(--r);}
+    .chat-bubble.theirs .bubble-text{background:var(--white);color:var(--ink);border:1px solid var(--border);border-radius:var(--r) var(--r) var(--r) 4px;}
+    .bubble-meta{font-size:.62rem;color:var(--ink-soft);padding:0 4px;}
+    .chat-input-row{display:flex;gap:8px;padding:10px 12px;background:var(--white);border-top:1px solid var(--border);}
+    .chat-input{flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:99px;font-size:.88rem;outline:none;font-family:'Noto Sans JP',sans-serif;background:var(--bg);transition:border-color .2s;resize:none;max-height:80px;}
+    .chat-input:focus{border-color:var(--violet);background:var(--white);}
+    .chat-send{padding:10px 18px;border-radius:99px;border:none;background:var(--ink);color:#fff;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:all .2s;white-space:nowrap;}
+    .chat-send:hover{background:var(--ink-mid);}
+    .chat-send:disabled{opacity:.4;cursor:not-allowed;}
+    .chat-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--ink-soft);font-size:.85rem;gap:8px;padding:20px;}
+    .chat-empty span{font-size:2.2rem;}
 
-    /* ─── MY PAGE ─── */
-    .mypage-wrap { max-width: 620px; margin: 0 auto; padding: 24px 20px 80px; }
-    .profile-card { border-radius: var(--r); padding: 22px 24px; margin-bottom: 18px; background: var(--ink); color: #fff; position: relative; overflow: hidden; }
-    .profile-card::before { content:''; position: absolute; inset: 0; background: radial-gradient(ellipse 65% 70% at 5% 15%, rgba(232,160,184,.2) 0%, transparent 60%), radial-gradient(ellipse 55% 60% at 92% 85%, rgba(112,96,168,.2) 0%, transparent 60%); }
-    .profile-name { font-family: 'Noto Serif JP', serif; font-size: 1.18rem; font-weight: 700; margin-bottom: 2px; position: relative; z-index: 1; }
-    .profile-email { font-size: .75rem; opacity: .52; margin-bottom: 14px; position: relative; z-index: 1; }
-    .profile-stats { display: flex; gap: 20px; position: relative; z-index: 1; }
-    .ps-num { font-size: 1.55rem; font-weight: 800; line-height: 1; }
-    .ps-label { font-size: .62rem; opacity: .52; margin-top: 2px; }
+    /* ── PHOTO PAGE ── */
+    .photo-page-wrap{max-width:720px;margin:0 auto;padding:24px 20px;}
+    .event-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+    .event-chip{padding:8px 16px;border-radius:99px;border:1.5px solid var(--border);background:transparent;color:var(--ink-soft);font-size:.76rem;font-weight:600;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:all .2s;}
+    .event-chip.active{background:var(--ink);color:#fff;border-color:var(--ink);}
+    .photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:20px;}
+    .photo-item{aspect-ratio:1;border-radius:var(--rs);overflow:hidden;position:relative;cursor:pointer;background:var(--bg2);border:1px solid var(--border);}
+    .photo-item img{width:100%;height:100%;object-fit:cover;transition:transform .3s;}
+    .photo-item:hover img{transform:scale(1.06);}
+    .photo-overlay{position:absolute;inset:0;background:rgba(28,35,64,.42);display:none;align-items:center;justify-content:center;}
+    .photo-item:hover .photo-overlay{display:flex;}
+    .photo-overlay svg{width:28px;height:28px;stroke:#fff;fill:none;stroke-width:2;}
+    .upload-zone{border:2px dashed var(--ink-pale);border-radius:var(--r);padding:36px 20px;text-align:center;cursor:pointer;transition:all .2s;background:rgba(112,96,168,.03);margin-bottom:16px;}
+    .upload-zone:hover{border-color:var(--violet);background:rgba(112,96,168,.06);}
+    .upload-icon{font-size:2.5rem;margin-bottom:8px;}
+    .upload-text{font-size:.85rem;color:var(--ink-soft);line-height:1.8;}
+    .upload-text strong{color:var(--violet);}
+    .photo-locked{background:var(--white);border-radius:var(--r);border:1px solid var(--border);padding:60px 20px;text-align:center;box-shadow:var(--s1);}
+    .photo-locked-icon{font-size:3rem;margin-bottom:12px;}
+    .photo-locked-text{font-size:.88rem;color:var(--ink-soft);line-height:1.9;}
+    .photo-viewer{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:300;display:flex;align-items:center;justify-content:center;animation:mfade .2s ease;}
+    .photo-viewer img{max-width:92vw;max-height:88vh;border-radius:var(--rs);object-fit:contain;}
+    .photo-viewer-close{position:absolute;top:18px;right:20px;background:rgba(255,255,255,.15);border:none;cursor:pointer;color:#fff;font-size:1.6rem;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
 
-    .card { background: var(--white); border-radius: var(--r); box-shadow: var(--s1); padding: 22px; margin-bottom: 16px; border: 1px solid var(--border); }
-    .tabs { display: flex; gap: 2px; margin-bottom: 16px; background: var(--bg2); padding: 3px; border-radius: var(--rs); overflow-x: auto; }
-    .tab-btn { flex: 1; min-width: fit-content; padding: 8px 12px; border: none; background: none; font-size: .76rem; font-weight: 700; color: var(--ink-soft); cursor: pointer; border-radius: 8px; transition: all .18s; font-family: 'Noto Sans JP', sans-serif; white-space: nowrap; }
-    .tab-btn.active { background: var(--white); color: var(--ink); box-shadow: var(--s1); }
-    .tab-logout { color: var(--amber) !important; }
-    table { width: 100%; border-collapse: collapse; font-size: .8rem; }
-    th { padding: 8px 10px; text-align: left; color: var(--ink-soft); font-weight: 700; border-bottom: 2px solid var(--bg2); white-space: nowrap; font-size: .7rem; letter-spacing: .04em; }
-    td { padding: 9px 10px; border-bottom: 1px solid var(--bg2); }
-    tr:hover > td { background: rgba(112,96,168,.03); }
-    .survey-form { background: linear-gradient(135deg, rgba(232,160,184,.1), rgba(112,96,168,.07)); border: 1px solid rgba(232,160,184,.28); border-radius: var(--rs); padding: 14px; margin-bottom: 12px; }
-    .survey-form h4 { font-family: 'Noto Serif JP', serif; font-size: .86rem; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
-    .star-rating { display: flex; gap: 4px; margin-bottom: 8px; flex-direction: row-reverse; justify-content: flex-end; }
-    .star-rating input { display: none; }
-    .star-rating label { font-size: 1.65rem; cursor: pointer; color: #e0e2ec; transition: color .15s; }
-    .star-rating input:checked ~ label, .star-rating label:hover, .star-rating label:hover ~ label { color: #f59e0b; }
-    .survey-done { background: rgba(61,102,64,.07); border: 1px solid rgba(61,102,64,.2); border-radius: var(--rs); padding: 10px 14px; font-size: .78rem; color: var(--green); margin-bottom: 10px; }
-    .star-display { color: #f59e0b; }
+    /* ── QR MODAL ── */
+    .qr-modal{position:fixed;inset:0;background:rgba(28,35,64,.6);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px);animation:mfade .2s ease;}
 
-    /* ─── REGISTER PAGE ─── */
-    .reg-wrap { max-width: 480px; margin: 0 auto; padding: 24px 20px 80px; }
-    .ev-hero-block { border-radius: var(--r); padding: 18px 20px; margin-bottom: 16px; }
-    .ev-hero-name { font-family: 'Noto Serif JP', serif; font-size: 1.05rem; font-weight: 700; color: var(--ink); margin-bottom: 5px; }
-    .ev-hero-meta { font-size: .82rem; color: var(--ink-soft); line-height: 2; }
-    .ticket-box { border: 1.5px dashed rgba(28,35,64,.18); border-radius: var(--r); padding: 22px; text-align: center; margin: 16px 0; position: relative; }
-    .ticket-box::before, .ticket-box::after { content:''; position: absolute; width: 18px; height: 18px; background: var(--bg); border-radius: 50%; top: 50%; transform: translateY(-50%); border: 1.5px dashed rgba(28,35,64,.18); }
-    .ticket-box::before { left: -10px; } .ticket-box::after { right: -10px; }
-    .ticket-label { font-family: 'Noto Serif JP', serif; font-size: .7rem; font-weight: 700; color: var(--ink-soft); margin-bottom: 12px; letter-spacing: .18em; }
-    .ticket-id { font-size: .62rem; color: var(--ink-soft); font-family: monospace; word-break: break-all; background: var(--bg2); padding: 5px 9px; border-radius: 6px; display: block; text-align: center; margin: 6px 0; }
-    .payment-box { background: rgba(112,96,168,.06); border: 1px solid rgba(112,96,168,.16); border-radius: var(--rs); padding: 13px; margin-bottom: 13px; font-size: .82rem; }
-    .payment-box h4 { color: var(--ink-mid); margin-bottom: 4px; font-weight: 700; }
-    .payment-box p { color: var(--ink-soft); line-height: 1.8; }
-
-    /* ─── SHARED BUTTONS ─── */
-    .btn-back { display: inline-flex; align-items: center; gap: 4px; padding: 7px 14px; border-radius: 99px; border: 1.5px solid var(--border); background: transparent; color: var(--ink-soft); cursor: pointer; font-family: 'Noto Sans JP', sans-serif; font-size: .76rem; margin-bottom: 14px; transition: all .18s; }
-    .btn-back:hover { border-color: var(--ink-mid); color: var(--ink); }
-    .btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--ink-soft); border-radius: 99px; padding: 10px 20px; font-size: .86rem; font-weight: 700; cursor: pointer; font-family: 'Noto Sans JP', sans-serif; transition: all .18s; margin-top: 10px; }
-    .btn-outline:hover { border-color: var(--ink-mid); color: var(--ink); }
-    .btn-season-rose   { width:100%;padding:12px;border-radius:99px;font-size:.9rem;font-weight:700;border:none;cursor:pointer;background:linear-gradient(135deg,var(--rose),#c06080);color:#fff;transition:all .25s;font-family:'Noto Sans JP',sans-serif; }
-    .btn-season-violet { width:100%;padding:12px;border-radius:99px;font-size:.9rem;font-weight:700;border:none;cursor:pointer;background:linear-gradient(135deg,var(--violet),#402880);color:#fff;transition:all .25s;font-family:'Noto Sans JP',sans-serif; }
-    .btn-season-amber  { width:100%;padding:12px;border-radius:99px;font-size:.9rem;font-weight:700;border:none;cursor:pointer;background:linear-gradient(135deg,var(--amber),#803010);color:#fff;transition:all .25s;font-family:'Noto Sans JP',sans-serif; }
-    .btn-season-sky    { width:100%;padding:12px;border-radius:99px;font-size:.9rem;font-weight:700;border:none;cursor:pointer;background:linear-gradient(135deg,var(--sky),#3870a8);color:#fff;transition:all .25s;font-family:'Noto Sans JP',sans-serif; }
-
-    .badge { display: inline-block; padding: 2px 9px; border-radius: 99px; font-size: .68rem; font-weight: 700; }
-    .badge-free { background: rgba(61,102,64,.1); color: var(--green); }
-    .badge-paid { background: rgba(112,96,168,.1); color: var(--violet); }
-    .badge-full { background: rgba(200,90,32,.1); color: var(--amber); }
-
-    .alert { padding: 11px 14px; border-radius: var(--rs); font-size: .82rem; margin-bottom: 14px; line-height: 1.7; }
-    .alert-ok { background: #f0fdf4; border-left: 3px solid #22c55e; color: #15803d; }
-    .alert-err { background: rgba(200,90,32,.06); border-left: 3px solid var(--amber); color: #7a2010; }
-    .alert-info { background: rgba(112,96,168,.07); border-left: 3px solid var(--violet); color: var(--ink-mid); }
-    .spinner { width: 34px; height: 34px; border: 3px solid var(--bg2); border-top-color: var(--violet); border-radius: 50%; animation: spin .8s linear infinite; margin: 28px auto; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .loading-text { text-align: center; color: var(--ink-soft); font-size: .82rem; }
-
-    /* QR Modal */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(28,35,64,.6); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(6px); animation: mfade .2s ease; }
-    @keyframes mfade { from{opacity:0;} to{opacity:1;} }
-    .modal { background: var(--white); border-radius: var(--r); padding: 26px; max-width: 340px; width: 100%; box-shadow: var(--s3); animation: mpop .28s cubic-bezier(.34,1.56,.64,1); }
-    @keyframes mpop { from{transform:scale(.9);opacity:0;} to{transform:scale(1);opacity:1;} }
-    .modal-title { font-family: 'Noto Serif JP', serif; font-size: .96rem; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
-    .modal-sub { font-size: .75rem; color: var(--ink-soft); margin-bottom: 16px; }
-    .modal-close { display: block; margin: 14px auto 0; padding: 7px 26px; border-radius: 99px; border: 1.5px solid var(--border); background: transparent; color: var(--ink-mid); font-size: .8rem; font-weight: 700; cursor: pointer; font-family: 'Noto Sans JP', sans-serif; }
-    .modal-close:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
+    /* ── PROFILE EDIT ── */
+    #my-profile-edit{}
+    .tab-logout{color:var(--amber)!important;}
 
     @media(max-width:600px){
       .header{padding:0 14px;}
       .auth-card-body{padding:26px 22px 24px;}
-      .events-wrap,.mypage-wrap,.reg-wrap{padding-left:14px;padding-right:14px;}
+      .events-wrap,.mypage-wrap,.reg-wrap,.page-inner,.photo-page-wrap{padding-left:14px;padding-right:14px;}
       .ev-actions{display:none;}
-      .auth-cta{gap:8px;}
-      .btn-cta-primary,.btn-cta-outline{padding:10px 22px;font-size:.85rem;}
+      .photo-grid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr));}
     }
   </style>
 </head>
@@ -259,35 +344,75 @@
   </div>
 </header>
 
+<!-- BOTTOM NAV (logged-in only) -->
+<nav class="bottom-nav" id="bottom-nav" style="display:none;">
+  <button class="bnav-item active" id="bnav-home" onclick="goHome()">
+    <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
+    <span>ホーム</span>
+  </button>
+  <button class="bnav-item" id="bnav-news" onclick="showNewsPage()">
+    <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h10M7 13h6"/></svg>
+    <span>ニュース</span>
+    <div class="bnav-dot" id="news-dot"></div>
+  </button>
+  <button class="bnav-item" id="bnav-photo" onclick="showPhotoPage()">
+    <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+    <span>フォト</span>
+  </button>
+  <button class="bnav-item" id="bnav-mypage" onclick="showMyPage()">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+    <span>マイページ</span>
+    <div class="bnav-dot" id="chat-dot"></div>
+  </button>
+</nav>
+
 <!-- QR Modal -->
-<div class="modal-overlay" id="qr-modal" style="display:none;" onclick="if(event.target===this)this.style.display='none'">
-  <div class="modal">
-    <div class="modal-title" id="qr-modal-title"></div>
-    <div class="modal-sub" id="qr-modal-sub"></div>
-    <div id="qr-modal-canvas" style="display:flex;justify-content:center;margin-bottom:8px;"></div>
-    <div class="ticket-id" id="qr-modal-id"></div>
-    <button class="modal-close" onclick="document.getElementById('qr-modal').style.display='none'" data-i18n="close">閉じる</button>
+<div id="qr-modal" style="display:none;" onclick="if(event.target===this)this.style.display='none'">
+  <div class="qr-modal" onclick="if(event.target===this)document.getElementById('qr-modal').style.display='none'">
+    <div class="modal">
+      <div class="modal-title" id="qr-modal-title"></div>
+      <div style="font-size:.75rem;color:var(--ink-soft);margin-bottom:16px;" id="qr-modal-sub"></div>
+      <div id="qr-modal-canvas" style="display:flex;justify-content:center;margin-bottom:8px;"></div>
+      <div class="ticket-id" id="qr-modal-id"></div>
+      <button class="modal-close" onclick="document.getElementById('qr-modal').style.display='none'">閉じる</button>
+    </div>
   </div>
+</div>
+
+<!-- News Detail Modal -->
+<div class="modal-overlay" id="news-modal" style="display:none;" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal" style="max-width:520px;">
+    <div class="modal-header">
+      <div class="news-detail-title" id="nm-title"></div>
+      <button class="modal-close-btn" onclick="document.getElementById('news-modal').style.display='none'">×</button>
+    </div>
+    <div class="news-detail-meta" id="nm-meta"></div>
+    <div class="news-detail-body" id="nm-body"></div>
+    <button class="modal-close" onclick="document.getElementById('news-modal').style.display='none'">閉じる</button>
+  </div>
+</div>
+
+<!-- Photo Viewer -->
+<div class="photo-viewer" id="photo-viewer" style="display:none;" onclick="this.style.display='none'">
+  <img id="photo-viewer-img" src="" alt="">
+  <button class="photo-viewer-close" onclick="document.getElementById('photo-viewer').style.display='none'">×</button>
 </div>
 
 <!-- ═══ PAGE: LANDING ═══ -->
 <div id="page-landing" class="page active">
   <div class="hero">
-    <div class="hero-label" data-i18n="eyebrow">Events</div>
-    <h1 class="hero-title"><em>connec+a</em><br><span data-i18n="heroTitle">のイベントへようこそ</span></h1>
-    <p class="hero-desc" data-i18n="heroDesc">参加したいイベントを選んで、簡単にお申し込みいただけます。</p>
+    <div class="hero-label">Events</div>
+    <h1 class="hero-title"><em>connec+a</em><br><span>のイベントへようこそ</span></h1>
+    <p class="hero-desc">参加したいイベントを選んで、簡単にお申し込みいただけます。</p>
     <div class="season-dots">
       <span class="sd" style="background:var(--rose)"></span><span class="sd" style="background:var(--violet)"></span>
       <span class="sd" style="background:var(--amber)"></span><span class="sd" style="background:var(--sky)"></span>
     </div>
-    <!-- Guest: show auth buttons -->
     <div class="auth-cta" id="guest-cta">
-      <button class="btn-cta-primary" onclick="showPage('page-login')" data-i18n="login">ログイン</button>
-      <button class="btn-cta-outline" onclick="showPage('page-register-account')" data-i18n="newRegister">新規登録</button>
+      <button class="btn-cta-primary" onclick="showPage('page-login')">ログイン</button>
+      <button class="btn-cta-outline" onclick="showPage('page-register-account')">新規登録</button>
     </div>
   </div>
-
-  <!-- Logged-in user bar -->
   <div class="events-wrap">
     <div class="user-bar" id="user-bar" style="display:none;">
       <div class="user-bar-left">
@@ -295,16 +420,12 @@
         <div><div class="user-bar-name" id="ub-name"></div><div class="user-bar-email" id="ub-email"></div></div>
       </div>
       <div class="user-bar-right">
-        <button class="btn-ev btn-ev-violet" onclick="showMyPage()" data-i18n="mypage" style="font-size:.76rem;">マイページ</button>
-        <button class="btn-ev-outline" onclick="logout()" data-i18n="logout">ログアウト</button>
+        <button class="btn-ev btn-ev-violet" onclick="showMyPage()" style="font-size:.76rem;">マイページ</button>
+        <button class="btn-ev-outline" onclick="logout()">ログアウト</button>
       </div>
     </div>
-
-    <div class="section-head">
-      <span class="section-head-text" data-i18n="eventsSection">イベント一覧</span>
-      <span class="section-head-line"></span>
-    </div>
-    <div id="event-list"><div class="spinner"></div><p class="loading-text" data-i18n="loading">読み込み中</p></div>
+    <div class="section-head"><span class="section-head-text">イベント一覧</span><span class="section-head-line"></span></div>
+    <div id="event-list"><div class="spinner"></div><p class="loading-text">読み込み中</p></div>
   </div>
 </div>
 
@@ -319,28 +440,23 @@
           <div class="auth-logo-name">connec<span>+</span>a</div>
           <div class="auth-logo-sub">Event Platform</div>
         </div>
-        <div class="auth-title" data-i18n="loginTitle">ログイン</div>
+        <div class="auth-title">ログイン</div>
         <div id="login-alert"></div>
         <div class="form-group">
-          <label class="form-label" data-i18n="emailLabel">メールアドレス</label>
-          <input id="login-email" class="form-control" type="email" data-i18n-ph="emailPh" placeholder="example@email.com">
+          <label class="form-label">メールアドレス</label>
+          <input id="login-email" class="form-control" type="email" placeholder="example@email.com">
         </div>
         <div class="form-group">
-          <label class="form-label" data-i18n="passwordLabel">パスワード</label>
+          <label class="form-label">パスワード</label>
           <div class="pw-wrap">
-            <input id="login-pw" class="form-control" type="password" data-i18n-ph="pwPh" placeholder="••••••••" style="padding-right:50px;">
-            <button class="pw-toggle" type="button" onclick="togglePw('login-pw',this)" data-i18n="showPw">表示</button>
+            <input id="login-pw" class="form-control" type="password" placeholder="••••••••" style="padding-right:50px;">
+            <button class="pw-toggle" type="button" onclick="togglePw('login-pw',this)">表示</button>
           </div>
         </div>
-        <button class="btn-primary" onclick="doLogin()" data-i18n="loginBtn">ログイン</button>
+        <button class="btn-primary" onclick="doLogin()">ログイン</button>
         <hr class="auth-divider">
-        <p class="auth-footer">
-          <span data-i18n="noAccount">アカウントをお持ちでない方は</span>
-          <a class="auth-link" onclick="showPage('page-register-account')" data-i18n="toRegister">新規登録</a>
-        </p>
-        <p class="auth-footer" style="margin-top:8px;">
-          <a class="auth-link" onclick="showPage('page-landing')" data-i18n="backToList">← 一覧に戻る</a>
-        </p>
+        <p class="auth-footer">アカウントをお持ちでない方は <a class="auth-link" onclick="showPage('page-register-account')">新規登録</a></p>
+        <p class="auth-footer" style="margin-top:8px;"><a class="auth-link" onclick="showPage('page-landing')">← 一覧に戻る</a></p>
       </div>
     </div>
   </div>
@@ -357,79 +473,95 @@
           <div class="auth-logo-name">connec<span>+</span>a</div>
           <div class="auth-logo-sub">Event Platform</div>
         </div>
-        <div class="auth-title" data-i18n="registerAccountTitle">新規登録</div>
+        <div class="auth-title">新規登録</div>
         <div id="reg-account-alert"></div>
+        <div class="form-group"><label class="form-label">お名前</label><input id="ra-name" class="form-control" type="text" placeholder="山田 太郎"></div>
+        <div class="form-group"><label class="form-label">メールアドレス</label><input id="ra-email" class="form-control" type="email" placeholder="example@email.com"></div>
         <div class="form-group">
-          <label class="form-label" data-i18n="nameLabel">お名前</label>
-          <input id="ra-name" class="form-control" type="text" data-i18n-ph="namePh" placeholder="山田 太郎">
+          <label class="form-label">パスワード</label>
+          <div class="pw-wrap"><input id="ra-pw" class="form-control" type="password" placeholder="••••••••" style="padding-right:50px;"><button class="pw-toggle" type="button" onclick="togglePw('ra-pw',this)">表示</button></div>
         </div>
         <div class="form-group">
-          <label class="form-label" data-i18n="emailLabel">メールアドレス</label>
-          <input id="ra-email" class="form-control" type="email" data-i18n-ph="emailPh" placeholder="example@email.com">
+          <label class="form-label">パスワード（確認）</label>
+          <div class="pw-wrap"><input id="ra-pw2" class="form-control" type="password" placeholder="••••••••" style="padding-right:50px;"><button class="pw-toggle" type="button" onclick="togglePw('ra-pw2',this)">表示</button></div>
         </div>
-        <div class="form-group">
-          <label class="form-label" data-i18n="passwordLabel">パスワード</label>
-          <div class="pw-wrap">
-            <input id="ra-pw" class="form-control" type="password" data-i18n-ph="pwPh" placeholder="••••••••" style="padding-right:50px;">
-            <button class="pw-toggle" type="button" onclick="togglePw('ra-pw',this)" data-i18n="showPw">表示</button>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label" data-i18n="pwConfirmLabel">パスワード（確認）</label>
-          <div class="pw-wrap">
-            <input id="ra-pw2" class="form-control" type="password" placeholder="••••••••" style="padding-right:50px;">
-            <button class="pw-toggle" type="button" onclick="togglePw('ra-pw2',this)" data-i18n="showPw">表示</button>
-          </div>
-        </div>
-        <button class="btn-primary" onclick="doRegister()" data-i18n="createAccountBtn">アカウントを作成</button>
+        <button class="btn-primary" onclick="doRegister()">アカウントを作成</button>
         <hr class="auth-divider">
-        <p class="auth-footer">
-          <span data-i18n="hasAccount">すでにアカウントをお持ちの方は</span>
-          <a class="auth-link" onclick="showPage('page-login')" data-i18n="toLogin">ログイン</a>
-        </p>
-        <p class="auth-footer" style="margin-top:8px;">
-          <a class="auth-link" onclick="showPage('page-landing')" data-i18n="backToList">← 一覧に戻る</a>
-        </p>
+        <p class="auth-footer">すでにアカウントをお持ちの方は <a class="auth-link" onclick="showPage('page-login')">ログイン</a></p>
+        <p class="auth-footer" style="margin-top:8px;"><a class="auth-link" onclick="showPage('page-landing')">← 一覧に戻る</a></p>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE: NEWS ═══ -->
+<div id="page-news" class="page">
+  <div class="page-inner">
+    <div class="section-head"><span class="section-head-text">📰 ニュース</span><span class="section-head-line"></span></div>
+    <div class="news-filters">
+      <button class="filter-chip active" onclick="filterNews('all',this)">すべて</button>
+      <button class="filter-chip" onclick="filterNews('global',this)">📢 全体</button>
+      <button class="filter-chip" onclick="filterNews('personal',this)">✉️ 個別</button>
+      <button class="filter-chip" onclick="filterNews('unread',this)">🔴 未読</button>
+    </div>
+    <div id="news-list"><div class="spinner"></div><p class="loading-text">読み込み中</p></div>
   </div>
 </div>
 
 <!-- ═══ PAGE: MY PAGE ═══ -->
 <div id="page-mypage" class="page">
   <div class="mypage-wrap">
-    <button class="btn-back" onclick="goHome()" data-i18n="backToList">← 一覧に戻る</button>
-    <div class="profile-card" id="profile-card"></div>
+    <div class="profile-card" id="profile-card">
+      <div class="profile-card-z">
+        <div class="profile-name" id="pc-name">—</div>
+        <div class="profile-email" id="pc-email">—</div>
+        <div class="profile-stats">
+          <div><div class="ps-num" id="pc-events">0</div><div class="ps-label">参加回数</div></div>
+          <div><div class="ps-num" id="pc-rank">New</div><div class="ps-label">ランク</div></div>
+        </div>
+      </div>
+    </div>
     <div class="card">
       <div class="tabs">
-        <button class="tab-btn active" onclick="switchMyTab('history',this)" data-i18n="historyTab">参加履歴</button>
-        <button class="tab-btn" onclick="switchMyTab('events',this)" data-i18n="myEventsTab">イベント詳細</button>
-        <button class="tab-btn" id="survey-tab-btn" onclick="switchMyTab('survey',this)" data-i18n="surveyTab" style="display:none;">満足度調査</button>
-        <button class="tab-btn" onclick="switchMyTab('profile-edit',this)" data-i18n="profileTab">プロフィール</button>
-        <button class="tab-btn tab-logout" onclick="logout()" data-i18n="logout">ログアウト</button>
+        <button class="tab-btn active" onclick="switchMyTab('history',this)">📋 履歴</button>
+        <button class="tab-btn" onclick="switchMyTab('survey',this)" id="survey-tab-btn">⭐ 調査</button>
+        <button class="tab-btn" onclick="switchMyTab('notifications',this)" id="notif-tab-btn">🔔 通知</button>
+        <button class="tab-btn" onclick="switchMyTab('chat',this)">💬 メッセージ</button>
+        <button class="tab-btn" onclick="switchMyTab('profile-edit',this)">👤 プロフィール</button>
+        <button class="tab-btn tab-logout" onclick="logout()">ログアウト</button>
       </div>
-      <div id="my-history"></div>
-      <div id="my-events" style="display:none;"></div>
-      <div id="my-survey" style="display:none;"></div>
-      <div id="my-profile-edit" style="display:none;"></div>
+      <div id="tab-history" class="tab-pane active"></div>
+      <div id="tab-survey" class="tab-pane"></div>
+      <div id="tab-notifications" class="tab-pane"></div>
+      <div id="tab-chat" class="tab-pane"></div>
+      <div id="tab-profile-edit" class="tab-pane"></div>
     </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE: PHOTOS ═══ -->
+<div id="page-photos" class="page">
+  <div class="photo-page-wrap">
+    <div class="section-head"><span class="section-head-text">📸 フォト</span><span class="section-head-line"></span></div>
+    <div id="photo-event-chips" class="event-chips"></div>
+    <div id="photo-content"></div>
   </div>
 </div>
 
 <!-- ═══ PAGE: EVENT REGISTER ═══ -->
 <div id="page-event-reg" class="page">
   <div class="reg-wrap">
-    <button class="btn-back" onclick="goHome()" data-i18n="backToList">← 一覧に戻る</button>
+    <button class="btn-back" onclick="goHome()">← 一覧に戻る</button>
     <div id="ev-reg-info"></div>
     <div class="card">
-      <div class="auth-title" data-i18n="registerTitle" style="margin-bottom:16px;">参加登録</div>
+      <div class="auth-title" style="margin-bottom:16px;">参加登録</div>
       <div id="ev-reg-alert"></div>
       <div id="ev-reg-form">
-        <div class="form-group"><label class="form-label" data-i18n="nameLabel">お名前</label><input id="inp-name" class="form-control" type="text" readonly></div>
-        <div class="form-group"><label class="form-label" data-i18n="emailLabel">メールアドレス</label><input id="inp-email" class="form-control" type="email" readonly></div>
+        <div class="form-group"><label class="form-label">お名前</label><input id="inp-name" class="form-control" type="text" readonly></div>
+        <div class="form-group"><label class="form-label">メールアドレス</label><input id="inp-email" class="form-control" type="email" readonly></div>
         <div id="payment-info-box"></div>
-        <button id="btn-ev-submit" class="btn-primary" data-i18n="registerBtn">登録する</button>
-        <p style="font-size:.7rem;color:var(--ink-soft);text-align:center;margin-top:9px;" data-i18n="registerNote">登録後、QRチケットをメールでお送りします</p>
+        <button id="btn-ev-submit" class="btn-primary">登録する</button>
+        <p style="font-size:.7rem;color:var(--ink-soft);text-align:center;margin-top:9px;">登録後、QRチケットをメールでお送りします</p>
       </div>
       <div id="ev-reg-result" style="display:none;"></div>
     </div>
@@ -437,638 +569,215 @@
 </div>
 
 <script>
+// ════════════════════════════════════════════════
+// CONFIG
+// ════════════════════════════════════════════════
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbw94iJOYloTfXOeOONgwyP3MlTXOBolUdSCFO57NyfYDr-0ISYMTLwntsQxinj5c8CsFA/exec';
 
-// ══════════════════════════════════════════════
-// i18n — 全15言語
-// ══════════════════════════════════════════════
-const I18N = {
-  ja:{
-    eyebrow:'Events', heroTitle:'のイベントへようこそ', heroDesc:'参加したいイベントを選んで、簡単にお申し込みいただけます。',
-    eventsSection:'イベント一覧', loading:'読み込み中', login:'ログイン', newRegister:'新規登録',
-    loginTitle:'ログイン', registerAccountTitle:'新規登録', loginBtn:'ログイン',
-    createAccountBtn:'アカウントを作成', mypage:'マイページ', logout:'ログアウト',
-    emailLabel:'メールアドレス', emailPh:'example@email.com', nameLabel:'お名前', namePh:'山田 太郎',
-    passwordLabel:'パスワード', pwPh:'8文字以上', pwConfirmLabel:'パスワード（確認）',
-    showPw:'表示', hidePw:'非表示',
-    noAccount:'アカウントをお持ちでない方は', toRegister:'新規登録',
-    hasAccount:'すでにアカウントをお持ちの方は', toLogin:'ログイン',
-    backToList:'← 一覧に戻る',
-    invalidEmail:'有効なメールアドレスを入力してください',
-    nameRequired:'お名前を入力してください',
-    pwRequired:'パスワードは8文字以上で入力してください',
-    pwMismatch:'パスワードが一致しません',
-    loginError:'メールアドレスまたはパスワードが正しくありません',
-    emailExists:'このメールアドレスはすでに登録されています',
-    free:'無料', full:'満席', venue:'会場', price:'参加費', seats:'残席',
-    registered:'登録済み', checkedIn:'参加済み', showQR:'QRチケット',
-    registerTitle:'参加登録', registerBtn:'登録する',
-    registerNote:'登録後、QRチケットをメールでお送りします',
-    regSuccess:'登録完了！チケットをメールで送信しました。',
-    regFull:'満席のため登録できません。', regDuplicate:'すでに登録済みです。',
-    registering:'登録中...', ticketTitle:'QR チケット',
-    historyTab:'参加履歴', myEventsTab:'イベント詳細', surveyTab:'満足度調査', profileTab:'プロフィール',
-    noHistory:'まだ参加履歴がありません。', participated:'参加済み',
-    myEventsTitle:'登録イベント一覧', noMyEvents:'まだ登録しているイベントはありません。',
-    evDate:'日時', evVenue:'会場', evPrice:'参加費', evPayment:'支払い', evCheckin:'入場', evRegisteredAt:'登録日', evSurvey:'満足度',
-    payFree:'無料', payUnpaid:'未払い', payPaypayPending:'PayPay確認中', payPaypayPaid:'PayPay支払済', payCash:'現金',
-    checkinDone:'入場済み', checkinPending:'未入場', showQRBtn:'QRを表示',
-    surveyTitle:'満足度アンケート', surveyRatingRequired:'評価を選択してください',
-    surveySubmit:'送信する', surveyThanks:'回答ありがとうございました！',
-    surveyComment:'一言コメント（任意）', noSurveys:'まだアンケートはありません',
-    participations:'参加回数', rank:'ランク',
-    payPayNote:'管理者から別途PayPayのご案内をします。',
-    cashNote:'当日受付にて現金でお支払いください。',
-    langLabel:'表示言語', emailChangeNote:'メールアドレスを変更すると次回ログイン時に新しいアドレスが必要になります',
-    saveProfile:'変更を保存', saving:'保存中...', profileSaved:'プロフィールを更新しました！',
-    close:'閉じる',
-  },
-  en:{
-    eyebrow:'Events', heroTitle:'Welcome to connec+a Events', heroDesc:'Browse and register for events easily.',
-    eventsSection:'Events', loading:'Loading', login:'Login', newRegister:'Sign Up',
-    loginTitle:'Login', registerAccountTitle:'Create Account', loginBtn:'Login',
-    createAccountBtn:'Create Account', mypage:'My Page', logout:'Logout',
-    emailLabel:'Email', emailPh:'you@example.com', nameLabel:'Name', namePh:'John Doe',
-    passwordLabel:'Password', pwPh:'8+ characters', pwConfirmLabel:'Confirm Password',
-    showPw:'Show', hidePw:'Hide',
-    noAccount:'No account?', toRegister:'Sign up',
-    hasAccount:'Already have an account?', toLogin:'Login',
-    backToList:'← Back to Events',
-    invalidEmail:'Please enter a valid email address',
-    nameRequired:'Please enter your name',
-    pwRequired:'Password must be at least 8 characters',
-    pwMismatch:'Passwords do not match',
-    loginError:'Incorrect email or password',
-    emailExists:'This email is already registered',
-    free:'Free', full:'Full', venue:'Venue', price:'Price', seats:'Seats left',
-    registered:'Registered', checkedIn:'Attended', showQR:'QR Ticket',
-    registerTitle:'Register for Event', registerBtn:'Register',
-    registerNote:'A QR ticket will be sent to your email after registration.',
-    regSuccess:'Registration complete! Your ticket has been emailed.',
-    regFull:'Sorry, this event is full.', regDuplicate:'You are already registered for this event.',
-    registering:'Registering...', ticketTitle:'QR Ticket',
-    historyTab:'History', myEventsTab:'My Events', surveyTab:'Survey', profileTab:'Profile',
-    noHistory:'No participation history yet.', participated:'Attended',
-    myEventsTitle:'My Registered Events', noMyEvents:'You have no registered events yet.',
-    evDate:'Date', evVenue:'Venue', evPrice:'Price', evPayment:'Payment', evCheckin:'Check-in', evRegisteredAt:'Registered', evSurvey:'Rating',
-    payFree:'Free', payUnpaid:'Unpaid', payPaypayPending:'PayPay Pending', payPaypayPaid:'PayPay Paid', payCash:'Cash',
-    checkinDone:'Attended', checkinPending:'Not yet', showQRBtn:'Show QR',
-    surveyTitle:'Satisfaction Survey', surveyRatingRequired:'Please select a rating',
-    surveySubmit:'Submit', surveyThanks:'Thank you for your feedback!',
-    surveyComment:'Comment (optional)', noSurveys:'No surveys available yet',
-    participations:'Events attended', rank:'Rank',
-    payPayNote:'The organizer will send you PayPay payment details separately.',
-    cashNote:'Please pay in cash at the reception desk on the day.',
-    langLabel:'Language', emailChangeNote:'If you change your email, you will need the new address to log in next time.',
-    saveProfile:'Save Changes', saving:'Saving...', profileSaved:'Profile updated successfully!',
-    close:'Close',
-  },
-  zh:{
-    eyebrow:'活动', heroTitle:'欢迎来到 connec+a 活动', heroDesc:'浏览并轻松报名参加我们的活动。',
-    eventsSection:'活动列表', loading:'加载中', login:'登录', newRegister:'注册',
-    loginTitle:'登录', registerAccountTitle:'创建账户', loginBtn:'登录',
-    createAccountBtn:'创建账户', mypage:'个人中心', logout:'退出登录',
-    emailLabel:'电子邮箱', emailPh:'your@email.com', nameLabel:'姓名', namePh:'张三',
-    passwordLabel:'密码', pwPh:'8位以上', pwConfirmLabel:'确认密码',
-    showPw:'显示', hidePw:'隐藏',
-    noAccount:'没有账户？', toRegister:'立即注册',
-    hasAccount:'已有账户？', toLogin:'去登录',
-    backToList:'← 返回活动列表',
-    invalidEmail:'请输入有效的电子邮箱地址',
-    nameRequired:'请输入您的姓名',
-    pwRequired:'密码至少需要8个字符',
-    pwMismatch:'两次输入的密码不一致',
-    loginError:'邮箱或密码不正确',
-    emailExists:'该邮箱已被注册',
-    free:'免费', full:'已满', venue:'场地', price:'费用', seats:'剩余名额',
-    registered:'已报名', checkedIn:'已参加', showQR:'查看QR票券',
-    registerTitle:'活动报名', registerBtn:'立即报名',
-    registerNote:'报名成功后，QR票券将发送至您的邮箱。',
-    regSuccess:'报名成功！票券已发送到您的邮箱。',
-    regFull:'抱歉，该活动名额已满。', regDuplicate:'您已报名参加此活动。',
-    registering:'报名中...', ticketTitle:'QR 票券',
-    historyTab:'参加记录', myEventsTab:'活动详情', surveyTab:'满意度调查', profileTab:'个人资料',
-    noHistory:'暂无参加记录。', participated:'已参加',
-    myEventsTitle:'我的报名活动', noMyEvents:'您还没有报名任何活动。',
-    evDate:'时间', evVenue:'地点', evPrice:'费用', evPayment:'付款', evCheckin:'签到', evRegisteredAt:'报名日', evSurvey:'评分',
-    payFree:'免费', payUnpaid:'未付款', payPaypayPending:'PayPay待确认', payPaypayPaid:'PayPay已付', payCash:'现金',
-    checkinDone:'已签到', checkinPending:'未签到', showQRBtn:'显示QR',
-    surveyTitle:'满意度问卷', surveyRatingRequired:'请选择评分',
-    surveySubmit:'提交', surveyThanks:'感谢您的反馈！',
-    surveyComment:'留言（选填）', noSurveys:'暂无调查问卷',
-    participations:'参加次数', rank:'等级',
-    payPayNote:'主办方将另行发送PayPay付款详情。',
-    cashNote:'请于活动当天在受付处以现金付款。',
-    langLabel:'语言', emailChangeNote:'更改邮箱后，下次登录需使用新邮箱地址。',
-    saveProfile:'保存更改', saving:'保存中...', profileSaved:'个人资料已更新！',
-    close:'关闭',
-  },
-  ko:{
-    eyebrow:'이벤트', heroTitle:'connec+a 이벤트에 오신 것을 환영합니다', heroDesc:'참여하고 싶은 이벤트를 선택하여 쉽게 신청하세요.',
-    eventsSection:'이벤트 목록', loading:'불러오는 중', login:'로그인', newRegister:'회원가입',
-    loginTitle:'로그인', registerAccountTitle:'회원가입', loginBtn:'로그인',
-    createAccountBtn:'계정 만들기', mypage:'마이페이지', logout:'로그아웃',
-    emailLabel:'이메일', emailPh:'your@email.com', nameLabel:'이름', namePh:'홍길동',
-    passwordLabel:'비밀번호', pwPh:'8자 이상', pwConfirmLabel:'비밀번호 확인',
-    showPw:'표시', hidePw:'숨김',
-    noAccount:'계정이 없으신가요?', toRegister:'회원가입',
-    hasAccount:'이미 계정이 있으신가요?', toLogin:'로그인',
-    backToList:'← 목록으로 돌아가기',
-    invalidEmail:'유효한 이메일 주소를 입력해주세요',
-    nameRequired:'이름을 입력해주세요',
-    pwRequired:'비밀번호는 8자 이상이어야 합니다',
-    pwMismatch:'비밀번호가 일치하지 않습니다',
-    loginError:'이메일 또는 비밀번호가 올바르지 않습니다',
-    emailExists:'이미 등록된 이메일 주소입니다',
-    free:'무료', full:'마감', venue:'장소', price:'참가비', seats:'남은 자리',
-    registered:'신청 완료', checkedIn:'참가 완료', showQR:'QR 티켓 보기',
-    registerTitle:'이벤트 신청', registerBtn:'신청하기',
-    registerNote:'신청 완료 후 QR 티켓을 이메일로 보내드립니다.',
-    regSuccess:'신청 완료! 티켓을 이메일로 발송했습니다.',
-    regFull:'죄송합니다, 이 이벤트는 마감되었습니다.', regDuplicate:'이미 신청하셨습니다.',
-    registering:'신청 중...', ticketTitle:'QR 티켓',
-    historyTab:'참가 기록', myEventsTab:'이벤트 상세', surveyTab:'만족도 조사', profileTab:'프로필',
-    noHistory:'아직 참가 기록이 없습니다.', participated:'참가 완료',
-    myEventsTitle:'등록된 이벤트', noMyEvents:'아직 등록된 이벤트가 없습니다.',
-    evDate:'일시', evVenue:'장소', evPrice:'참가비', evPayment:'결제', evCheckin:'체크인', evRegisteredAt:'등록일', evSurvey:'평점',
-    payFree:'무료', payUnpaid:'미결제', payPaypayPending:'PayPay 확인중', payPaypayPaid:'PayPay 결제완료', payCash:'현금',
-    checkinDone:'입장완료', checkinPending:'미입장', showQRBtn:'QR 보기',
-    surveyTitle:'만족도 설문', surveyRatingRequired:'평점을 선택해 주세요',
-    surveySubmit:'제출', surveyThanks:'소중한 의견 감사합니다!',
-    surveyComment:'코멘트 (선택)', noSurveys:'아직 설문이 없습니다',
-    participations:'참가 횟수', rank:'랭크',
-    payPayNote:'주최자가 PayPay 결제 안내를 별도로 보내드립니다.',
-    cashNote:'당일 접수처에서 현금으로 결제해 주세요.',
-    langLabel:'언어', emailChangeNote:'이메일을 변경하면 다음 로그인 시 새 이메일이 필요합니다.',
-    saveProfile:'변경 저장', saving:'저장 중...', profileSaved:'프로필이 업데이트되었습니다!',
-    close:'닫기',
-  },
-  es:{
-    eyebrow:'Eventos', heroTitle:'Bienvenido a connec+a', heroDesc:'Explora y regístrate en nuestros eventos fácilmente.',
-    eventsSection:'Lista de eventos', loading:'Cargando', login:'Iniciar sesión', newRegister:'Registrarse',
-    loginTitle:'Iniciar sesión', registerAccountTitle:'Crear cuenta', loginBtn:'Iniciar sesión',
-    createAccountBtn:'Crear cuenta', mypage:'Mi página', logout:'Cerrar sesión',
-    emailLabel:'Correo electrónico', emailPh:'tu@email.com', nameLabel:'Nombre completo', namePh:'Juan García',
-    passwordLabel:'Contraseña', pwPh:'Mín. 8 caracteres', pwConfirmLabel:'Confirmar contraseña',
-    showPw:'Mostrar', hidePw:'Ocultar',
-    noAccount:'¿No tienes cuenta?', toRegister:'Regístrate',
-    hasAccount:'¿Ya tienes cuenta?', toLogin:'Inicia sesión',
-    backToList:'← Volver a eventos',
-    invalidEmail:'Ingresa una dirección de correo válida',
-    nameRequired:'Por favor ingresa tu nombre',
-    pwRequired:'La contraseña debe tener al menos 8 caracteres',
-    pwMismatch:'Las contraseñas no coinciden',
-    loginError:'Correo o contraseña incorrectos',
-    emailExists:'Este correo ya está registrado',
-    free:'Gratis', full:'Completo', venue:'Lugar', price:'Precio', seats:'Lugares disponibles',
-    registered:'Inscrito', checkedIn:'Asistido', showQR:'Ver ticket QR',
-    registerTitle:'Inscripción al evento', registerBtn:'Inscribirse',
-    registerNote:'Recibirás tu ticket QR por correo después de inscribirte.',
-    regSuccess:'¡Inscripción completada! Tu ticket ha sido enviado por correo.',
-    regFull:'Lo sentimos, este evento está completo.', regDuplicate:'Ya estás inscrito en este evento.',
-    registering:'Inscribiendo...', ticketTitle:'Ticket QR',
-    historyTab:'Historial', myEventsTab:'Mis Eventos', surveyTab:'Encuesta', profileTab:'Perfil',
-    noHistory:'Aún no tienes historial de participación.', participated:'Asististe',
-    myEventsTitle:'Mis Eventos Registrados', noMyEvents:'Aún no tienes eventos registrados.',
-    evDate:'Fecha', evVenue:'Lugar', evPrice:'Precio', evPayment:'Pago', evCheckin:'Check-in', evRegisteredAt:'Registrado', evSurvey:'Calificación',
-    payFree:'Gratis', payUnpaid:'No pagado', payPaypayPending:'PayPay pendiente', payPaypayPaid:'PayPay pagado', payCash:'Efectivo',
-    checkinDone:'Asistido', checkinPending:'Pendiente', showQRBtn:'Ver QR',
-    surveyTitle:'Encuesta de satisfacción', surveyRatingRequired:'Por favor selecciona una puntuación',
-    surveySubmit:'Enviar', surveyThanks:'¡Gracias por tu opinión!',
-    surveyComment:'Comentario (opcional)', noSurveys:'No hay encuestas disponibles aún',
-    participations:'Eventos asistidos', rank:'Rango',
-    payPayNote:'El organizador te enviará los detalles de pago por PayPay.',
-    cashNote:'Por favor paga en efectivo en la recepción el día del evento.',
-    langLabel:'Idioma', emailChangeNote:'Si cambias tu correo, necesitarás el nuevo para iniciar sesión.',
-    saveProfile:'Guardar cambios', saving:'Guardando...', profileSaved:'¡Perfil actualizado correctamente!',
-    close:'Cerrar',
-  },
-  fr:{
-    eyebrow:'Événements', heroTitle:'Bienvenue sur connec+a', heroDesc:'Parcourez et inscrivez-vous à nos événements facilement.',
-    eventsSection:'Liste des événements', loading:'Chargement', login:'Connexion', newRegister:"S'inscrire",
-    loginTitle:'Connexion', registerAccountTitle:'Créer un compte', loginBtn:'Se connecter',
-    createAccountBtn:'Créer un compte', mypage:'Mon espace', logout:'Se déconnecter',
-    emailLabel:'Adresse e-mail', emailPh:'vous@email.com', nameLabel:'Nom complet', namePh:'Jean Dupont',
-    passwordLabel:'Mot de passe', pwPh:'8 caractères min.', pwConfirmLabel:'Confirmer le mot de passe',
-    showPw:'Afficher', hidePw:'Masquer',
-    noAccount:'Pas encore de compte ?', toRegister:"S'inscrire",
-    hasAccount:'Déjà un compte ?', toLogin:'Se connecter',
-    backToList:'← Retour aux événements',
-    invalidEmail:'Veuillez entrer une adresse e-mail valide',
-    nameRequired:'Veuillez entrer votre nom',
-    pwRequired:'Le mot de passe doit contenir au moins 8 caractères',
-    pwMismatch:'Les mots de passe ne correspondent pas',
-    loginError:'E-mail ou mot de passe incorrect',
-    emailExists:'Cette adresse e-mail est déjà enregistrée',
-    free:'Gratuit', full:'Complet', venue:'Lieu', price:'Prix', seats:'Places disponibles',
-    registered:'Inscrit', checkedIn:'Participé', showQR:'Voir le ticket QR',
-    registerTitle:"Inscription à l'événement", registerBtn:"S'inscrire",
-    registerNote:'Votre ticket QR vous sera envoyé par e-mail après inscription.',
-    regSuccess:'Inscription réussie ! Votre ticket a été envoyé par e-mail.',
-    regFull:"Désolé, cet événement est complet.", regDuplicate:'Vous êtes déjà inscrit à cet événement.',
-    registering:'Inscription en cours...', ticketTitle:'Ticket QR',
-    historyTab:'Historique', myEventsTab:'Mes Événements', surveyTab:'Sondage', profileTab:'Profil',
-    noHistory:"Pas encore d'historique de participation.", participated:'Participé',
-    myEventsTitle:'Mes événements inscrits', noMyEvents:"Vous n'avez pas encore d'événements inscrits.",
-    evDate:'Date', evVenue:'Lieu', evPrice:'Prix', evPayment:'Paiement', evCheckin:'Check-in', evRegisteredAt:'Inscrit le', evSurvey:'Note',
-    payFree:'Gratuit', payUnpaid:'Non payé', payPaypayPending:'PayPay en attente', payPaypayPaid:'PayPay payé', payCash:'Espèces',
-    checkinDone:'Participé', checkinPending:'En attente', showQRBtn:'Voir QR',
-    surveyTitle:'Enquête de satisfaction', surveyRatingRequired:'Veuillez sélectionner une note',
-    surveySubmit:'Envoyer', surveyThanks:'Merci pour votre avis !',
-    surveyComment:'Commentaire (optionnel)', noSurveys:'Aucune enquête disponible pour le moment',
-    participations:'Événements auxquels vous avez participé', rank:'Rang',
-    payPayNote:"L'organisateur vous enverra les détails de paiement PayPay séparément.",
-    cashNote:'Veuillez payer en espèces à la réception le jour de l\'événement.',
-    langLabel:'Langue', emailChangeNote:'Si vous changez votre e-mail, vous aurez besoin du nouveau pour vous connecter.',
-    saveProfile:'Enregistrer les modifications', saving:'Enregistrement...', profileSaved:'Profil mis à jour avec succès !',
-    close:'Fermer',
-  },
-  pt:{
-    eyebrow:'Eventos', heroTitle:'Bem-vindo ao connec+a', heroDesc:'Explore e inscreva-se nos nossos eventos facilmente.',
-    eventsSection:'Lista de eventos', loading:'Carregando', login:'Entrar', newRegister:'Cadastrar',
-    loginTitle:'Entrar', registerAccountTitle:'Criar conta', loginBtn:'Entrar',
-    createAccountBtn:'Criar conta', mypage:'Minha página', logout:'Sair',
-    emailLabel:'E-mail', emailPh:'voce@email.com', nameLabel:'Nome completo', namePh:'João Silva',
-    passwordLabel:'Senha', pwPh:'Mín. 8 caracteres', pwConfirmLabel:'Confirmar senha',
-    showPw:'Mostrar', hidePw:'Ocultar',
-    noAccount:'Não tem conta?', toRegister:'Cadastre-se',
-    hasAccount:'Já tem conta?', toLogin:'Entre',
-    backToList:'← Voltar aos eventos',
-    invalidEmail:'Por favor, insira um endereço de e-mail válido',
-    nameRequired:'Por favor, insira seu nome',
-    pwRequired:'A senha deve ter pelo menos 8 caracteres',
-    pwMismatch:'As senhas não coincidem',
-    loginError:'E-mail ou senha incorretos',
-    emailExists:'Este e-mail já está cadastrado',
-    free:'Gratuito', full:'Lotado', venue:'Local', price:'Preço', seats:'Vagas disponíveis',
-    registered:'Inscrito', checkedIn:'Participou', showQR:'Ver ticket QR',
-    registerTitle:'Inscrição no evento', registerBtn:'Inscrever-se',
-    registerNote:'Seu ticket QR será enviado por e-mail após a inscrição.',
-    regSuccess:'Inscrição realizada! Seu ticket foi enviado por e-mail.',
-    regFull:'Desculpe, este evento está lotado.', regDuplicate:'Você já está inscrito neste evento.',
-    registering:'Inscrevendo...', ticketTitle:'Ticket QR',
-    historyTab:'Histórico', myEventsTab:'Meus Eventos', surveyTab:'Pesquisa', profileTab:'Perfil',
-    noHistory:'Ainda não há histórico de participação.', participated:'Participou',
-    myEventsTitle:'Meus Eventos Registrados', noMyEvents:'Você ainda não tem eventos registrados.',
-    evDate:'Data', evVenue:'Local', evPrice:'Preço', evPayment:'Pagamento', evCheckin:'Check-in', evRegisteredAt:'Registrado em', evSurvey:'Avaliação',
-    payFree:'Gratuito', payUnpaid:'Não pago', payPaypayPending:'PayPay pendente', payPaypayPaid:'PayPay pago', payCash:'Dinheiro',
-    checkinDone:'Participou', checkinPending:'Pendente', showQRBtn:'Ver QR',
-    surveyTitle:'Pesquisa de satisfação', surveyRatingRequired:'Por favor, selecione uma avaliação',
-    surveySubmit:'Enviar', surveyThanks:'Obrigado pelo seu feedback!',
-    surveyComment:'Comentário (opcional)', noSurveys:'Nenhuma pesquisa disponível ainda',
-    participations:'Eventos participados', rank:'Rank',
-    payPayNote:'O organizador enviará os detalhes de pagamento PayPay separadamente.',
-    cashNote:'Por favor, pague em dinheiro na recepção no dia do evento.',
-    langLabel:'Idioma', emailChangeNote:'Se você alterar seu e-mail, precisará do novo para fazer login.',
-    saveProfile:'Salvar alterações', saving:'Salvando...', profileSaved:'Perfil atualizado com sucesso!',
-    close:'Fechar',
-  },
-  id:{
-    eyebrow:'Acara', heroTitle:'Selamat datang di connec+a', heroDesc:'Temukan dan daftar acara kami dengan mudah.',
-    eventsSection:'Daftar acara', loading:'Memuat', login:'Masuk', newRegister:'Daftar',
-    loginTitle:'Masuk', registerAccountTitle:'Buat akun', loginBtn:'Masuk',
-    createAccountBtn:'Buat akun', mypage:'Halaman saya', logout:'Keluar',
-    emailLabel:'Alamat email', emailPh:'anda@email.com', nameLabel:'Nama lengkap', namePh:'Budi Santoso',
-    passwordLabel:'Kata sandi', pwPh:'Min. 8 karakter', pwConfirmLabel:'Konfirmasi kata sandi',
-    showPw:'Tampilkan', hidePw:'Sembunyikan',
-    noAccount:'Belum punya akun?', toRegister:'Daftar',
-    hasAccount:'Sudah punya akun?', toLogin:'Masuk',
-    backToList:'← Kembali ke acara',
-    invalidEmail:'Masukkan alamat email yang valid',
-    nameRequired:'Masukkan nama Anda',
-    pwRequired:'Kata sandi minimal 8 karakter',
-    pwMismatch:'Kata sandi tidak cocok',
-    loginError:'Email atau kata sandi salah',
-    emailExists:'Email ini sudah terdaftar',
-    free:'Gratis', full:'Penuh', venue:'Tempat', price:'Harga', seats:'Tempat tersedia',
-    registered:'Terdaftar', checkedIn:'Hadir', showQR:'Lihat tiket QR',
-    registerTitle:'Pendaftaran acara', registerBtn:'Daftar',
-    registerNote:'Tiket QR Anda akan dikirim ke email setelah pendaftaran.',
-    regSuccess:'Pendaftaran selesai! Tiket telah dikirim ke email Anda.',
-    regFull:'Maaf, acara ini sudah penuh.', regDuplicate:'Anda sudah terdaftar di acara ini.',
-    registering:'Mendaftar...', ticketTitle:'Tiket QR',
-    historyTab:'Riwayat', myEventsTab:'Detail Acara', surveyTab:'Survei', profileTab:'Profil',
-    noHistory:'Belum ada riwayat partisipasi.', participated:'Hadir',
-    myEventsTitle:'Acara Terdaftar Saya', noMyEvents:'Anda belum memiliki acara yang terdaftar.',
-    evDate:'Tanggal', evVenue:'Tempat', evPrice:'Harga', evPayment:'Pembayaran', evCheckin:'Check-in', evRegisteredAt:'Terdaftar', evSurvey:'Penilaian',
-    payFree:'Gratis', payUnpaid:'Belum bayar', payPaypayPending:'PayPay menunggu', payPaypayPaid:'PayPay dibayar', payCash:'Tunai',
-    checkinDone:'Hadir', checkinPending:'Belum hadir', showQRBtn:'Lihat QR',
-    surveyTitle:'Survei kepuasan', surveyRatingRequired:'Pilih penilaian',
-    surveySubmit:'Kirim', surveyThanks:'Terima kasih atas masukan Anda!',
-    surveyComment:'Komentar (opsional)', noSurveys:'Belum ada survei tersedia',
-    participations:'Acara dihadiri', rank:'Peringkat',
-    payPayNote:'Penyelenggara akan mengirim detail pembayaran PayPay secara terpisah.',
-    cashNote:'Bayar tunai di meja resepsi pada hari acara.',
-    langLabel:'Bahasa', emailChangeNote:'Jika mengubah email, Anda memerlukan email baru untuk login.',
-    saveProfile:'Simpan perubahan', saving:'Menyimpan...', profileSaved:'Profil berhasil diperbarui!',
-    close:'Tutup',
-  },
-  th:{
-    eyebrow:'กิจกรรม', heroTitle:'ยินดีต้อนรับสู่ connec+a', heroDesc:'ค้นหาและลงทะเบียนกิจกรรมของเราได้อย่างง่ายดาย',
-    eventsSection:'รายการกิจกรรม', loading:'กำลังโหลด', login:'เข้าสู่ระบบ', newRegister:'สมัครสมาชิก',
-    loginTitle:'เข้าสู่ระบบ', registerAccountTitle:'สร้างบัญชี', loginBtn:'เข้าสู่ระบบ',
-    createAccountBtn:'สร้างบัญชี', mypage:'หน้าของฉัน', logout:'ออกจากระบบ',
-    emailLabel:'อีเมล', emailPh:'คุณ@email.com', nameLabel:'ชื่อ-นามสกุล', namePh:'สมชาย ใจดี',
-    passwordLabel:'รหัสผ่าน', pwPh:'อย่างน้อย 8 ตัวอักษร', pwConfirmLabel:'ยืนยันรหัสผ่าน',
-    showPw:'แสดง', hidePw:'ซ่อน',
-    noAccount:'ยังไม่มีบัญชี?', toRegister:'สมัครสมาชิก',
-    hasAccount:'มีบัญชีอยู่แล้ว?', toLogin:'เข้าสู่ระบบ',
-    backToList:'← กลับสู่รายการกิจกรรม',
-    invalidEmail:'กรุณากรอกอีเมลที่ถูกต้อง',
-    nameRequired:'กรุณากรอกชื่อของคุณ',
-    pwRequired:'รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร',
-    pwMismatch:'รหัสผ่านไม่ตรงกัน',
-    loginError:'อีเมลหรือรหัสผ่านไม่ถูกต้อง',
-    emailExists:'อีเมลนี้ถูกลงทะเบียนแล้ว',
-    free:'ฟรี', full:'เต็ม', venue:'สถานที่', price:'ราคา', seats:'ที่นั่งว่าง',
-    registered:'ลงทะเบียนแล้ว', checkedIn:'เข้าร่วมแล้ว', showQR:'ดูตั๋ว QR',
-    registerTitle:'ลงทะเบียนกิจกรรม', registerBtn:'ลงทะเบียน',
-    registerNote:'ตั๋ว QR ของคุณจะถูกส่งไปยังอีเมลหลังจากลงทะเบียน',
-    regSuccess:'ลงทะเบียนสำเร็จ! ตั๋วของคุณถูกส่งทางอีเมลแล้ว',
-    regFull:'ขออภัย กิจกรรมนี้เต็มแล้ว', regDuplicate:'คุณได้ลงทะเบียนกิจกรรมนี้แล้ว',
-    registering:'กำลังลงทะเบียน...', ticketTitle:'ตั๋ว QR',
-    historyTab:'ประวัติ', myEventsTab:'รายละเอียดกิจกรรม', surveyTab:'แบบสำรวจ', profileTab:'โปรไฟล์',
-    noHistory:'ยังไม่มีประวัติการเข้าร่วม', participated:'เข้าร่วมแล้ว',
-    myEventsTitle:'กิจกรรมที่ลงทะเบียน', noMyEvents:'คุณยังไม่มีกิจกรรมที่ลงทะเบียน',
-    evDate:'วันที่', evVenue:'สถานที่', evPrice:'ราคา', evPayment:'การชำระเงิน', evCheckin:'เช็คอิน', evRegisteredAt:'วันที่ลงทะเบียน', evSurvey:'คะแนน',
-    payFree:'ฟรี', payUnpaid:'ยังไม่ชำระ', payPaypayPending:'PayPay รอดำเนินการ', payPaypayPaid:'PayPay ชำระแล้ว', payCash:'เงินสด',
-    checkinDone:'เช็คอินแล้ว', checkinPending:'ยังไม่เช็คอิน', showQRBtn:'แสดง QR',
-    surveyTitle:'แบบสำรวจความพึงพอใจ', surveyRatingRequired:'กรุณาเลือกคะแนน',
-    surveySubmit:'ส่ง', surveyThanks:'ขอบคุณสำหรับความคิดเห็นของคุณ!',
-    surveyComment:'ความคิดเห็น (ไม่บังคับ)', noSurveys:'ยังไม่มีแบบสำรวจ',
-    participations:'จำนวนครั้งที่เข้าร่วม', rank:'อันดับ',
-    payPayNote:'ผู้จัดงานจะส่งรายละเอียดการชำระเงิน PayPay แยกต่างหาก',
-    cashNote:'กรุณาชำระเงินสดที่เคาน์เตอร์รับลงทะเบียนในวันงาน',
-    langLabel:'ภาษา', emailChangeNote:'หากเปลี่ยนอีเมล คุณจะต้องใช้อีเมลใหม่ในการเข้าสู่ระบบ',
-    saveProfile:'บันทึกการเปลี่ยนแปลง', saving:'กำลังบันทึก...', profileSaved:'อัปเดตโปรไฟล์สำเร็จ!',
-    close:'ปิด',
-  },
-  vi:{
-    eyebrow:'Sự kiện', heroTitle:'Chào mừng đến connec+a', heroDesc:'Khám phá và đăng ký các sự kiện của chúng tôi dễ dàng.',
-    eventsSection:'Danh sách sự kiện', loading:'Đang tải', login:'Đăng nhập', newRegister:'Đăng ký',
-    loginTitle:'Đăng nhập', registerAccountTitle:'Tạo tài khoản', loginBtn:'Đăng nhập',
-    createAccountBtn:'Tạo tài khoản', mypage:'Trang cá nhân', logout:'Đăng xuất',
-    emailLabel:'Địa chỉ email', emailPh:'ban@email.com', nameLabel:'Họ và tên', namePh:'Nguyễn Văn A',
-    passwordLabel:'Mật khẩu', pwPh:'Tối thiểu 8 ký tự', pwConfirmLabel:'Xác nhận mật khẩu',
-    showPw:'Hiện', hidePw:'Ẩn',
-    noAccount:'Chưa có tài khoản?', toRegister:'Đăng ký ngay',
-    hasAccount:'Đã có tài khoản?', toLogin:'Đăng nhập',
-    backToList:'← Quay lại sự kiện',
-    invalidEmail:'Vui lòng nhập địa chỉ email hợp lệ',
-    nameRequired:'Vui lòng nhập tên của bạn',
-    pwRequired:'Mật khẩu phải có ít nhất 8 ký tự',
-    pwMismatch:'Mật khẩu không khớp',
-    loginError:'Email hoặc mật khẩu không đúng',
-    emailExists:'Email này đã được đăng ký',
-    free:'Miễn phí', full:'Hết chỗ', venue:'Địa điểm', price:'Giá', seats:'Chỗ còn lại',
-    registered:'Đã đăng ký', checkedIn:'Đã tham dự', showQR:'Xem vé QR',
-    registerTitle:'Đăng ký sự kiện', registerBtn:'Đăng ký',
-    registerNote:'Vé QR của bạn sẽ được gửi qua email sau khi đăng ký.',
-    regSuccess:'Đăng ký thành công! Vé của bạn đã được gửi qua email.',
-    regFull:'Xin lỗi, sự kiện này đã hết chỗ.', regDuplicate:'Bạn đã đăng ký sự kiện này rồi.',
-    registering:'Đang đăng ký...', ticketTitle:'Vé QR',
-    historyTab:'Lịch sử', myEventsTab:'Chi tiết sự kiện', surveyTab:'Khảo sát', profileTab:'Hồ sơ',
-    noHistory:'Chưa có lịch sử tham dự.', participated:'Đã tham dự',
-    myEventsTitle:'Sự kiện đã đăng ký', noMyEvents:'Bạn chưa đăng ký sự kiện nào.',
-    evDate:'Ngày', evVenue:'Địa điểm', evPrice:'Giá', evPayment:'Thanh toán', evCheckin:'Check-in', evRegisteredAt:'Ngày đăng ký', evSurvey:'Đánh giá',
-    payFree:'Miễn phí', payUnpaid:'Chưa trả', payPaypayPending:'PayPay đang chờ', payPaypayPaid:'PayPay đã thanh toán', payCash:'Tiền mặt',
-    checkinDone:'Đã tham dự', checkinPending:'Chưa tham dự', showQRBtn:'Hiện QR',
-    surveyTitle:'Khảo sát sự hài lòng', surveyRatingRequired:'Vui lòng chọn đánh giá',
-    surveySubmit:'Gửi', surveyThanks:'Cảm ơn phản hồi của bạn!',
-    surveyComment:'Nhận xét (không bắt buộc)', noSurveys:'Chưa có khảo sát nào',
-    participations:'Số sự kiện đã tham dự', rank:'Xếp hạng',
-    payPayNote:'Ban tổ chức sẽ gửi thông tin thanh toán PayPay riêng cho bạn.',
-    cashNote:'Vui lòng thanh toán tiền mặt tại quầy lễ tân vào ngày diễn ra sự kiện.',
-    langLabel:'Ngôn ngữ', emailChangeNote:'Nếu bạn đổi email, bạn sẽ cần dùng email mới để đăng nhập.',
-    saveProfile:'Lưu thay đổi', saving:'Đang lưu...', profileSaved:'Cập nhật hồ sơ thành công!',
-    close:'Đóng',
-  },
-  ar:{
-    eyebrow:'الفعاليات', heroTitle:'مرحباً بك في connec+a', heroDesc:'تصفح فعالياتنا وسجّل بسهولة.',
-    eventsSection:'قائمة الفعاليات', loading:'جارٍ التحميل', login:'تسجيل الدخول', newRegister:'إنشاء حساب',
-    loginTitle:'تسجيل الدخول', registerAccountTitle:'إنشاء حساب', loginBtn:'تسجيل الدخول',
-    createAccountBtn:'إنشاء حساب', mypage:'صفحتي', logout:'تسجيل الخروج',
-    emailLabel:'البريد الإلكتروني', emailPh:'بريدك@email.com', nameLabel:'الاسم الكامل', namePh:'محمد أحمد',
-    passwordLabel:'كلمة المرور', pwPh:'٨ أحرف على الأقل', pwConfirmLabel:'تأكيد كلمة المرور',
-    showPw:'إظهار', hidePw:'إخفاء',
-    noAccount:'ليس لديك حساب؟', toRegister:'إنشاء حساب',
-    hasAccount:'لديك حساب بالفعل؟', toLogin:'تسجيل الدخول',
-    backToList:'← العودة إلى الفعاليات',
-    invalidEmail:'يرجى إدخال عنوان بريد إلكتروني صحيح',
-    nameRequired:'يرجى إدخال اسمك',
-    pwRequired:'يجب أن تتكون كلمة المرور من 8 أحرف على الأقل',
-    pwMismatch:'كلمتا المرور غير متطابقتين',
-    loginError:'البريد الإلكتروني أو كلمة المرور غير صحيحة',
-    emailExists:'هذا البريد الإلكتروني مسجّل بالفعل',
-    free:'مجاني', full:'مكتمل', venue:'المكان', price:'السعر', seats:'الأماكن المتاحة',
-    registered:'مسجّل', checkedIn:'حضر', showQR:'عرض تذكرة QR',
-    registerTitle:'التسجيل في الفعالية', registerBtn:'التسجيل',
-    registerNote:'ستُرسَل تذكرة QR إلى بريدك الإلكتروني بعد التسجيل.',
-    regSuccess:'تم التسجيل بنجاح! تم إرسال تذكرتك عبر البريد الإلكتروني.',
-    regFull:'عذراً، هذه الفعالية ممتلئة.', regDuplicate:'لقد سجّلت بالفعل في هذه الفعالية.',
-    registering:'جارٍ التسجيل...', ticketTitle:'تذكرة QR',
-    historyTab:'السجل', myEventsTab:'تفاصيل الفعالية', surveyTab:'الاستطلاع', profileTab:'الملف الشخصي',
-    noHistory:'لا يوجد سجل مشاركة حتى الآن.', participated:'حضر',
-    myEventsTitle:'الفعاليات المسجلة', noMyEvents:'لم تسجل في أي فعالية بعد.',
-    evDate:'التاريخ', evVenue:'المكان', evPrice:'السعر', evPayment:'الدفع', evCheckin:'تسجيل الحضور', evRegisteredAt:'تاريخ التسجيل', evSurvey:'التقييم',
-    payFree:'مجاني', payUnpaid:'غير مدفوع', payPaypayPending:'PayPay معلق', payPaypayPaid:'PayPay مدفوع', payCash:'نقدي',
-    checkinDone:'حضر', checkinPending:'لم يحضر بعد', showQRBtn:'عرض QR',
-    surveyTitle:'استطلاع الرضا', surveyRatingRequired:'يرجى تحديد تقييم',
-    surveySubmit:'إرسال', surveyThanks:'شكراً على ملاحظاتك!',
-    surveyComment:'تعليق (اختياري)', noSurveys:'لا توجد استطلاعات متاحة حتى الآن',
-    participations:'الفعاليات المشارَك بها', rank:'الرتبة',
-    payPayNote:'سيُرسل المنظّم تفاصيل الدفع عبر PayPay بشكل منفصل.',
-    cashNote:'يرجى الدفع نقداً عند مكتب الاستقبال يوم الفعالية.',
-    langLabel:'اللغة', emailChangeNote:'إذا غيّرت بريدك الإلكتروني، ستحتاج إلى البريد الجديد لتسجيل الدخول.',
-    saveProfile:'حفظ التغييرات', saving:'جارٍ الحفظ...', profileSaved:'تم تحديث الملف الشخصي بنجاح!',
-    close:'إغلاق',
-  },
-  hi:{
-    eyebrow:'कार्यक्रम', heroTitle:'connec+a में आपका स्वागत है', heroDesc:'हमारे कार्यक्रमों को खोजें और आसानी से पंजीकरण करें।',
-    eventsSection:'कार्यक्रम सूची', loading:'लोड हो रहा है', login:'लॉग इन', newRegister:'साइन अप',
-    loginTitle:'लॉग इन', registerAccountTitle:'खाता बनाएं', loginBtn:'लॉग इन करें',
-    createAccountBtn:'खाता बनाएं', mypage:'मेरा पेज', logout:'लॉग आउट',
-    emailLabel:'ईमेल पता', emailPh:'aap@email.com', nameLabel:'पूरा नाम', namePh:'राम शर्मा',
-    passwordLabel:'पासवर्ड', pwPh:'कम से कम 8 अक्षर', pwConfirmLabel:'पासवर्ड की पुष्टि करें',
-    showPw:'दिखाएं', hidePw:'छुपाएं',
-    noAccount:'खाता नहीं है?', toRegister:'साइन अप करें',
-    hasAccount:'पहले से खाता है?', toLogin:'लॉग इन करें',
-    backToList:'← कार्यक्रमों पर वापस जाएं',
-    invalidEmail:'कृपया एक वैध ईमेल पता दर्ज करें',
-    nameRequired:'कृपया अपना नाम दर्ज करें',
-    pwRequired:'पासवर्ड कम से कम 8 अक्षरों का होना चाहिए',
-    pwMismatch:'पासवर्ड मेल नहीं खाते',
-    loginError:'ईमेल या पासवर्ड गलत है',
-    emailExists:'यह ईमेल पहले से पंजीकृत है',
-    free:'निःशुल्क', full:'भरा हुआ', venue:'स्थान', price:'मूल्य', seats:'उपलब्ध सीटें',
-    registered:'पंजीकृत', checkedIn:'भाग लिया', showQR:'QR टिकट देखें',
-    registerTitle:'कार्यक्रम पंजीकरण', registerBtn:'पंजीकरण करें',
-    registerNote:'पंजीकरण के बाद आपका QR टिकट ईमेल पर भेजा जाएगा।',
-    regSuccess:'पंजीकरण सफल! आपका टिकट ईमेल पर भेजा गया है।',
-    regFull:'क्षमा करें, यह कार्यक्रम भरा हुआ है।', regDuplicate:'आप पहले से इस कार्यक्रम के लिए पंजीकृत हैं।',
-    registering:'पंजीकरण हो रहा है...', ticketTitle:'QR टिकट',
-    historyTab:'इतिहास', myEventsTab:'कार्यक्रम विवरण', surveyTab:'सर्वेक्षण', profileTab:'प्रोफ़ाइल',
-    noHistory:'अभी तक कोई भागीदारी इतिहास नहीं।', participated:'भाग लिया',
-    myEventsTitle:'पंजीकृत कार्यक्रम', noMyEvents:'आपने अभी तक कोई कार्यक्रम पंजीकृत नहीं किया।',
-    evDate:'तारीख', evVenue:'स्थान', evPrice:'मूल्य', evPayment:'भुगतान', evCheckin:'चेक-इन', evRegisteredAt:'पंजीकृत', evSurvey:'रेटिंग',
-    payFree:'निःशुल्क', payUnpaid:'अदेय', payPaypayPending:'PayPay प्रतीक्षा', payPaypayPaid:'PayPay भुगतान', payCash:'नकद',
-    checkinDone:'उपस्थित', checkinPending:'अनुपस्थित', showQRBtn:'QR दिखाएं',
-    surveyTitle:'संतुष्टि सर्वेक्षण', surveyRatingRequired:'कृपया एक रेटिंग चुनें',
-    surveySubmit:'सबमिट करें', surveyThanks:'आपकी प्रतिक्रिया के लिए धन्यवाद!',
-    surveyComment:'टिप्पणी (वैकल्पिक)', noSurveys:'अभी तक कोई सर्वेक्षण उपलब्ध नहीं',
-    participations:'भाग लिए गए कार्यक्रम', rank:'रैंक',
-    payPayNote:'आयोजक अलग से PayPay भुगतान विवरण भेजेंगे।',
-    cashNote:'कृपया कार्यक्रम के दिन रिसेप्शन पर नकद में भुगतान करें।',
-    langLabel:'भाषा', emailChangeNote:'यदि आप ईमेल बदलते हैं, तो लॉग इन करने के लिए नए ईमेल की आवश्यकता होगी।',
-    saveProfile:'परिवर्तन सहेजें', saving:'सहेजा जा रहा है...', profileSaved:'प्रोफ़ाइल सफलतापूर्वक अपडेट हुई!',
-    close:'बंद करें',
-  },
-  de:{
-    eyebrow:'Veranstaltungen', heroTitle:'Willkommen bei connec+a', heroDesc:'Entdecke und melde dich für unsere Veranstaltungen an.',
-    eventsSection:'Veranstaltungsliste', loading:'Wird geladen', login:'Anmelden', newRegister:'Registrieren',
-    loginTitle:'Anmelden', registerAccountTitle:'Konto erstellen', loginBtn:'Anmelden',
-    createAccountBtn:'Konto erstellen', mypage:'Meine Seite', logout:'Abmelden',
-    emailLabel:'E-Mail-Adresse', emailPh:'du@email.com', nameLabel:'Vollständiger Name', namePh:'Max Mustermann',
-    passwordLabel:'Passwort', pwPh:'Mind. 8 Zeichen', pwConfirmLabel:'Passwort bestätigen',
-    showPw:'Anzeigen', hidePw:'Verbergen',
-    noAccount:'Noch kein Konto?', toRegister:'Registrieren',
-    hasAccount:'Bereits ein Konto?', toLogin:'Anmelden',
-    backToList:'← Zurück zu Veranstaltungen',
-    invalidEmail:'Bitte gib eine gültige E-Mail-Adresse ein',
-    nameRequired:'Bitte gib deinen Namen ein',
-    pwRequired:'Das Passwort muss mindestens 8 Zeichen lang sein',
-    pwMismatch:'Die Passwörter stimmen nicht überein',
-    loginError:'E-Mail oder Passwort ist falsch',
-    emailExists:'Diese E-Mail-Adresse ist bereits registriert',
-    free:'Kostenlos', full:'Ausgebucht', venue:'Ort', price:'Preis', seats:'Verfügbare Plätze',
-    registered:'Angemeldet', checkedIn:'Teilgenommen', showQR:'QR-Ticket anzeigen',
-    registerTitle:'Für Veranstaltung anmelden', registerBtn:'Anmelden',
-    registerNote:'Dein QR-Ticket wird nach der Anmeldung per E-Mail gesendet.',
-    regSuccess:'Anmeldung erfolgreich! Dein Ticket wurde per E-Mail gesendet.',
-    regFull:'Leider ist diese Veranstaltung ausgebucht.', regDuplicate:'Du bist bereits für diese Veranstaltung angemeldet.',
-    registering:'Wird angemeldet...', ticketTitle:'QR-Ticket',
-    historyTab:'Verlauf', myEventsTab:'Meine Events', surveyTab:'Umfrage', profileTab:'Profil',
-    noHistory:'Noch kein Teilnahmeverlauf.', participated:'Teilgenommen',
-    myEventsTitle:'Meine registrierten Events', noMyEvents:'Sie haben noch keine registrierten Events.',
-    evDate:'Datum', evVenue:'Ort', evPrice:'Preis', evPayment:'Zahlung', evCheckin:'Check-in', evRegisteredAt:'Registriert am', evSurvey:'Bewertung',
-    payFree:'Kostenlos', payUnpaid:'Nicht bezahlt', payPaypayPending:'PayPay ausstehend', payPaypayPaid:'PayPay bezahlt', payCash:'Bargeld',
-    checkinDone:'Teilgenommen', checkinPending:'Ausstehend', showQRBtn:'QR anzeigen',
-    surveyTitle:'Zufriedenheitsumfrage', surveyRatingRequired:'Bitte wähle eine Bewertung',
-    surveySubmit:'Absenden', surveyThanks:'Vielen Dank für dein Feedback!',
-    surveyComment:'Kommentar (optional)', noSurveys:'Noch keine Umfragen verfügbar',
-    participations:'Besuchte Veranstaltungen', rank:'Rang',
-    payPayNote:'Der Veranstalter wird dir die PayPay-Zahlungsdetails separat zusenden.',
-    cashNote:'Bitte zahle am Veranstaltungstag bar an der Rezeption.',
-    langLabel:'Sprache', emailChangeNote:'Wenn du deine E-Mail änderst, benötigst du die neue E-Mail zum Einloggen.',
-    saveProfile:'Änderungen speichern', saving:'Wird gespeichert...', profileSaved:'Profil erfolgreich aktualisiert!',
-    close:'Schließen',
-  },
-  it:{
-    eyebrow:'Eventi', heroTitle:'Benvenuto su connec+a', heroDesc:'Esplora e iscriviti ai nostri eventi facilmente.',
-    eventsSection:'Lista eventi', loading:'Caricamento', login:'Accedi', newRegister:'Registrati',
-    loginTitle:'Accedi', registerAccountTitle:'Crea account', loginBtn:'Accedi',
-    createAccountBtn:'Crea account', mypage:'La mia pagina', logout:'Esci',
-    emailLabel:'Indirizzo email', emailPh:'tu@email.com', nameLabel:'Nome completo', namePh:'Mario Rossi',
-    passwordLabel:'Password', pwPh:'Min. 8 caratteri', pwConfirmLabel:'Conferma password',
-    showPw:'Mostra', hidePw:'Nascondi',
-    noAccount:'Non hai un account?', toRegister:'Registrati',
-    hasAccount:'Hai già un account?', toLogin:'Accedi',
-    backToList:'← Torna agli eventi',
-    invalidEmail:"Inserisci un indirizzo email valido",
-    nameRequired:'Inserisci il tuo nome',
-    pwRequired:'La password deve contenere almeno 8 caratteri',
-    pwMismatch:'Le password non corrispondono',
-    loginError:'Email o password non corretta',
-    emailExists:'Questa email è già registrata',
-    free:'Gratuito', full:'Completo', venue:'Luogo', price:'Prezzo', seats:'Posti disponibili',
-    registered:'Iscritto', checkedIn:'Partecipato', showQR:'Visualizza ticket QR',
-    registerTitle:"Iscrizione all'evento", registerBtn:'Iscriviti',
-    registerNote:'Il tuo ticket QR sarà inviato via email dopo la registrazione.',
-    regSuccess:"Iscrizione completata! Il tuo ticket è stato inviato via email.",
-    regFull:"Spiacenti, questo evento è al completo.", regDuplicate:'Sei già iscritto a questo evento.',
-    registering:'Iscrizione in corso...', ticketTitle:'Ticket QR',
-    historyTab:'Cronologia', myEventsTab:'I Miei Eventi', surveyTab:'Sondaggio', profileTab:'Profilo',
-    noHistory:'Ancora nessuno storico di partecipazione.', participated:'Partecipato',
-    myEventsTitle:'I miei eventi registrati', noMyEvents:'Non hai ancora eventi registrati.',
-    evDate:'Data', evVenue:'Luogo', evPrice:'Prezzo', evPayment:'Pagamento', evCheckin:'Check-in', evRegisteredAt:'Registrato il', evSurvey:'Valutazione',
-    payFree:'Gratuito', payUnpaid:'Non pagato', payPaypayPending:'PayPay in attesa', payPaypayPaid:'PayPay pagato', payCash:'Contanti',
-    checkinDone:'Partecipato', checkinPending:'In attesa', showQRBtn:'Mostra QR',
-    surveyTitle:'Sondaggio di soddisfazione', surveyRatingRequired:'Seleziona una valutazione',
-    surveySubmit:'Invia', surveyThanks:'Grazie per il tuo feedback!',
-    surveyComment:'Commento (opzionale)', noSurveys:'Nessun sondaggio disponibile al momento',
-    participations:'Eventi a cui hai partecipato', rank:'Grado',
-    payPayNote:"L'organizzatore ti invierà i dettagli di pagamento PayPay separatamente.",
-    cashNote:"Paga in contanti alla reception il giorno dell'evento.",
-    langLabel:'Lingua', emailChangeNote:"Se cambi l'email, avrai bisogno di quella nuova per accedere.",
-    saveProfile:'Salva modifiche', saving:'Salvataggio...', profileSaved:'Profilo aggiornato con successo!',
-    close:'Chiudi',
-  },
-  ru:{
-    eyebrow:'Мероприятия', heroTitle:'Добро пожаловать на connec+a', heroDesc:'Просматривайте наши мероприятия и регистрируйтесь легко.',
-    eventsSection:'Список мероприятий', loading:'Загрузка', login:'Войти', newRegister:'Зарегистрироваться',
-    loginTitle:'Вход', registerAccountTitle:'Создать аккаунт', loginBtn:'Войти',
-    createAccountBtn:'Создать аккаунт', mypage:'Моя страница', logout:'Выйти',
-    emailLabel:'Электронная почта', emailPh:'вы@email.com', nameLabel:'Полное имя', namePh:'Иван Иванов',
-    passwordLabel:'Пароль', pwPh:'Мин. 8 символов', pwConfirmLabel:'Подтвердите пароль',
-    showPw:'Показать', hidePw:'Скрыть',
-    noAccount:'Нет аккаунта?', toRegister:'Зарегистрироваться',
-    hasAccount:'Уже есть аккаунт?', toLogin:'Войти',
-    backToList:'← Вернуться к мероприятиям',
-    invalidEmail:'Пожалуйста, введите действительный адрес электронной почты',
-    nameRequired:'Пожалуйста, введите ваше имя',
-    pwRequired:'Пароль должен содержать не менее 8 символов',
-    pwMismatch:'Пароли не совпадают',
-    loginError:'Неверный адрес электронной почты или пароль',
-    emailExists:'Этот адрес электронной почты уже зарегистрирован',
-    free:'Бесплатно', full:'Заполнено', venue:'Место', price:'Цена', seats:'Свободных мест',
-    registered:'Зарегистрирован', checkedIn:'Посетил', showQR:'Показать QR-билет',
-    registerTitle:'Регистрация на мероприятие', registerBtn:'Зарегистрироваться',
-    registerNote:'Ваш QR-билет будет отправлен на электронную почту после регистрации.',
-    regSuccess:'Регистрация завершена! Ваш билет отправлен на электронную почту.',
-    regFull:'Извините, это мероприятие заполнено.', regDuplicate:'Вы уже зарегистрированы на это мероприятие.',
-    registering:'Регистрация...', ticketTitle:'QR-билет',
-    historyTab:'История', myEventsTab:'Мои Мероприятия', surveyTab:'Опрос', profileTab:'Профиль',
-    noHistory:'Нет истории участия.', participated:'Посетил',
-    myEventsTitle:'Мои зарегистрированные мероприятия', noMyEvents:'У вас ещё нет зарегистрированных мероприятий.',
-    evDate:'Дата', evVenue:'Место', evPrice:'Цена', evPayment:'Оплата', evCheckin:'Регистрация', evRegisteredAt:'Дата регистрации', evSurvey:'Оценка',
-    payFree:'Бесплатно', payUnpaid:'Не оплачено', payPaypayPending:'PayPay ожидает', payPaypayPaid:'PayPay оплачено', payCash:'Наличные',
-    checkinDone:'Участвовал', checkinPending:'Ожидается', showQRBtn:'Показать QR',
-    surveyTitle:'Опрос удовлетворённости', surveyRatingRequired:'Пожалуйста, выберите оценку',
-    surveySubmit:'Отправить', surveyThanks:'Спасибо за ваш отзыв!',
-    surveyComment:'Комментарий (необязательно)', noSurveys:'Опросов пока нет',
-    participations:'Посещённые мероприятия', rank:'Ранг',
-    payPayNote:'Организатор отдельно пришлёт данные для оплаты через PayPay.',
-    cashNote:'Пожалуйста, оплатите наличными на стойке регистрации в день мероприятия.',
-    langLabel:'Язык', emailChangeNote:'Если вы измените электронную почту, вам потребуется новый адрес для входа.',
-    saveProfile:'Сохранить изменения', saving:'Сохранение...', profileSaved:'Профиль успешно обновлён!',
-    close:'Закрыть',
-  },
-};
-
-let currentLang = localStorage.getItem('lang') || 'ja';
-function t(k){ return (I18N[currentLang]||I18N.ja)[k] || I18N.ja[k] || k; }
-function setLang(l){ currentLang=l; localStorage.setItem('lang',l); document.getElementById('lang-sel').value=l; applyI18n(); }
-function applyI18n(){
-  document.querySelectorAll('[data-i18n]').forEach(el=>{ el.textContent=t(el.dataset.i18n); });
-  document.querySelectorAll('[data-i18n-ph]').forEach(el=>{ el.placeholder=t(el.dataset.i18nPh); });
-}
-document.getElementById('lang-sel').value=currentLang;
-
-// ══════════════════════════════════════════════
-// API
-// ══════════════════════════════════════════════
-async function api(action,params){
-  params=params||{};
-  const res=await fetch(GAS_URL,{method:'POST',redirect:'follow',headers:{'Content-Type':'text/plain'},body:JSON.stringify(Object.assign({action},params))});
-  const json=await res.json();
-  if(!json.success) throw new Error(json.error||'Error');
+// ════════════════════════════════════════════════
+// API helper
+// ════════════════════════════════════════════════
+async function api(action, params) {
+  params = params || {};
+  const res = await fetch(GAS_URL, {
+    method: 'POST', redirect: 'follow',
+    headers: {'Content-Type':'text/plain'},
+    body: JSON.stringify(Object.assign({action}, params))
+  });
+  const json = await res.json();
+  if (!json.success) throw new Error(json.error || 'Error');
   return json.data;
 }
 function esc(s){ return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-// ══════════════════════════════════════════════
+// ════════════════════════════════════════════════
+// LOCAL STORAGE stubs for News / Chat / Photos
+// (GAS functions not yet deployed → use localStorage)
+// ════════════════════════════════════════════════
+function lsGet(k){ try{ return JSON.parse(localStorage.getItem(k)||'null'); }catch(e){ return null; } }
+function lsSet(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
+
+// News helpers
+function getNewsItems(participantId){
+  const all = lsGet('connecplus_news') || [];
+  return all.filter(n => !n.userId || n.userId === participantId);
+}
+function markNewsRead(id){
+  const read = lsGet('connecplus_news_read') || [];
+  if(!read.includes(id)){ read.push(id); lsSet('connecplus_news_read', read); }
+}
+function isNewsRead(id){
+  const read = lsGet('connecplus_news_read') || [];
+  return read.includes(id);
+}
+
+// Chat helpers
+function getChatMessages(participantId){
+  const all = lsGet('connecplus_chat') || [];
+  return all.filter(m => m.senderId === participantId || m.receiverId === participantId);
+}
+function sendChatMessage(participantId, senderName, text){
+  const all = lsGet('connecplus_chat') || [];
+  const msg = {
+    id: Date.now()+'_'+Math.random().toString(36).slice(2,6),
+    senderId: participantId,
+    receiverId: 'ADMIN',
+    senderName, text,
+    createdAt: new Date().toISOString(),
+    isRead: false
+  };
+  all.push(msg);
+  lsSet('connecplus_chat', all);
+  return msg;
+}
+
+// Photo helpers (base64 stored)
+function getPhotos(eventId){
+  return (lsGet('connecplus_photos') || []).filter(p => p.eventId === eventId);
+}
+function addPhoto(eventId, name, dataUrl){
+  const all = lsGet('connecplus_photos') || [];
+  all.push({ id: Date.now(), eventId, name, url: dataUrl, uploadedAt: new Date().toISOString() });
+  lsSet('connecplus_photos', all);
+}
+function deletePhoto(id){
+  const all = (lsGet('connecplus_photos') || []).filter(p => p.id !== id);
+  lsSet('connecplus_photos', all);
+}
+
+// Seed demo news if empty
+(function seedDemoNews(){
+  if(lsGet('connecplus_news')) return;
+  lsSet('connecplus_news', [
+    { id:'news1', title:'🌸 春のイベント開催のお知らせ', body:'来月、新しいconnec+aイベントを開催します。ぜひご参加ください！', type:'global', userId:null, createdAt: new Date(Date.now()-86400000*2).toISOString() },
+    { id:'news2', title:'⚠️ 会場変更のお知らせ', body:'次回イベントの会場が変更になりました。新しい会場は「東京カルチャーセンター」となります。ご不便をおかけしますが、よろしくお願いいたします。', type:'global', userId:null, createdAt: new Date(Date.now()-86400000*5).toISOString() },
+    { id:'news3', title:'📸 フォトギャラリー公開中', body:'先日開催したイベントのお写真をフォトページにアップロードしました。ぜひご覧ください。', type:'global', userId:null, createdAt: new Date(Date.now()-86400000*10).toISOString() },
+  ]);
+})();
+
+// ════════════════════════════════════════════════
+// i18n (simplified – ja/en keys)
+// ════════════════════════════════════════════════
+let currentLang = localStorage.getItem('lang') || 'ja';
+function setLang(l){ currentLang=l; localStorage.setItem('lang',l); document.getElementById('lang-sel').value=l; }
+document.getElementById('lang-sel').value = currentLang;
+
+// ════════════════════════════════════════════════
+// State
+// ════════════════════════════════════════════════
+let currentUser = null, currentEvent = null, currentEventIdx = 0, myRegistrations = [];
+const EV_BTN  = ['btn-ev-rose','btn-ev-violet','btn-ev-amber','btn-ev-sky'];
+const REG_BTN = ['btn-season-rose','btn-season-violet','btn-season-amber','btn-season-sky'];
+const EV_THEME = [
+  'background:linear-gradient(135deg,rgba(232,160,184,.18),rgba(137,201,122,.1));border:1px solid rgba(232,160,184,.3);',
+  'background:linear-gradient(135deg,rgba(112,96,168,.14),rgba(91,163,232,.1));border:1px solid rgba(112,96,168,.22);',
+  'background:linear-gradient(135deg,rgba(200,90,32,.12),rgba(232,200,74,.12));border:1px solid rgba(200,90,32,.18);',
+  'background:linear-gradient(135deg,rgba(122,168,204,.2),rgba(176,40,60,.07));border:1px solid rgba(122,168,204,.28);'
+];
+const SEASONS = ['Spring','Summer','Autumn','Winter'];
+let chartInstances = {};
+let newsFilter = 'all';
+let activePhotoEventId = null;
+
+// ════════════════════════════════════════════════
+// Page system
+// ════════════════════════════════════════════════
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  // update bottom nav
+  const map = {'page-landing':'bnav-home','page-news':'bnav-news','page-photos':'bnav-photo','page-mypage':'bnav-mypage'};
+  document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('active'));
+  if(map[id]) document.getElementById(map[id])?.classList.add('active');
+}
+
+function goHome(){
+  showPage('page-landing');
+  loadEvents();
+}
+
+// ════════════════════════════════════════════════
+// Header / Bottom nav
+// ════════════════════════════════════════════════
+function updateHeader(user){
+  if(user){
+    document.getElementById('avatar-btn').style.display='flex';
+    document.getElementById('avatar-initial').textContent=(user.Name||'U').charAt(0).toUpperCase();
+    document.getElementById('guest-cta').style.display='none';
+    document.getElementById('user-bar').style.display='flex';
+    document.getElementById('ub-avatar').textContent=(user.Name||'U').charAt(0).toUpperCase();
+    document.getElementById('ub-name').textContent=user.Name||'';
+    document.getElementById('ub-email').textContent=user.Email||'';
+    document.getElementById('bottom-nav').style.display='flex';
+  } else {
+    document.getElementById('avatar-btn').style.display='none';
+    document.getElementById('guest-cta').style.display='flex';
+    document.getElementById('user-bar').style.display='none';
+    document.getElementById('bottom-nav').style.display='none';
+  }
+}
+
+// ════════════════════════════════════════════════
+// Auth
+// ════════════════════════════════════════════════
+function togglePw(id, btn){
+  const el=document.getElementById(id);
+  const show=el.type==='password';
+  el.type=show?'text':'password';
+  btn.textContent=show?'非表示':'表示';
+}
+
+async function doLogin(){
+  const alertEl=document.getElementById('login-alert'); alertEl.innerHTML='';
+  const email=document.getElementById('login-email').value.trim();
+  const pw=document.getElementById('login-pw').value;
+  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){alertEl.innerHTML='<div class="alert alert-err">有効なメールアドレスを入力してください</div>';return;}
+  if(!pw){alertEl.innerHTML='<div class="alert alert-err">パスワードを入力してください</div>';return;}
+  const btn=document.querySelector('#page-login .btn-primary'); btn.disabled=true; btn.textContent='...';
+  try{
+    const user=await api('loginWithPassword',{email,password:pw});
+    currentUser=user; sessionStorage.setItem('auth_user',JSON.stringify(user));
+    updateHeader(user); showPage('page-landing'); await loadEvents();
+  }catch(err){
+    alertEl.innerHTML='<div class="alert alert-err">'+(err.message==='INVALID_CREDENTIALS'?'メールアドレスまたはパスワードが正しくありません':esc(err.message))+'</div>';
+  }
+  btn.disabled=false; btn.textContent='ログイン';
+}
+
+async function doRegister(){
+  const alertEl=document.getElementById('reg-account-alert'); alertEl.innerHTML='';
+  const name=document.getElementById('ra-name').value.trim();
+  const email=document.getElementById('ra-email').value.trim();
+  const pw=document.getElementById('ra-pw').value;
+  const pw2=document.getElementById('ra-pw2').value;
+  if(!name){alertEl.innerHTML='<div class="alert alert-err">お名前を入力してください</div>';return;}
+  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){alertEl.innerHTML='<div class="alert alert-err">有効なメールアドレスを入力してください</div>';return;}
+  if(!pw||pw.length<8){alertEl.innerHTML='<div class="alert alert-err">パスワードは8文字以上で入力してください</div>';return;}
+  if(pw!==pw2){alertEl.innerHTML='<div class="alert alert-err">パスワードが一致しません</div>';return;}
+  const btn=document.querySelector('#page-register-account .btn-primary'); btn.disabled=true; btn.textContent='...';
+  try{
+    const user=await api('registerWithPassword',{name,email,password:pw});
+    currentUser=user; sessionStorage.setItem('auth_user',JSON.stringify(user));
+    updateHeader(user); showPage('page-landing'); await loadEvents();
+  }catch(err){
+    alertEl.innerHTML='<div class="alert alert-err">'+(err.message==='EMAIL_EXISTS'?'このメールアドレスはすでに登録されています':esc(err.message))+'</div>';
+  }
+  btn.disabled=false; btn.textContent='アカウントを作成';
+}
+
+function logout(){
+  currentUser=null; myRegistrations=[];
+  sessionStorage.removeItem('auth_user');
+  updateHeader(null); showPage('page-landing'); loadEvents();
+}
+
+['login-email','login-pw'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});});
+['ra-name','ra-email','ra-pw','ra-pw2'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('keydown',e=>{if(e.key==='Enter')doRegister();});});
+
+// ════════════════════════════════════════════════
 // Petals
-// ══════════════════════════════════════════════
+// ════════════════════════════════════════════════
 (function(){
   const bg=document.getElementById('petals');
   const symbols=['🌸','🌸','🌸','🍂','🍁'];
@@ -1079,128 +788,24 @@ function esc(s){ return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;')
   }
 })();
 
-// ══════════════════════════════════════════════
-// State
-// ══════════════════════════════════════════════
-let currentUser=null, currentEvent=null, currentEventIdx=0, myRegistrations=[];
-const EV_BTN=['btn-ev-rose','btn-ev-violet','btn-ev-amber','btn-ev-sky'];
-const REG_BTN=['btn-season-rose','btn-season-violet','btn-season-amber','btn-season-sky'];
-const EV_THEME=['background:linear-gradient(135deg,rgba(232,160,184,.18),rgba(137,201,122,.1));border:1px solid rgba(232,160,184,.3);',
-  'background:linear-gradient(135deg,rgba(112,96,168,.14),rgba(91,163,232,.1));border:1px solid rgba(112,96,168,.22);',
-  'background:linear-gradient(135deg,rgba(200,90,32,.12),rgba(232,200,74,.12));border:1px solid rgba(200,90,32,.18);',
-  'background:linear-gradient(135deg,rgba(122,168,204,.2),rgba(176,40,60,.07));border:1px solid rgba(122,168,204,.28);'];
-const SEASONS=['Spring','Summer','Autumn','Winter'];
-
+// ════════════════════════════════════════════════
+// Event List
+// ════════════════════════════════════════════════
 function formatPrice(p,tp){
-  if(tp==='FREE'||Number(p)===0) return '<span class="badge badge-free">'+t('free')+'</span>';
+  if(tp==='FREE'||Number(p)===0) return '<span class="badge badge-free">無料</span>';
   return '<span class="badge badge-paid">¥'+Number(p).toLocaleString()+'</span>';
 }
 
-// ══════════════════════════════════════════════
-// Page system
-// ══════════════════════════════════════════════
-function showPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-function goHome(){ showPage('page-landing'); loadEvents(); }
-
-function updateHeader(user){
-  if(user){
-    document.getElementById('avatar-btn').style.display='flex';
-    document.getElementById('avatar-initial').textContent=(user.Name||'U').charAt(0).toUpperCase();
-    document.getElementById('guest-cta').style.display='none';
-    document.getElementById('user-bar').style.display='flex';
-    document.getElementById('ub-avatar').textContent=(user.Name||'U').charAt(0).toUpperCase();
-    document.getElementById('ub-name').textContent=user.Name||'';
-    document.getElementById('ub-email').textContent=user.Email||'';
-  } else {
-    document.getElementById('avatar-btn').style.display='none';
-    document.getElementById('guest-cta').style.display='flex';
-    document.getElementById('user-bar').style.display='none';
-  }
-}
-function showMyPage(){ if(!currentUser)return; showPage('page-mypage'); loadMyPageData(); }
-
-// ══════════════════════════════════════════════
-// Password Auth
-// ══════════════════════════════════════════════
-function togglePw(id,btn){
-  const el=document.getElementById(id);
-  const show=el.type==='password';
-  el.type=show?'text':'password';
-  btn.textContent=show?t('hidePw'):t('showPw');
-}
-
-async function doLogin(){
-  const alertEl=document.getElementById('login-alert'); alertEl.innerHTML='';
-  const email=document.getElementById('login-email').value.trim();
-  const pw=document.getElementById('login-pw').value;
-  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){alertEl.innerHTML='<div class="alert alert-err">'+t('invalidEmail')+'</div>';return;}
-  if(!pw){alertEl.innerHTML='<div class="alert alert-err">'+t('pwRequired')+'</div>';return;}
-  const btn=document.querySelector('#page-login .btn-primary'); btn.disabled=true; btn.textContent='...';
-  try{
-    const user=await api('loginWithPassword',{email,password:pw});
-    currentUser=user; sessionStorage.setItem('auth_user',JSON.stringify(user));
-    updateHeader(user); showPage('page-landing'); await loadEvents();
-  }catch(err){
-    alertEl.innerHTML='<div class="alert alert-err">'+(err.message==='INVALID_CREDENTIALS'?t('loginError'):esc(err.message))+'</div>';
-  }
-  btn.disabled=false; btn.textContent=t('loginBtn');
-}
-
-async function doRegister(){
-  const alertEl=document.getElementById('reg-account-alert'); alertEl.innerHTML='';
-  const name=document.getElementById('ra-name').value.trim();
-  const email=document.getElementById('ra-email').value.trim();
-  const pw=document.getElementById('ra-pw').value;
-  const pw2=document.getElementById('ra-pw2').value;
-  if(!name){alertEl.innerHTML='<div class="alert alert-err">'+t('nameRequired')+'</div>';return;}
-  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){alertEl.innerHTML='<div class="alert alert-err">'+t('invalidEmail')+'</div>';return;}
-  if(!pw||pw.length<8){alertEl.innerHTML='<div class="alert alert-err">'+t('pwRequired')+'</div>';return;}
-  if(pw!==pw2){alertEl.innerHTML='<div class="alert alert-err">'+t('pwMismatch')+'</div>';return;}
-  const btn=document.querySelector('#page-register-account .btn-primary'); btn.disabled=true; btn.textContent='...';
-  try{
-    const user=await api('registerWithPassword',{name,email,password:pw});
-    currentUser=user; sessionStorage.setItem('auth_user',JSON.stringify(user));
-    updateHeader(user); showPage('page-landing'); await loadEvents();
-  }catch(err){
-    alertEl.innerHTML='<div class="alert alert-err">'+(err.message==='EMAIL_EXISTS'?t('emailExists'):esc(err.message))+'</div>';
-  }
-  btn.disabled=false; btn.textContent=t('createAccountBtn');
-}
-
-function logout(){
-  currentUser=null; myRegistrations=[];
-  sessionStorage.removeItem('auth_user');
-  updateHeader(null); showPage('page-landing'); loadEvents();
-}
-
-// Enter keys
-['login-email','login-pw'].forEach(id=>{
-  const el=document.getElementById(id);
-  if(el) el.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
-});
-['ra-name','ra-email','ra-pw','ra-pw2'].forEach(id=>{
-  const el=document.getElementById(id);
-  if(el) el.addEventListener('keydown',e=>{if(e.key==='Enter')doRegister();});
-});
-
-// ══════════════════════════════════════════════
-// Event list
-// ══════════════════════════════════════════════
 async function loadEvents(){
   const listEl=document.getElementById('event-list');
-  listEl.innerHTML='<div class="spinner"></div><p class="loading-text">'+t('loading')+'</p>';
+  listEl.innerHTML='<div class="spinner"></div><p class="loading-text">読み込み中</p>';
   try{
-    const [events,allRegs]=await Promise.all([
+    const [events, allRegs]=await Promise.all([
       api('getEvents'),
       currentUser?api('getAllRegistrations',{}):Promise.resolve([])
     ]);
     myRegistrations=currentUser?allRegs.filter(r=>r.ParticipantID===currentUser.ParticipantID):[];
-    if(!events||!events.length){listEl.innerHTML='<div class="alert alert-info">'+t('noHistory')+'</div>';return;}
-
+    if(!events||!events.length){listEl.innerHTML='<div class="alert alert-info">現在公開中のイベントはありません</div>';return;}
     const grid=document.createElement('div'); grid.className='event-grid';
     events.forEach((ev,i)=>{
       const isFull=Number(ev.registrationCount||0)>=Number(ev.Capacity);
@@ -1208,76 +813,68 @@ async function loadEvents(){
       const isChecked=myReg&&(myReg.CheckinStatus===true||myReg.CheckinStatus==='TRUE'||myReg.CheckinStatus==='true');
       const si=i%4;
       const card=document.createElement('div'); card.className='event-card';
-
       let actHtml='';
       if(myReg){
-        actHtml='<div class="ev-actions"><div class="reg-badge '+(isChecked?'reg-badge-checked':'reg-badge-pending')+'" style="cursor:pointer;">'+(isChecked?'✓ '+t('checkedIn'):'✓ '+t('registered'))+'</div></div>';
+        actHtml='<div class="ev-actions"><div class="reg-badge '+(isChecked?'reg-badge-checked':'reg-badge-pending')+'" style="cursor:pointer;">'+(isChecked?'✓ 参加済み':'✓ 登録済み')+'</div></div>';
       } else if(isFull){
-        actHtml='<div class="ev-actions"><div class="btn-ev-outline">'+t('full')+'</div></div>';
+        actHtml='<div class="ev-actions"><div class="btn-ev-outline">満席</div></div>';
       } else if(currentUser){
-        actHtml='<div class="ev-actions"><button class="btn-ev '+EV_BTN[si]+' reg-btn">'+t('registerBtn')+' →</button></div>';
+        actHtml='<div class="ev-actions"><button class="btn-ev '+EV_BTN[si]+' reg-btn">登録 →</button></div>';
       } else {
-        actHtml='<div class="ev-actions"><button class="btn-ev '+EV_BTN[si]+' login-btn">'+t('login')+' →</button></div>';
+        actHtml='<div class="ev-actions"><button class="btn-ev '+EV_BTN[si]+' login-btn">ログイン →</button></div>';
       }
-
-      card.innerHTML=
-        '<div class="ev-accent"></div>'+
-        '<div class="ev-body">'+
-          '<div class="ev-season">'+SEASONS[si]+'</div>'+
-          '<div class="ev-name">'+esc(ev.EventName)+'</div>'+
-          '<div class="ev-date">'+esc(ev.Date)+'</div>'+
-          '<div class="ev-meta">'+
-            '<div class="ev-kv"><span class="ev-k">'+t('venue')+'</span><span class="ev-v">'+esc(ev.Location)+'</span></div>'+
-            '<div class="ev-kv"><span class="ev-k">'+t('price')+'</span><span class="ev-v">'+formatPrice(ev.Price,ev.PaymentType)+'</span></div>'+
-            (!myReg?'<div class="ev-kv"><span class="ev-k">'+t('seats')+'</span><span class="ev-v">'+(isFull?'<span class="badge badge-full">'+t('full')+'</span>':(Number(ev.Capacity)-Number(ev.registrationCount||0))+' seats')+'</span></div>':'')+
-          '</div>'+
-        '</div>'+actHtml;
-
+      card.innerHTML='<div class="ev-accent"></div><div class="ev-body"><div class="ev-season">'+SEASONS[si]+'</div><div class="ev-name">'+esc(ev.EventName)+'</div><div class="ev-date">'+esc(ev.Date)+'</div><div class="ev-meta"><div class="ev-kv"><span class="ev-k">会場</span><span class="ev-v">'+esc(ev.Location)+'</span></div><div class="ev-kv"><span class="ev-k">参加費</span><span class="ev-v">'+formatPrice(ev.Price,ev.PaymentType)+'</span></div>'+((!myReg)?'<div class="ev-kv"><span class="ev-k">残席</span><span class="ev-v">'+(isFull?'<span class="badge badge-full">満席</span>':(Number(ev.Capacity)-Number(ev.registrationCount||0))+' 席')+'</span></div>':'')+'</div></div>'+actHtml;
       if(myReg) card.querySelector('.reg-badge').addEventListener('click',()=>openQR(ev.EventName,ev.Date,myReg.QR||'',myReg.RegistrationID));
       if(!myReg&&!isFull&&currentUser) card.querySelector('.reg-btn').addEventListener('click',()=>showEventReg(ev,i));
       if(!currentUser&&card.querySelector('.login-btn')) card.querySelector('.login-btn').addEventListener('click',()=>showPage('page-login'));
       grid.appendChild(card);
     });
     listEl.innerHTML=''; listEl.appendChild(grid);
-
-    if(currentUser){
-      try{
-        const surveys=await api('getMySurveys',{participantId:currentUser.ParticipantID});
-        const unans=surveys.filter(s=>!s.Rating||s.Rating==='');
-        document.getElementById('avatar-badge').style.display=unans.length>0?'block':'none';
-      }catch(e){}
-    }
+    // badge
+    if(currentUser) updateBadges();
   }catch(err){listEl.innerHTML='<div class="alert alert-err">'+esc(err.message)+'</div>';}
 }
 
-// ══════════════════════════════════════════════
+function updateBadges(){
+  if(!currentUser) return;
+  const news = getNewsItems(currentUser.ParticipantID);
+  const unreadNews = news.filter(n => !isNewsRead(n.id));
+  document.getElementById('news-dot').classList.toggle('show', unreadNews.length>0);
+  const chats = getChatMessages(currentUser.ParticipantID);
+  const unreadChat = chats.filter(m => m.receiverId===currentUser.ParticipantID && !m.isRead);
+  document.getElementById('chat-dot').classList.toggle('show', unreadChat.length>0);
+  const avatarBadge = document.getElementById('avatar-badge');
+  if(avatarBadge) avatarBadge.style.display = (unreadNews.length>0||unreadChat.length>0)?'block':'none';
+}
+
+// ════════════════════════════════════════════════
 // QR Modal
-// ══════════════════════════════════════════════
+// ════════════════════════════════════════════════
 function openQR(name,date,qr,id){
   document.getElementById('qr-modal-title').textContent=name;
   document.getElementById('qr-modal-sub').textContent=date;
   document.getElementById('qr-modal-id').textContent=qr;
   const c=document.getElementById('qr-modal-canvas'); c.innerHTML='';
   if(qr) new QRCode(c,{text:qr,width:196,height:196,colorDark:'#1c2340',colorLight:'#f7f8fc'});
-  document.getElementById('qr-modal').style.display='flex'; applyI18n();
+  document.getElementById('qr-modal').style.display='block';
 }
 
-// ══════════════════════════════════════════════
+// ════════════════════════════════════════════════
 // Event Registration
-// ══════════════════════════════════════════════
+// ════════════════════════════════════════════════
 function showEventReg(ev,idx){
   if(!currentUser){showPage('page-login');return;}
   currentEvent=ev; currentEventIdx=idx;
   showPage('page-event-reg');
   const si=idx%4;
-  document.getElementById('ev-reg-info').innerHTML='<div class="ev-hero-block" style="'+EV_THEME[si]+'"><div class="ev-hero-name">'+esc(ev.EventName)+'</div><div class="ev-hero-meta">'+esc(ev.Date)+'　'+esc(ev.Location)+'　'+(Number(ev.Price)===0?t('free'):'¥'+Number(ev.Price).toLocaleString())+'</div></div>';
+  document.getElementById('ev-reg-info').innerHTML='<div class="ev-hero-block" style="'+EV_THEME[si]+'"><div class="ev-hero-name">'+esc(ev.EventName)+'</div><div class="ev-hero-meta">'+esc(ev.Date)+'　'+esc(ev.Location)+'　'+(Number(ev.Price)===0?'無料':'¥'+Number(ev.Price).toLocaleString())+'</div></div>';
   document.getElementById('inp-name').value=currentUser.Name;
   document.getElementById('inp-email').value=currentUser.Email;
   const payEl=document.getElementById('payment-info-box'); payEl.innerHTML='';
   if(ev.PaymentType!=='FREE'){
     let h='<div class="payment-box">';
-    if(ev.PaymentType==='PAYPAY'||ev.PaymentType==='PAYPAY_OR_CASH') h+='<h4>PayPay</h4><p>'+t('payPayNote')+'</p>';
-    if(ev.PaymentType==='CASH') h+='<h4>Cash</h4><p>'+t('cashNote')+'</p>';
+    if(ev.PaymentType==='PAYPAY'||ev.PaymentType==='PAYPAY_OR_CASH') h+='<h4>PayPay</h4><p>管理者から別途PayPayのご案内をします。</p>';
+    if(ev.PaymentType==='CASH') h+='<h4>Cash</h4><p>当日受付にて現金でお支払いください。</p>';
     h+='</div>'; payEl.innerHTML=h;
   }
   document.getElementById('ev-reg-alert').innerHTML='';
@@ -1285,208 +882,422 @@ function showEventReg(ev,idx){
   document.getElementById('ev-reg-result').style.display='none';
   const btn=document.getElementById('btn-ev-submit');
   btn.className=REG_BTN[si]; btn.style.cssText='width:100%;padding:12px;border-radius:99px;font-size:.9rem;font-weight:700;border:none;cursor:pointer;font-family:"Noto Sans JP",sans-serif;transition:all .25s;';
-  btn.textContent=t('registerBtn'); btn.disabled=false;
-  applyI18n();
+  btn.textContent='登録する'; btn.disabled=false;
 }
 
 document.getElementById('btn-ev-submit').addEventListener('click',async()=>{
   if(!currentUser){showPage('page-login');return;}
   const alertEl=document.getElementById('ev-reg-alert'); alertEl.innerHTML='';
-  const btn=document.getElementById('btn-ev-submit'); btn.disabled=true; btn.textContent=t('registering');
+  const btn=document.getElementById('btn-ev-submit'); btn.disabled=true; btn.textContent='登録中...';
   try{
     const result=await api('registerParticipant',{name:currentUser.Name,email:currentUser.Email,phone:'',eventId:currentEvent.EventID});
     document.getElementById('ev-reg-form').style.display='none';
     document.getElementById('ev-reg-result').style.display='block';
     let payHtml='';
-    if(result.paymentStatus==='PAYPAY_PENDING') payHtml='<div class="payment-box"><h4>PayPay</h4><p>'+t('payPayNote')+'</p></div>';
-    else if(result.paymentStatus==='CASH') payHtml='<div class="alert alert-info">'+t('cashNote')+'</div>';
+    if(result.paymentStatus==='PAYPAY_PENDING') payHtml='<div class="payment-box"><h4>PayPay</h4><p>管理者から別途PayPayのご案内をします。</p></div>';
+    else if(result.paymentStatus==='CASH') payHtml='<div class="alert alert-info">当日受付にて現金でお支払いください。</div>';
     document.getElementById('ev-reg-result').innerHTML=
       '<div style="text-align:center;padding:14px 0 4px;font-size:2rem;">🎉</div>'+
-      '<div class="alert alert-ok">'+t('regSuccess')+'</div>'+
-      '<div class="ticket-box"><div class="ticket-label">— '+t('ticketTitle')+' —</div>'+
+      '<div class="alert alert-ok">登録完了！チケットをメールで送信しました。</div>'+
+      '<div class="ticket-box"><div class="ticket-label">— QR チケット —</div>'+
       '<div id="qr-reg-canvas" style="display:flex;justify-content:center;margin:0 auto 10px;"></div>'+
-      '<div class="ticket-id">'+esc(result.qrData)+'</div></div>'+
-      payHtml+
-      '<button class="btn-outline" onclick="goHome()" style="display:block;width:100%;margin-top:10px;padding:10px;text-align:center;border-radius:99px;border:1.5px solid var(--border);background:transparent;color:var(--ink-soft);cursor:pointer;font-family:\'Noto Sans JP\',sans-serif;font-size:.86rem;font-weight:700;">'+t('backToList')+'</button>';
+      '<div class="ticket-id">'+esc(result.qrData)+'</div></div>'+payHtml+
+      '<button class="btn-outline" onclick="goHome()" style="display:block;width:100%;margin-top:10px;padding:10px;text-align:center;border-radius:99px;border:1.5px solid var(--border);background:transparent;color:var(--ink-soft);cursor:pointer;font-family:\'Noto Sans JP\',sans-serif;font-size:.86rem;font-weight:700;">← 一覧に戻る</button>';
     new QRCode(document.getElementById('qr-reg-canvas'),{text:result.qrData,width:176,height:176,colorDark:'#1c2340',colorLight:'#f7f8fc'});
     myRegistrations.push({EventID:currentEvent.EventID,ParticipantID:currentUser.ParticipantID,QR:result.qrData,RegistrationID:result.registrationId,CheckinStatus:false});
   }catch(err){
-    btn.disabled=false; btn.textContent=t('registerBtn');
-    if(err.message==='FULL') alertEl.innerHTML='<div class="alert alert-err">'+t('regFull')+'</div>';
-    else if(err.message==='ALREADY_REGISTERED') alertEl.innerHTML='<div class="alert alert-info">'+t('regDuplicate')+'</div>';
+    btn.disabled=false; btn.textContent='登録する';
+    if(err.message==='FULL') alertEl.innerHTML='<div class="alert alert-err">満席のため登録できません。</div>';
+    else if(err.message==='ALREADY_REGISTERED') alertEl.innerHTML='<div class="alert alert-info">すでに登録済みです。</div>';
     else alertEl.innerHTML='<div class="alert alert-err">'+esc(err.message)+'</div>';
   }
 });
 
-// ══════════════════════════════════════════════
-// My Page
-// ══════════════════════════════════════════════
+// ════════════════════════════════════════════════
+// NEWS PAGE
+// ════════════════════════════════════════════════
+function showNewsPage(){
+  if(!currentUser){showPage('page-login');return;}
+  showPage('page-news');
+  renderNews();
+}
+
+function filterNews(f, btn){
+  newsFilter = f;
+  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  renderNews();
+}
+
+function renderNews(){
+  if(!currentUser) return;
+  const el = document.getElementById('news-list');
+  let items = getNewsItems(currentUser.ParticipantID);
+  if(newsFilter==='global') items = items.filter(n=>n.type==='global'||!n.userId);
+  else if(newsFilter==='personal') items = items.filter(n=>n.userId===currentUser.ParticipantID);
+  else if(newsFilter==='unread') items = items.filter(n=>!isNewsRead(n.id));
+  items = items.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+  if(!items.length){
+    el.innerHTML='<div class="news-empty"><div class="news-empty-icon">📭</div><p>ニュースはありません</p></div>';
+    return;
+  }
+  el.innerHTML = items.map((n,i)=>{
+    const read = isNewsRead(n.id);
+    const date = new Date(n.createdAt).toLocaleDateString('ja-JP',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+    const isPersonal = n.userId && n.userId===currentUser.ParticipantID;
+    return `<div class="news-card${read?'':' unread'}" onclick="openNewsDetail('${esc(n.id)}')" style="animation-delay:${i*.06}s">
+      <div class="news-card-head">
+        <div class="news-card-badges">
+          ${!read?'<span class="badge badge-new">NEW</span>':''}
+          ${isPersonal?'<span class="badge badge-personal">個別</span>':'<span class="badge badge-global">全体</span>'}
+        </div>
+        <span class="news-card-date">${date}</span>
+      </div>
+      <div class="news-card-title">${esc(n.title)}</div>
+      <div class="news-card-body">${esc(n.body)}</div>
+    </div>`;
+  }).join('');
+  updateBadges();
+}
+
+function openNewsDetail(id){
+  markNewsRead(id);
+  const items = getNewsItems(currentUser.ParticipantID);
+  const n = items.find(x=>x.id===id);
+  if(!n) return;
+  const date = new Date(n.createdAt).toLocaleDateString('ja-JP',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'});
+  const isPersonal = n.userId && n.userId===currentUser.ParticipantID;
+  document.getElementById('nm-title').textContent = n.title;
+  document.getElementById('nm-meta').innerHTML =
+    (isPersonal?'<span class="badge badge-personal">個別通知</span>':'<span class="badge badge-global">全体</span>')+
+    `<span style="font-size:.74rem;color:var(--ink-soft);">${date}</span>`;
+  document.getElementById('nm-body').textContent = n.body;
+  document.getElementById('news-modal').style.display='flex';
+  // re-render to update read state
+  setTimeout(renderNews, 100);
+  updateBadges();
+}
+
+// ════════════════════════════════════════════════
+// MY PAGE
+// ════════════════════════════════════════════════
+function showMyPage(){
+  if(!currentUser){showPage('page-login');return;}
+  showPage('page-mypage');
+  loadMyPageData();
+}
+
 async function loadMyPageData(){
-  if(!currentUser)return;
+  if(!currentUser) return;
   try{
     const ps=await api('getParticipants',{query:currentUser.Email});
     if(ps&&ps.length){const f=ps.find(p=>p.Email===currentUser.Email)||ps[0]; currentUser=Object.assign({},currentUser,{TotalEvents:f.TotalEvents,Rank:f.Rank,Name:f.Name}); sessionStorage.setItem('auth_user',JSON.stringify(currentUser));}
   }catch(e){}
-  const p=currentUser;
-  document.getElementById('profile-card').innerHTML=
-    '<div class="profile-name">'+esc(p.Name)+'</div>'+
-    '<div class="profile-email">'+esc(p.Email)+'</div>'+
-    '<div class="profile-stats">'+
-      '<div><div class="ps-num">'+esc(p.TotalEvents||0)+'</div><div class="ps-label">'+t('participations')+'</div></div>'+
-      '<div><div class="ps-num">'+esc(p.Rank||'New')+'</div><div class="ps-label">'+t('rank')+'</div></div>'+
-    '</div>';
-  try{
-    const [stats,mySurveys]=await Promise.all([api('getStats'),api('getMySurveys',{participantId:p.ParticipantID})]);
-    const events=stats.eventStats||[];
-    const allRegs=await api('getAllRegistrations',{});
-    const myRegs=allRegs.filter(r=>r.ParticipantID===p.ParticipantID);
-    const checked=myRegs.filter(r=>r.CheckinStatus===true||r.CheckinStatus==='TRUE'||r.CheckinStatus==='true');
-    const histEl=document.getElementById('my-history');
-    if(!checked.length){histEl.innerHTML='<div class="alert alert-info">'+t('noHistory')+'</div>';}
-    else{
-      let h='<div style="overflow-x:auto"><table><thead><tr><th>Event</th><th>Date</th><th></th></tr></thead><tbody>';
-      checked.forEach(r=>{const ev=events.find(e=>e.EventID===r.EventID); h+='<tr><td><strong>'+esc(ev?ev.EventName:r.EventID)+'</strong></td><td style="font-size:.74rem;">'+esc(ev?ev.Date:'—')+'</td><td style="color:var(--green);font-size:.76rem;font-weight:700;">'+t('participated')+'</td></tr>';});
-      h+='</tbody></table></div>'; histEl.innerHTML=h;
-    }
-    const unans=mySurveys.filter(s=>!s.Rating||s.Rating==='');
-    if(mySurveys.length>0){
-      const stb=document.getElementById('survey-tab-btn'); stb.style.display='block';
-      if(unans.length>0) stb.textContent=t('surveyTab')+' ('+unans.length+')';
-      renderSurveys(mySurveys,p.ParticipantID);
-      document.getElementById('avatar-badge').style.display=unans.length>0?'block':'none';
-    }
-  }catch(err){console.error(err);}
+  const p = currentUser;
+  document.getElementById('pc-name').textContent = p.Name||'';
+  document.getElementById('pc-email').textContent = p.Email||'';
+  document.getElementById('pc-events').textContent = p.TotalEvents||0;
+  document.getElementById('pc-rank').textContent = p.Rank||'New';
+  // load history tab by default
+  loadHistoryTab();
 }
 
-function switchMyTab(tab,btn){
+function switchMyTab(tab, btn){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  ['my-history','my-events','my-survey','my-profile-edit'].forEach(id=>document.getElementById(id).style.display='none');
-  document.getElementById('my-'+tab).style.display='block';
-  if(btn)btn.classList.add('active');
-  if(tab==='profile-edit')renderProfileEdit();
-  if(tab==='events')loadMyEvents();
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  const pane = document.getElementById('tab-'+tab);
+  if(pane) pane.classList.add('active');
+  if(tab==='history') loadHistoryTab();
+  else if(tab==='survey') loadSurveyTab();
+  else if(tab==='notifications') loadNotificationsTab();
+  else if(tab==='chat') loadChatTab();
+  else if(tab==='profile-edit') renderProfileEdit();
 }
 
-// ══════════════════════════════════════════════
-// My Events (登録イベント詳細)
-// ══════════════════════════════════════════════
-async function loadMyEvents(){
-  if(!currentUser)return;
-  const el=document.getElementById('my-events');
+// ── History Tab ──
+async function loadHistoryTab(){
+  const el = document.getElementById('tab-history');
   el.innerHTML='<div class="spinner"></div>';
   try{
-    const events=await api('getMyEventDetails',{participantId:currentUser.ParticipantID});
-    if(!events||!events.length){
-      el.innerHTML='<div class="alert alert-info">'+t('noMyEvents')+'</div>';
+    const [stats, allRegs] = await Promise.all([api('getStats'), api('getAllRegistrations',{})]);
+    const events = stats.eventStats||[];
+    const myRegs = allRegs.filter(r=>r.ParticipantID===currentUser.ParticipantID);
+    const checked = myRegs.filter(r=>r.CheckinStatus===true||r.CheckinStatus==='TRUE'||r.CheckinStatus==='true');
+    if(!checked.length){
+      el.innerHTML='<div class="alert alert-info" style="margin-top:8px;">まだ参加履歴がありません。</div>';
       return;
     }
-    let html='<div style="display:grid;gap:14px;">';
-    events.forEach(ev=>{
-      const isChecked=ev.checkinStatus===true||ev.checkinStatus==='TRUE'||ev.checkinStatus==='true';
-      const payLabel={'FREE':t('payFree'),'UNPAID':t('payUnpaid'),'PAYPAY_PENDING':t('payPaypayPending'),'PAYPAY_PAID':t('payPaypayPaid'),'CASH':t('payCash')}[ev.paymentStatus]||ev.paymentStatus||'—';
-      const surveyStars=ev.surveyRating?'★'.repeat(Math.round(ev.surveyRating))+'☆'.repeat(5-Math.round(ev.surveyRating)):'—';
-      const accent=['var(--rose)','var(--violet)','var(--amber)','var(--sky)'][Math.floor(Math.random()*4)];
-      html+=`
-        <div style="background:var(--white);border-radius:var(--r);border:1px solid var(--border);border-left:4px solid ${accent};box-shadow:var(--s1);overflow:hidden;">
-          <div style="padding:16px 18px;">
-            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
-              <div style="font-family:'Noto Serif JP',serif;font-weight:700;font-size:1rem;color:var(--ink);">${esc(ev.eventName)}</div>
-              <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                <span style="display:inline-block;padding:2px 9px;border-radius:99px;font-size:.7rem;font-weight:700;${isChecked?'background:rgba(61,102,64,.1);color:var(--green);':'background:var(--bg2);color:var(--ink-soft);'}">${isChecked?t('checkinDone'):t('checkinPending')}</span>
-              </div>
-            </div>
-            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;">
-              <div style="font-size:.78rem;"><span style="color:var(--ink-soft);margin-right:5px;">${t('evDate')}</span><strong>${esc(ev.date||'—')}</strong></div>
-              <div style="font-size:.78rem;"><span style="color:var(--ink-soft);margin-right:5px;">${t('evVenue')}</span><strong>${esc(ev.location||'—')}</strong></div>
-              <div style="font-size:.78rem;"><span style="color:var(--ink-soft);margin-right:5px;">${t('evPrice')}</span><strong>${ev.price===0?t('payFree'):'¥'+Number(ev.price).toLocaleString()}</strong></div>
-              <div style="font-size:.78rem;"><span style="color:var(--ink-soft);margin-right:5px;">${t('evPayment')}</span><strong>${payLabel}</strong></div>
-              <div style="font-size:.78rem;"><span style="color:var(--ink-soft);margin-right:5px;">${t('evRegisteredAt')}</span><strong>${esc(ev.registeredAt||'—')}</strong></div>
-              ${ev.surveyRating?`<div style="font-size:.78rem;"><span style="color:var(--ink-soft);margin-right:5px;">${t('evSurvey')}</span><strong style="color:#f59e0b;">${surveyStars}</strong></div>`:''}
-            </div>
-            ${ev.surveyComment?`<div style="margin-top:8px;padding:8px 12px;background:var(--bg2);border-radius:var(--rs);font-size:.76rem;color:var(--ink-mid);line-height:1.6;">${esc(ev.surveyComment)}</div>`:''}
-          </div>
-          ${ev.qrData?`
-          <div style="border-top:1px solid var(--border);padding:10px 18px;display:flex;justify-content:flex-end;">
-            <button class="btn-primary" style="padding:7px 18px;font-size:.78rem;" onclick="openQR('${esc(ev.eventName)}','${esc(ev.date)}','${esc(ev.qrData)}','${esc(ev.registrationId)}')">${t('showQRBtn')}</button>
-          </div>`:''}
-        </div>`;
-    });
-    html+='</div>';
-    el.innerHTML=html;
-  }catch(err){
-    el.innerHTML='<div class="alert alert-err">'+esc(err.message)+'</div>';
-  }
+    el.innerHTML='<div class="timeline">'+checked.map((r,i)=>{
+      const ev=events.find(e=>e.EventID===r.EventID);
+      const hasMore = i < checked.length-1;
+      return `<div class="tl-item"><div class="tl-left"><div class="tl-dot"><div class="tl-dot-inner"></div></div>${hasMore?'<div class="tl-line"></div>':''}</div><div class="tl-body"><div class="tl-event">${esc(ev?ev.EventName:r.EventID)}</div><div class="tl-date">${esc(ev?ev.Date:'—')}</div><div class="tl-badge-done">✓ 参加済み</div></div></div>`;
+    }).join('')+'</div>';
+  }catch(err){el.innerHTML='<div class="alert alert-err">'+esc(err.message)+'</div>';}
 }
 
-function renderSurveys(surveys,participantId){
-  const el=document.getElementById('my-survey');
-  if(!surveys||!surveys.length){el.innerHTML='<div class="alert alert-info">'+t('noSurveys')+'</div>';return;}
-  let html='';
-  surveys.forEach(s=>{
-    if(s.Rating&&Number(s.Rating)>0){
-      html+='<div class="survey-done"><strong>'+esc(s.EventName)+'</strong><div class="star-display">'+'★'.repeat(Number(s.Rating))+'☆'.repeat(5-Number(s.Rating))+' '+s.Rating+'/5</div>'+(s.Comment?'<div style="font-size:.76rem;margin-top:2px;">'+esc(s.Comment)+'</div>':'')+'</div>';
-    } else {
-      const sid='srv_'+s.SurveyID;
-      html+='<div class="survey-form" id="sf-'+esc(s.SurveyID)+'"><h4>'+esc(s.EventName)+'　'+t('surveyTitle')+'</h4><div class="star-rating">';
-      for(let i=5;i>=1;i--) html+='<input type="radio" id="'+sid+'_'+i+'" name="'+sid+'" value="'+i+'"><label for="'+sid+'_'+i+'">★</label>';
-      html+='</div><textarea id="cmt-'+esc(s.SurveyID)+'" class="form-control" rows="2" placeholder="'+t('surveyComment')+'" style="margin-bottom:8px;resize:none;"></textarea>';
-      html+='<button class="btn-primary" style="padding:10px;" onclick="submitSurvey(\''+esc(s.SurveyID)+'\',\''+esc(s.EventID)+'\',\''+esc(participantId)+'\')">'+t('surveySubmit')+'</button></div>';
+// ── Survey Tab ──
+async function loadSurveyTab(){
+  const el = document.getElementById('tab-survey');
+  el.innerHTML='<div class="spinner"></div>';
+  try{
+    const mySurveys = await api('getMySurveys',{participantId:currentUser.ParticipantID});
+    if(!mySurveys||!mySurveys.length){
+      el.innerHTML='<div class="alert alert-info">まだアンケートはありません</div>';
+      return;
     }
-  });
-  el.innerHTML=html;
+    const answered = mySurveys.filter(s=>s.Rating&&Number(s.Rating)>0);
+    const unanswered = mySurveys.filter(s=>!s.Rating||s.Rating==='');
+    let html='';
+    // Chart
+    if(answered.length>0){
+      html+=`<div class="card" style="padding:16px;"><h4 style="font-family:'Noto Serif JP',serif;font-size:.88rem;font-weight:700;color:var(--ink);margin-bottom:4px;">📊 イベント別満足度</h4><div class="chart-wrap"><canvas id="survey-chart"></canvas></div></div>`;
+    }
+    // Answered
+    answered.forEach(s=>{
+      html+=`<div class="survey-done"><strong>${esc(s.EventName)}</strong><div class="star-display">${'★'.repeat(Number(s.Rating))}${'☆'.repeat(5-Number(s.Rating))} ${s.Rating}/5</div>${s.Comment?'<div style="font-size:.76rem;margin-top:2px;">'+esc(s.Comment)+'</div>':''}</div>`;
+    });
+    // Unanswered forms
+    unanswered.forEach(s=>{
+      const sid='srv_'+s.SurveyID;
+      html+=`<div class="survey-form" id="sf-${esc(s.SurveyID)}"><h4>${esc(s.EventName)}　満足度アンケート</h4><div class="star-rating">`;
+      for(let i=5;i>=1;i--) html+=`<input type="radio" id="${sid}_${i}" name="${sid}" value="${i}"><label for="${sid}_${i}">★</label>`;
+      html+=`</div><textarea id="cmt-${esc(s.SurveyID)}" class="form-control" rows="2" placeholder="一言コメント（任意）" style="margin-bottom:8px;resize:none;"></textarea><button class="btn-primary" style="padding:10px;" onclick="submitSurvey('${esc(s.SurveyID)}','${esc(s.EventID)}','${esc(currentUser.ParticipantID)}')">送信する</button></div>`;
+    });
+    el.innerHTML=html;
+    // Draw chart
+    if(answered.length>0){
+      const ctx=document.getElementById('survey-chart');
+      if(ctx){
+        if(chartInstances.survey) chartInstances.survey.destroy();
+        chartInstances.survey=new Chart(ctx,{
+          type:'bar',
+          data:{
+            labels:answered.map(s=>s.EventName.length>10?s.EventName.slice(0,10)+'…':s.EventName),
+            datasets:[{label:'満足度',data:answered.map(s=>Number(s.Rating)),backgroundColor:['rgba(232,160,184,.7)','rgba(112,96,168,.7)','rgba(200,90,32,.7)','rgba(122,168,204,.7)'],borderRadius:8,borderSkipped:false}]
+          },
+          options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:5,ticks:{stepSize:1}}}}
+        });
+      }
+    }
+  }catch(err){el.innerHTML='<div class="alert alert-err">'+esc(err.message)+'</div>';}
 }
 
-async function submitSurvey(surveyId,eventId,participantId){
+async function submitSurvey(surveyId, eventId, participantId){
   const rEl=document.querySelector('input[name="srv_'+surveyId+'"]:checked');
-  if(!rEl){alert(t('surveyRatingRequired'));return;}
+  if(!rEl){alert('評価を選択してください');return;}
   const rating=rEl.value; const comment=document.getElementById('cmt-'+surveyId).value.trim();
   try{
     await api('submitSurvey',{surveyId,eventId,participantId,rating,comment});
     const f=document.getElementById('sf-'+surveyId);
-    if(f) f.outerHTML='<div class="survey-done">'+t('surveyThanks')+'<div class="star-display">'+'★'.repeat(Number(rating))+'☆'.repeat(5-Number(rating))+'</div></div>';
-    document.getElementById('avatar-badge').style.display='none';
+    if(f) f.outerHTML='<div class="survey-done">回答ありがとうございました！<div class="star-display">'+'★'.repeat(Number(rating))+'☆'.repeat(5-Number(rating))+'</div></div>';
   }catch(err){alert(esc(err.message));}
 }
 
+// ── Notifications Tab ──
+function loadNotificationsTab(){
+  const el = document.getElementById('tab-notifications');
+  if(!currentUser){ el.innerHTML=''; return; }
+  const items = getNewsItems(currentUser.ParticipantID)
+    .filter(n=>n.userId===currentUser.ParticipantID)
+    .sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+  if(!items.length){
+    el.innerHTML='<div class="alert alert-info" style="margin-top:8px;">個別の通知はありません</div>';
+    return;
+  }
+  el.innerHTML=items.map(n=>{
+    const read=isNewsRead(n.id);
+    const date=new Date(n.createdAt).toLocaleDateString('ja-JP',{month:'short',day:'numeric'});
+    return `<div style="padding:14px 0;border-bottom:1px solid var(--bg2);cursor:pointer;" onclick="openNewsDetail('${esc(n.id)}')">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+        <span style="font-family:'Noto Serif JP',serif;font-size:.9rem;font-weight:700;color:var(--ink);">${esc(n.title)}</span>
+        <span style="font-size:.68rem;color:var(--ink-soft);">${date}</span>
+      </div>
+      <div style="font-size:.8rem;color:var(--ink-soft);line-height:1.7;">${esc(n.body.slice(0,80))}${n.body.length>80?'…':''}</div>
+      ${!read?'<span class="badge badge-new" style="margin-top:6px;">未読</span>':''}
+    </div>`;
+  }).join('');
+}
+
+// ── Chat Tab ──
+function loadChatTab(){
+  const el = document.getElementById('tab-chat');
+  if(!currentUser){ el.innerHTML=''; return; }
+  const msgs = getChatMessages(currentUser.ParticipantID);
+  // mark admin messages as read
+  const all = lsGet('connecplus_chat')||[];
+  let changed=false;
+  all.forEach(m=>{if(m.receiverId===currentUser.ParticipantID&&!m.isRead){m.isRead=true;changed=true;}});
+  if(changed){lsSet('connecplus_chat',all);updateBadges();}
+  el.innerHTML=`
+    <div class="chat-area">
+      <div class="chat-messages" id="chat-msg-list">${msgs.length?msgs.map(m=>renderBubble(m)).join(''):'<div class="chat-empty"><span>💬</span><p>まだメッセージがありません<br><small>運営へのご質問や<br>ご連絡はこちらから</small></p></div>'}</div>
+      <div class="chat-input-row">
+        <textarea class="chat-input" id="chat-input" placeholder="メッセージを入力..." rows="1" onkeydown="handleChatKey(event)"></textarea>
+        <button class="chat-send" onclick="doSendChat()">送信</button>
+      </div>
+    </div>`;
+  // scroll to bottom
+  setTimeout(()=>{const cm=document.getElementById('chat-msg-list');if(cm)cm.scrollTop=cm.scrollHeight;},100);
+}
+
+function renderBubble(m){
+  const isMine = m.senderId === currentUser.ParticipantID;
+  const time = new Date(m.createdAt).toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'});
+  const date = new Date(m.createdAt).toLocaleDateString('ja-JP',{month:'short',day:'numeric'});
+  return `<div class="chat-bubble ${isMine?'mine':'theirs'}">
+    ${!isMine?`<div class="bubble-sender">connec+a 運営</div>`:''}
+    <div class="bubble-text">${esc(m.text)}</div>
+    <div class="bubble-meta">${date} ${time}${isMine&&m.isRead?' ✓✓':''}</div>
+  </div>`;
+}
+
+function handleChatKey(e){
+  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();doSendChat();}
+}
+
+function doSendChat(){
+  const input=document.getElementById('chat-input');
+  const text=(input.value||'').trim();
+  if(!text||!currentUser) return;
+  const msg=sendChatMessage(currentUser.ParticipantID, currentUser.Name, text);
+  input.value='';
+  // append bubble
+  const cm=document.getElementById('chat-msg-list');
+  const empty=cm.querySelector('.chat-empty');
+  if(empty) empty.remove();
+  const div=document.createElement('div');
+  div.innerHTML=renderBubble(msg);
+  cm.appendChild(div.firstElementChild);
+  cm.scrollTop=cm.scrollHeight;
+}
+
+// ── Profile Edit Tab ──
 function renderProfileEdit(){
-  if(!currentUser)return;
+  if(!currentUser) return;
   const p=currentUser;
   const langOptions=['ja','en','zh','ko','es','fr','pt','id','th','vi','ar','hi','de','it','ru'];
   const langNames={ja:'日本語',en:'English',zh:'中文',ko:'한국어',es:'Español',fr:'Français',pt:'Português',id:'Bahasa Indonesia',th:'ภาษาไทย',vi:'Tiếng Việt',ar:'العربية',hi:'हिन्दी',de:'Deutsch',it:'Italiano',ru:'Русский'};
-  document.getElementById('my-profile-edit').innerHTML=
+  document.getElementById('tab-profile-edit').innerHTML=
     '<div id="pe-alert"></div>'+
-    '<div class="form-group"><label class="form-label">'+t('nameLabel')+'</label><input id="pe-name" class="form-control" type="text" value="'+esc(p.Name||'')+'"></div>'+
-    '<div class="form-group"><label class="form-label">'+t('emailLabel')+'</label><input id="pe-email" class="form-control" type="email" value="'+esc(p.Email||'')+'"><p style="font-size:.7rem;color:var(--ink-soft);margin-top:5px;line-height:1.6;">'+t('emailChangeNote')+'</p></div>'+
-    '<div class="form-group"><label class="form-label">'+t('langLabel')+'</label>'+
-    '<select id="pe-lang" class="form-control" onchange="setLang(this.value)">'+
+    '<div class="form-group"><label class="form-label">お名前</label><input id="pe-name" class="form-control" type="text" value="'+esc(p.Name||'')+'"></div>'+
+    '<div class="form-group"><label class="form-label">メールアドレス</label><input id="pe-email" class="form-control" type="email" value="'+esc(p.Email||'')+'"><p style="font-size:.7rem;color:var(--ink-soft);margin-top:5px;line-height:1.6;">メールアドレスを変更すると次回ログイン時に新しいアドレスが必要になります</p></div>'+
+    '<div class="form-group"><label class="form-label">表示言語</label><select id="pe-lang" class="form-control" onchange="setLang(this.value)">'+
     langOptions.map(l=>'<option value="'+l+'"'+(currentLang===l?' selected':'')+'>'+langNames[l]+'</option>').join('')+
     '</select></div>'+
-    '<button class="btn-primary" onclick="saveProfile()">'+t('saveProfile')+'</button>';
+    '<button class="btn-primary" onclick="saveProfile()">変更を保存</button>';
 }
 
 async function saveProfile(){
   const alertEl=document.getElementById('pe-alert'); alertEl.innerHTML='';
   const newName=document.getElementById('pe-name').value.trim();
   const newEmail=document.getElementById('pe-email').value.trim();
-  if(!newName){alertEl.innerHTML='<div class="alert alert-err">'+t('nameRequired')+'</div>';return;}
-  if(!newEmail||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)){alertEl.innerHTML='<div class="alert alert-err">'+t('invalidEmail')+'</div>';return;}
-  const btn=document.querySelector('#my-profile-edit .btn-primary'); btn.disabled=true; btn.textContent=t('saving');
+  if(!newName){alertEl.innerHTML='<div class="alert alert-err">お名前を入力してください</div>';return;}
+  if(!newEmail||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)){alertEl.innerHTML='<div class="alert alert-err">有効なメールアドレスを入力してください</div>';return;}
+  const btn=document.querySelector('#tab-profile-edit .btn-primary'); btn.disabled=true; btn.textContent='保存中...';
   try{
     const updated=await api('updateParticipantProfile',{participantId:currentUser.ParticipantID,name:newName,email:newEmail});
     currentUser=Object.assign({},currentUser,{Name:updated.Name||newName,Email:updated.Email||newEmail});
     sessionStorage.setItem('auth_user',JSON.stringify(currentUser));
     document.getElementById('avatar-initial').textContent=currentUser.Name.charAt(0).toUpperCase();
     updateHeader(currentUser);
-    alertEl.innerHTML='<div class="alert alert-ok">'+t('profileSaved')+'</div>';
+    alertEl.innerHTML='<div class="alert alert-ok">プロフィールを更新しました！</div>';
   }catch(err){alertEl.innerHTML='<div class="alert alert-err">'+esc(err.message)+'</div>';}
-  btn.disabled=false; btn.textContent=t('saveProfile');
+  btn.disabled=false; btn.textContent='変更を保存';
 }
 
-// ══════════════════════════════════════════════
-// Init
-// ══════════════════════════════════════════════
+// ════════════════════════════════════════════════
+// PHOTOS PAGE
+// ════════════════════════════════════════════════
+async function showPhotoPage(){
+  if(!currentUser){showPage('page-login');return;}
+  showPage('page-photos');
+  await loadPhotoPage();
+}
+
+async function loadPhotoPage(){
+  const chipsEl = document.getElementById('photo-event-chips');
+  const contentEl = document.getElementById('photo-content');
+  chipsEl.innerHTML='<div class="spinner" style="margin:0;width:20px;height:20px;border-width:2px;"></div>';
+  contentEl.innerHTML='';
+  try{
+    const allRegs = await api('getAllRegistrations',{});
+    const myRegs = allRegs.filter(r=>r.ParticipantID===currentUser.ParticipantID);
+    const stats = await api('getStats');
+    const events = (stats.eventStats||[]).filter(ev=>myRegs.some(r=>r.EventID===ev.EventID));
+    if(!events.length){
+      chipsEl.innerHTML='';
+      contentEl.innerHTML='<div class="photo-locked"><div class="photo-locked-icon">🔒</div><div class="photo-locked-text">参加済みのイベントがないため<br>フォトページを閲覧できません。<br>イベントに参加するとフォトが解放されます。</div></div>';
+      return;
+    }
+    // chips
+    chipsEl.innerHTML=events.map((ev,i)=>`<button class="event-chip${i===0?' active':''}" onclick="selectPhotoEvent('${esc(ev.EventID)}',this)">${esc(ev.EventName)}</button>`).join('');
+    activePhotoEventId = events[0].EventID;
+    renderPhotoGrid(events[0].EventID, events[0].EventName);
+  }catch(err){
+    contentEl.innerHTML='<div class="alert alert-err">'+esc(err.message)+'</div>';
+    chipsEl.innerHTML='';
+  }
+}
+
+function selectPhotoEvent(eventId, btn){
+  document.querySelectorAll('.event-chip').forEach(c=>c.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  activePhotoEventId = eventId;
+  const name = btn ? btn.textContent : eventId;
+  renderPhotoGrid(eventId, name);
+}
+
+function renderPhotoGrid(eventId, eventName){
+  const el = document.getElementById('photo-content');
+  const photos = getPhotos(eventId);
+  let html=`
+    <div class="upload-zone" onclick="document.getElementById('photo-file-input').click()">
+      <div class="upload-icon">📷</div>
+      <div class="upload-text">クリックして写真をアップロード<br><strong>JPG / PNG / WebP</strong>（最大10MB）</div>
+    </div>
+    <input type="file" id="photo-file-input" accept="image/*" multiple style="display:none;" onchange="handlePhotoUpload(this,'${esc(eventId)}')">
+  `;
+  if(photos.length){
+    html+=`<div style="margin-bottom:8px;font-size:.78rem;color:var(--ink-soft);">${photos.length}枚の写真</div>`;
+    html+=`<div class="photo-grid">${photos.map(p=>`
+      <div class="photo-item" onclick="openPhotoViewer('${p.url.replace(/'/g,"\\'")}')">
+        <img src="${p.url}" alt="${esc(p.name)}" loading="lazy">
+        <div class="photo-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></div>
+      </div>`).join('')}</div>`;
+  } else {
+    html+=`<div style="text-align:center;padding:40px 20px;color:var(--ink-soft);font-size:.85rem;">まだ写真はありません。<br>最初の1枚をアップロードしてみましょう！</div>`;
+  }
+  el.innerHTML=html;
+}
+
+function handlePhotoUpload(input, eventId){
+  const files = Array.from(input.files||[]);
+  if(!files.length) return;
+  const MAX=10*1024*1024;
+  let count=0;
+  files.forEach(file=>{
+    if(file.size>MAX){alert(file.name+' は10MBを超えています');return;}
+    const reader=new FileReader();
+    reader.onload=e=>{
+      addPhoto(eventId, file.name, e.target.result);
+      count++;
+      if(count===files.length) renderPhotoGrid(eventId, '');
+    };
+    reader.readAsDataURL(file);
+  });
+  input.value='';
+}
+
+function openPhotoViewer(url){
+  document.getElementById('photo-viewer-img').src=url;
+  document.getElementById('photo-viewer').style.display='flex';
+}
+
+// ════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════
 (async function init(){
-  applyI18n();
   const saved=sessionStorage.getItem('auth_user');
   if(saved){try{currentUser=JSON.parse(saved);updateHeader(currentUser);}catch(e){sessionStorage.clear();updateHeader(null);}}
   else{updateHeader(null);}
