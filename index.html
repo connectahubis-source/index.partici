@@ -23,7 +23,6 @@
     html{scroll-behavior:smooth;}
     body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden;line-height:1.6;}
 
-    /* ── BACKGROUND ── */
     .bg-wrap{position:fixed;inset:0;z-index:0;pointer-events:none;
       background:radial-gradient(ellipse 70% 50% at 10% 0%,rgba(232,160,184,.16) 0%,transparent 55%),
                  radial-gradient(ellipse 60% 50% at 90% 100%,rgba(122,168,204,.14) 0%,transparent 55%),var(--bg);}
@@ -33,10 +32,8 @@
     .petal{position:absolute;opacity:0;animation:petalFall linear infinite;}
     @keyframes petalFall{0%{transform:translateY(-10px) rotate(0deg);opacity:0;}6%{opacity:.4;}94%{opacity:.2;}100%{transform:translateY(105vh) rotate(600deg) translateX(30px);opacity:0;}}
 
-    /* ── SEASON BAR ── */
     .season-bar{height:3px;background:linear-gradient(90deg,var(--rose) 0%,var(--violet) 33%,var(--amber) 66%,var(--sky) 100%);position:relative;z-index:101;}
 
-    /* ── HEADER ── */
     .header{position:sticky;top:0;z-index:100;background:rgba(247,248,252,.94);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;}
     .logo{display:flex;align-items:center;gap:9px;cursor:pointer;}
     .logo-icon{width:30px;height:30px;background:var(--ink);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Noto Serif JP',serif;font-size:.55rem;color:#fff;font-weight:700;}
@@ -49,7 +46,6 @@
     .avatar-btn:hover{transform:scale(1.08);box-shadow:0 3px 12px rgba(28,35,64,.24);}
     .avatar-badge{position:absolute;top:-2px;right:-2px;width:8px;height:8px;background:#f59e0b;border-radius:50%;border:2px solid var(--bg);display:none;}
 
-    /* ── BOTTOM NAV ── */
     .bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:99;background:rgba(247,248,252,.96);backdrop-filter:blur(18px);border-top:1px solid var(--border);height:62px;display:flex;align-items:center;justify-content:space-around;}
     .bnav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 14px;cursor:pointer;border:none;background:none;color:var(--ink-soft);font-family:'Noto Sans JP',sans-serif;border-radius:var(--rs);transition:all .2s;position:relative;}
     .bnav-item svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
@@ -59,12 +55,10 @@
     .bnav-dot{position:absolute;top:6px;right:10px;width:7px;height:7px;background:#f59e0b;border-radius:50%;border:2px solid var(--bg);display:none;}
     .bnav-dot.show{display:block;}
 
-    /* ── PAGE SYSTEM ── */
     .page{display:none;position:relative;z-index:2;padding-bottom:80px;}
     .page.active{display:block;animation:fadeUp .32s ease both;}
     @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 
-    /* ── SHARED UTILS ── */
     .spinner{width:34px;height:34px;border:3px solid var(--bg2);border-top-color:var(--violet);border-radius:50%;animation:spin .8s linear infinite;margin:28px auto;}
     @keyframes spin{to{transform:rotate(360deg);}}
     .loading-text{text-align:center;color:var(--ink-soft);font-size:.82rem;}
@@ -98,7 +92,6 @@
     .pw-toggle{position:absolute;right:11px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--ink-soft);font-size:.7rem;padding:2px 4px;font-family:'Noto Sans JP',sans-serif;}
     .auth-divider{border:none;border-top:1px solid var(--border);margin:20px 0;}
 
-    /* ── MODAL ── */
     .modal-overlay{position:fixed;inset:0;background:rgba(28,35,64,.6);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px);animation:mfade .2s ease;}
     @keyframes mfade{from{opacity:0;}to{opacity:1;}}
     .modal{background:var(--white);border-radius:var(--r);padding:26px;max-width:420px;width:100%;box-shadow:var(--s3);animation:mpop .28s cubic-bezier(.34,1.56,.64,1);max-height:90vh;overflow-y:auto;}
@@ -109,7 +102,6 @@
     .modal-close{display:block;margin:14px auto 0;padding:7px 26px;border-radius:99px;border:1.5px solid var(--border);background:transparent;color:var(--ink-mid);font-size:.8rem;font-weight:700;cursor:pointer;font-family:'Noto Sans JP',sans-serif;}
     .modal-close:hover{background:var(--ink);color:#fff;border-color:var(--ink);}
 
-    /* ── AUTH PAGES ── */
     .auth-wrap{min-height:calc(100vh - 59px);display:flex;align-items:center;justify-content:center;padding:24px 16px;}
     .auth-card{background:var(--white);border-radius:var(--r);box-shadow:var(--s3);border:1px solid var(--border);width:100%;max-width:420px;overflow:hidden;}
     .auth-card-bar{height:4px;background:linear-gradient(90deg,var(--rose),var(--violet),var(--amber),var(--sky));}
@@ -124,7 +116,6 @@
     .auth-link{color:var(--violet);cursor:pointer;font-weight:700;}
     .auth-link:hover{text-decoration:underline;}
 
-    /* ── LANDING ── */
     .hero{text-align:center;padding:52px 20px 32px;}
     .hero-label{font-size:.62rem;letter-spacing:.38em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:10px;}
     .hero-label::before,.hero-label::after{content:'';width:40px;height:1px;background:linear-gradient(90deg,transparent,var(--ink-pale));}
@@ -176,7 +167,6 @@
     .btn-ev-sky{background:linear-gradient(135deg,var(--sky),#3870a8);color:#fff;}
     .btn-ev-outline{padding:8px 14px;border-radius:99px;font-size:.74rem;font-weight:600;border:1.5px solid var(--border);background:transparent;color:var(--ink-soft);cursor:default;font-family:'Noto Sans JP',sans-serif;}
 
-    /* ── EVENT REGISTER ── */
     .reg-wrap{max-width:480px;margin:0 auto;padding:24px 20px 80px;}
     .ev-hero-block{border-radius:var(--r);padding:18px 20px;margin-bottom:16px;}
     .ev-hero-name{font-family:'Noto Serif JP',serif;font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:5px;}
@@ -196,7 +186,6 @@
     .btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--ink-soft);border-radius:99px;padding:10px 20px;font-size:.86rem;font-weight:700;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:all .18s;margin-top:10px;}
     .btn-outline:hover{border-color:var(--ink-mid);color:var(--ink);}
 
-    /* ── NEWS PAGE ── */
     .page-inner{max-width:680px;margin:0 auto;padding:24px 20px;}
     .news-filters{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
     .filter-chip{padding:6px 16px;border-radius:99px;border:1.5px solid var(--border);background:transparent;color:var(--ink-soft);font-size:.74rem;font-weight:600;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:all .2s;}
@@ -211,41 +200,45 @@
     .news-card-body{font-size:.82rem;color:var(--ink-soft);line-height:1.8;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
     .news-empty{text-align:center;padding:60px 20px;color:var(--ink-soft);}
     .news-empty-icon{font-size:3rem;margin-bottom:12px;}
-    /* news detail modal */
     .news-detail-title{font-family:'Noto Serif JP',serif;font-size:1.1rem;font-weight:700;color:var(--ink);line-height:1.4;margin-bottom:10px;}
     .news-detail-meta{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
     .news-detail-body{font-size:.88rem;color:var(--ink-soft);line-height:2;white-space:pre-wrap;word-break:break-word;}
 
-    /* ── MY PAGE ── */
+    /* ── MY PAGE (リデザイン) ── */
     .mypage-wrap{max-width:620px;margin:0 auto;padding:24px 20px 80px;}
-    .profile-card{border-radius:var(--r);padding:22px 24px;margin-bottom:18px;background:var(--ink);color:#fff;position:relative;overflow:hidden;}
+
+    /* プロフィールカード */
+    .profile-card{border-radius:var(--r);padding:20px 22px;margin-bottom:16px;background:var(--ink);color:#fff;position:relative;overflow:hidden;}
     .profile-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 65% 70% at 5% 15%,rgba(232,160,184,.22) 0%,transparent 60%),radial-gradient(ellipse 55% 60% at 92% 85%,rgba(112,96,168,.22) 0%,transparent 60%);}
     .profile-card-z{position:relative;z-index:1;}
-    .profile-name{font-family:'Noto Serif JP',serif;font-size:1.18rem;font-weight:700;margin-bottom:2px;}
-    .profile-email{font-size:.75rem;opacity:.52;margin-bottom:14px;}
-    .profile-stats{display:flex;gap:20px;}
-    .ps-num{font-size:1.55rem;font-weight:800;line-height:1;}
-    .ps-label{font-size:.62rem;opacity:.52;margin-top:2px;}
-    .tabs{display:flex;gap:2px;margin-bottom:16px;background:var(--bg2);padding:3px;border-radius:var(--rs);overflow-x:auto;}
-    .tab-btn{flex:1;min-width:fit-content;padding:8px 12px;border:none;background:none;font-size:.76rem;font-weight:700;color:var(--ink-soft);cursor:pointer;border-radius:8px;transition:all .18s;font-family:'Noto Sans JP',sans-serif;white-space:nowrap;}
-    .tab-btn.active{background:var(--white);color:var(--ink);box-shadow:var(--s1);}
-    .tab-logout{color:var(--amber)!important;}
+    .profile-header{display:flex;align-items:center;gap:13px;margin-bottom:18px;}
+    .profile-avatar{width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-family:'Noto Serif JP',serif;font-size:1.1rem;color:#fff;font-weight:700;flex-shrink:0;}
+    .profile-info{flex:1;}
+    .profile-name{font-family:'Noto Serif JP',serif;font-size:1.1rem;font-weight:700;margin-bottom:2px;}
+    .profile-email{font-size:.72rem;opacity:.5;}
+    .profile-edit-btn{padding:5px 13px;border-radius:99px;border:1px solid rgba(255,255,255,.25);background:transparent;color:rgba(255,255,255,.75);font-size:.72rem;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:all .2s;white-space:nowrap;}
+    .profile-edit-btn:hover{background:rgba(255,255,255,.15);}
+    .profile-stats{display:flex;border-top:1px solid rgba(255,255,255,.12);padding-top:16px;gap:0;}
+    .ps-item{flex:1;text-align:center;}
+    .ps-item+.ps-item{border-left:1px solid rgba(255,255,255,.12);}
+    .ps-num{font-size:1.5rem;font-weight:800;line-height:1;}
+    .ps-label{font-size:.62rem;opacity:.5;margin-top:3px;}
+
+    /* クイックアクセスグリッド */
+    .quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
+    .quick-btn{display:flex;flex-direction:column;align-items:center;gap:7px;padding:14px 6px;border:1.5px solid var(--border);border-radius:var(--r);cursor:pointer;background:var(--white);transition:all .22s;position:relative;box-shadow:var(--s1);}
+    .quick-btn:hover{transform:translateY(-2px);box-shadow:var(--s2);}
+    .quick-btn.active-tab{border-color:var(--violet);background:rgba(112,96,168,.04);}
+    .quick-icon{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .quick-icon svg{width:18px;height:18px;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+    .quick-label{font-size:.68rem;font-weight:700;color:var(--ink-soft);text-align:center;line-height:1.3;}
+    .quick-badge{position:absolute;top:8px;right:8px;min-width:16px;height:16px;background:#f59e0b;border-radius:99px;border:2px solid var(--bg);display:none;align-items:center;justify-content:center;font-size:.55rem;font-weight:700;color:#fff;padding:0 3px;}
+    .quick-badge.show{display:flex;}
+
+    /* タブペイン */
     .tab-pane{display:none;}.tab-pane.active{display:block;}
-    table{width:100%;border-collapse:collapse;font-size:.8rem;}
-    th{padding:8px 10px;text-align:left;color:var(--ink-soft);font-weight:700;border-bottom:2px solid var(--bg2);white-space:nowrap;font-size:.7rem;letter-spacing:.04em;}
-    td{padding:9px 10px;border-bottom:1px solid var(--bg2);}
-    tr:hover>td{background:rgba(112,96,168,.03);}
-    /* survey charts */
-    .chart-wrap{position:relative;height:220px;margin-top:8px;}
-    .survey-form{background:linear-gradient(135deg,rgba(232,160,184,.1),rgba(112,96,168,.07));border:1px solid rgba(232,160,184,.28);border-radius:var(--rs);padding:14px;margin-bottom:12px;}
-    .survey-form h4{font-family:'Noto Serif JP',serif;font-size:.86rem;font-weight:700;color:var(--ink);margin-bottom:8px;}
-    .star-rating{display:flex;gap:4px;margin-bottom:8px;flex-direction:row-reverse;justify-content:flex-end;}
-    .star-rating input{display:none;}
-    .star-rating label{font-size:1.65rem;cursor:pointer;color:#e0e2ec;transition:color .15s;}
-    .star-rating input:checked~label,.star-rating label:hover,.star-rating label:hover~label{color:#f59e0b;}
-    .survey-done{background:rgba(61,102,64,.07);border:1px solid rgba(61,102,64,.2);border-radius:var(--rs);padding:10px 14px;font-size:.78rem;color:var(--green);margin-bottom:10px;}
-    .star-display{color:#f59e0b;}
-    /* timeline */
+
+    /* タイムライン */
     .timeline{display:flex;flex-direction:column;}
     .tl-item{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--bg2);}
     .tl-item:last-child{border-bottom:none;}
@@ -258,7 +251,18 @@
     .tl-date{font-size:.72rem;color:var(--ink-soft);}
     .tl-badge-done{display:inline-block;padding:2px 8px;border-radius:99px;font-size:.64rem;font-weight:700;background:rgba(61,102,64,.1);color:var(--green);margin-top:4px;}
 
-    /* ── CHAT / DM ── */
+    /* チャート */
+    .chart-wrap{position:relative;height:220px;margin-top:8px;}
+    .survey-form{background:linear-gradient(135deg,rgba(232,160,184,.1),rgba(112,96,168,.07));border:1px solid rgba(232,160,184,.28);border-radius:var(--rs);padding:14px;margin-bottom:12px;}
+    .survey-form h4{font-family:'Noto Serif JP',serif;font-size:.86rem;font-weight:700;color:var(--ink);margin-bottom:8px;}
+    .star-rating{display:flex;gap:4px;margin-bottom:8px;flex-direction:row-reverse;justify-content:flex-end;}
+    .star-rating input{display:none;}
+    .star-rating label{font-size:1.65rem;cursor:pointer;color:#e0e2ec;transition:color .15s;}
+    .star-rating input:checked~label,.star-rating label:hover,.star-rating label:hover~label{color:#f59e0b;}
+    .survey-done{background:rgba(61,102,64,.07);border:1px solid rgba(61,102,64,.2);border-radius:var(--rs);padding:10px 14px;font-size:.78rem;color:var(--green);margin-bottom:10px;}
+    .star-display{color:#f59e0b;}
+
+    /* チャット */
     .chat-area{display:flex;flex-direction:column;height:380px;border-radius:var(--r);overflow:hidden;border:1px solid var(--border);}
     .chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;background:var(--bg2);}
     .chat-bubble{max-width:78%;display:flex;flex-direction:column;gap:3px;}
@@ -276,9 +280,13 @@
     .chat-send:hover{background:var(--ink-mid);}
     .chat-send:disabled{opacity:.4;cursor:not-allowed;}
     .chat-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--ink-soft);font-size:.85rem;gap:8px;padding:20px;}
-    .chat-empty span{font-size:2.2rem;}
 
-    /* ── PHOTO PAGE ── */
+    /* ログアウトボタン */
+    .logout-row{margin-top:6px;}
+    .btn-logout{width:100%;padding:11px;border-radius:99px;border:1.5px solid rgba(200,90,32,.25);background:transparent;color:var(--amber);font-size:.84rem;font-weight:700;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:all .2s;}
+    .btn-logout:hover{background:rgba(200,90,32,.06);}
+
+    /* フォト */
     .photo-page-wrap{max-width:720px;margin:0 auto;padding:24px 20px;}
     .event-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
     .event-chip{padding:8px 16px;border-radius:99px;border:1.5px solid var(--border);background:transparent;color:var(--ink-soft);font-size:.76rem;font-weight:600;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:all .2s;}
@@ -292,22 +300,33 @@
     .photo-overlay svg{width:28px;height:28px;stroke:#fff;fill:none;stroke-width:2;}
     .upload-zone{border:2px dashed var(--ink-pale);border-radius:var(--r);padding:36px 20px;text-align:center;cursor:pointer;transition:all .2s;background:rgba(112,96,168,.03);margin-bottom:16px;}
     .upload-zone:hover{border-color:var(--violet);background:rgba(112,96,168,.06);}
-    .upload-icon{font-size:2.5rem;margin-bottom:8px;}
+    .upload-icon{margin-bottom:10px;}
     .upload-text{font-size:.85rem;color:var(--ink-soft);line-height:1.8;}
     .upload-text strong{color:var(--violet);}
     .photo-locked{background:var(--white);border-radius:var(--r);border:1px solid var(--border);padding:60px 20px;text-align:center;box-shadow:var(--s1);}
-    .photo-locked-icon{font-size:3rem;margin-bottom:12px;}
     .photo-locked-text{font-size:.88rem;color:var(--ink-soft);line-height:1.9;}
     .photo-viewer{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:300;display:flex;align-items:center;justify-content:center;animation:mfade .2s ease;}
     .photo-viewer img{max-width:92vw;max-height:88vh;border-radius:var(--rs);object-fit:contain;}
     .photo-viewer-close{position:absolute;top:18px;right:20px;background:rgba(255,255,255,.15);border:none;cursor:pointer;color:#fff;font-size:1.6rem;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
 
-    /* ── QR MODAL ── */
     .qr-modal{position:fixed;inset:0;background:rgba(28,35,64,.6);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px);animation:mfade .2s ease;}
 
-    /* ── PROFILE EDIT ── */
-    #my-profile-edit{}
-    .tab-logout{color:var(--amber)!important;}
+    /* SVGアイコンユーティリティ */
+    .icon-circle-blue{background:#E6F1FB;}
+    .icon-circle-blue svg{stroke:#185FA5;}
+    .icon-circle-amber{background:#FAEEDA;}
+    .icon-circle-amber svg{stroke:#854F0B;}
+    .icon-circle-violet{background:#EEEDFE;}
+    .icon-circle-violet svg{stroke:#534AB7;}
+    .icon-circle-pink{background:#FBEAF0;}
+    .icon-circle-pink svg{stroke:#993556;}
+    .icon-circle-green{background:#EAF3DE;}
+    .icon-circle-green svg{stroke:#3B6D11;}
+
+    table{width:100%;border-collapse:collapse;font-size:.8rem;}
+    th{padding:8px 10px;text-align:left;color:var(--ink-soft);font-weight:700;border-bottom:2px solid var(--bg2);white-space:nowrap;font-size:.7rem;letter-spacing:.04em;}
+    td{padding:9px 10px;border-bottom:1px solid var(--bg2);}
+    tr:hover>td{background:rgba(112,96,168,.03);}
 
     @media(max-width:600px){
       .header{padding:0 14px;}
@@ -315,6 +334,8 @@
       .events-wrap,.mypage-wrap,.reg-wrap,.page-inner,.photo-page-wrap{padding-left:14px;padding-right:14px;}
       .ev-actions{display:none;}
       .photo-grid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr));}
+      .quick-grid{gap:8px;}
+      .quick-icon{width:38px;height:38px;}
     }
   </style>
 </head>
@@ -344,24 +365,23 @@
   </div>
 </header>
 
-<!-- BOTTOM NAV (logged-in only) -->
 <nav class="bottom-nav" id="bottom-nav" style="display:none;">
   <button class="bnav-item active" id="bnav-home" onclick="goHome()">
     <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
-    <span>ホーム</span>
+    <span data-i18n="nav_home">ホーム</span>
   </button>
   <button class="bnav-item" id="bnav-news" onclick="showNewsPage()">
     <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h10M7 13h6"/></svg>
-    <span>ニュース</span>
+    <span data-i18n="nav_news">ニュース</span>
     <div class="bnav-dot" id="news-dot"></div>
   </button>
   <button class="bnav-item" id="bnav-photo" onclick="showPhotoPage()">
     <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-    <span>フォト</span>
+    <span data-i18n="nav_photo">フォト</span>
   </button>
   <button class="bnav-item" id="bnav-mypage" onclick="showMyPage()">
     <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-    <span>マイページ</span>
+    <span data-i18n="nav_mypage">マイページ</span>
     <div class="bnav-dot" id="chat-dot"></div>
   </button>
 </nav>
@@ -374,7 +394,7 @@
       <div style="font-size:.75rem;color:var(--ink-soft);margin-bottom:16px;" id="qr-modal-sub"></div>
       <div id="qr-modal-canvas" style="display:flex;justify-content:center;margin-bottom:8px;"></div>
       <div class="ticket-id" id="qr-modal-id"></div>
-      <button class="modal-close" onclick="document.getElementById('qr-modal').style.display='none'">閉じる</button>
+      <button class="modal-close" data-i18n="news_close" onclick="document.getElementById('qr-modal').style.display='none'">閉じる</button>
     </div>
   </div>
 </div>
@@ -388,7 +408,7 @@
     </div>
     <div class="news-detail-meta" id="nm-meta"></div>
     <div class="news-detail-body" id="nm-body"></div>
-    <button class="modal-close" onclick="document.getElementById('news-modal').style.display='none'">閉じる</button>
+    <button class="modal-close" data-i18n="news_close" onclick="document.getElementById('news-modal').style.display='none'">閉じる</button>
   </div>
 </div>
 
@@ -398,19 +418,19 @@
   <button class="photo-viewer-close" onclick="document.getElementById('photo-viewer').style.display='none'">×</button>
 </div>
 
-<!-- ═══ PAGE: LANDING ═══ -->
+<!-- ═══ LANDING ═══ -->
 <div id="page-landing" class="page active">
   <div class="hero">
     <div class="hero-label">Events</div>
-    <h1 class="hero-title"><em>connec+a</em><br><span>のイベントへようこそ</span></h1>
-    <p class="hero-desc">参加したいイベントを選んで、簡単にお申し込みいただけます。</p>
+    <h1 class="hero-title"><em>connec+a</em><br><span data-i18n="hero_title_sub">のイベントへようこそ</span></h1>
+    <p class="hero-desc" data-i18n="hero_desc">参加したいイベントを選んで、簡単にお申し込みいただけます。</p>
     <div class="season-dots">
       <span class="sd" style="background:var(--rose)"></span><span class="sd" style="background:var(--violet)"></span>
       <span class="sd" style="background:var(--amber)"></span><span class="sd" style="background:var(--sky)"></span>
     </div>
     <div class="auth-cta" id="guest-cta">
-      <button class="btn-cta-primary" onclick="showPage('page-login')">ログイン</button>
-      <button class="btn-cta-outline" onclick="showPage('page-register-account')">新規登録</button>
+      <button class="btn-cta-primary" data-i18n="btn_login" onclick="showPage('page-login')">ログイン</button>
+      <button class="btn-cta-outline" data-i18n="btn_register" onclick="showPage('page-register-account')">新規登録</button>
     </div>
   </div>
   <div class="events-wrap">
@@ -420,16 +440,16 @@
         <div><div class="user-bar-name" id="ub-name"></div><div class="user-bar-email" id="ub-email"></div></div>
       </div>
       <div class="user-bar-right">
-        <button class="btn-ev btn-ev-violet" onclick="showMyPage()" style="font-size:.76rem;">マイページ</button>
-        <button class="btn-ev-outline" onclick="logout()">ログアウト</button>
+        <button class="btn-ev btn-ev-violet" data-i18n="btn_mypage" onclick="showMyPage()" style="font-size:.76rem;">マイページ</button>
+        <button class="btn-ev-outline" data-i18n="btn_logout" onclick="logout()">ログアウト</button>
       </div>
     </div>
-    <div class="section-head"><span class="section-head-text">イベント一覧</span><span class="section-head-line"></span></div>
+    <div class="section-head"><span class="section-head-text" data-i18n="event_list">イベント一覧</span><span class="section-head-line"></span></div>
     <div id="event-list"><div class="spinner"></div><p class="loading-text">読み込み中</p></div>
   </div>
 </div>
 
-<!-- ═══ PAGE: LOGIN ═══ -->
+<!-- ═══ LOGIN ═══ -->
 <div id="page-login" class="page">
   <div class="auth-wrap">
     <div class="auth-card">
@@ -442,17 +462,8 @@
         </div>
         <div class="auth-title">ログイン</div>
         <div id="login-alert"></div>
-        <div class="form-group">
-          <label class="form-label">メールアドレス</label>
-          <input id="login-email" class="form-control" type="email" placeholder="example@email.com">
-        </div>
-        <div class="form-group">
-          <label class="form-label">パスワード</label>
-          <div class="pw-wrap">
-            <input id="login-pw" class="form-control" type="password" placeholder="••••••••" style="padding-right:50px;">
-            <button class="pw-toggle" type="button" onclick="togglePw('login-pw',this)">表示</button>
-          </div>
-        </div>
+        <div class="form-group"><label class="form-label">メールアドレス</label><input id="login-email" class="form-control" type="email" placeholder="example@email.com"></div>
+        <div class="form-group"><label class="form-label">パスワード</label><div class="pw-wrap"><input id="login-pw" class="form-control" type="password" placeholder="••••••••" style="padding-right:50px;"><button class="pw-toggle" type="button" onclick="togglePw('login-pw',this)">表示</button></div></div>
         <button class="btn-primary" onclick="doLogin()">ログイン</button>
         <hr class="auth-divider">
         <p class="auth-footer">アカウントをお持ちでない方は <a class="auth-link" onclick="showPage('page-register-account')">新規登録</a></p>
@@ -462,7 +473,7 @@
   </div>
 </div>
 
-<!-- ═══ PAGE: REGISTER ACCOUNT ═══ -->
+<!-- ═══ REGISTER ═══ -->
 <div id="page-register-account" class="page">
   <div class="auth-wrap">
     <div class="auth-card">
@@ -477,14 +488,8 @@
         <div id="reg-account-alert"></div>
         <div class="form-group"><label class="form-label">お名前</label><input id="ra-name" class="form-control" type="text" placeholder="山田 太郎"></div>
         <div class="form-group"><label class="form-label">メールアドレス</label><input id="ra-email" class="form-control" type="email" placeholder="example@email.com"></div>
-        <div class="form-group">
-          <label class="form-label">パスワード</label>
-          <div class="pw-wrap"><input id="ra-pw" class="form-control" type="password" placeholder="••••••••" style="padding-right:50px;"><button class="pw-toggle" type="button" onclick="togglePw('ra-pw',this)">表示</button></div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">パスワード（確認）</label>
-          <div class="pw-wrap"><input id="ra-pw2" class="form-control" type="password" placeholder="••••••••" style="padding-right:50px;"><button class="pw-toggle" type="button" onclick="togglePw('ra-pw2',this)">表示</button></div>
-        </div>
+        <div class="form-group"><label class="form-label">パスワード</label><div class="pw-wrap"><input id="ra-pw" class="form-control" type="password" placeholder="••••••••" style="padding-right:50px;"><button class="pw-toggle" type="button" onclick="togglePw('ra-pw',this)">表示</button></div></div>
+        <div class="form-group"><label class="form-label">パスワード（確認）</label><div class="pw-wrap"><input id="ra-pw2" class="form-control" type="password" placeholder="••••••••" style="padding-right:50px;"><button class="pw-toggle" type="button" onclick="togglePw('ra-pw2',this)">表示</button></div></div>
         <button class="btn-primary" onclick="doRegister()">アカウントを作成</button>
         <hr class="auth-divider">
         <p class="auth-footer">すでにアカウントをお持ちの方は <a class="auth-link" onclick="showPage('page-login')">ログイン</a></p>
@@ -494,67 +499,133 @@
   </div>
 </div>
 
-<!-- ═══ PAGE: NEWS ═══ -->
+<!-- ═══ NEWS ═══ -->
 <div id="page-news" class="page">
   <div class="page-inner">
-    <div class="section-head"><span class="section-head-text">📰 ニュース</span><span class="section-head-line"></span></div>
+    <div class="section-head">
+      <span class="section-head-text" style="display:flex;align-items:center;gap:7px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h10M7 13h6"/></svg>
+        ニュース
+      </span>
+      <span class="section-head-line"></span>
+    </div>
     <div class="news-filters">
       <button class="filter-chip active" onclick="filterNews('all',this)">すべて</button>
-      <button class="filter-chip" onclick="filterNews('global',this)">📢 全体</button>
-      <button class="filter-chip" onclick="filterNews('personal',this)">✉️ 個別</button>
-      <button class="filter-chip" onclick="filterNews('unread',this)">🔴 未読</button>
+      <button class="filter-chip" onclick="filterNews('global',this)">全体</button>
+      <button class="filter-chip" onclick="filterNews('personal',this)">個別</button>
+      <button class="filter-chip" onclick="filterNews('unread',this)">未読</button>
     </div>
     <div id="news-list"><div class="spinner"></div><p class="loading-text">読み込み中</p></div>
   </div>
 </div>
 
-<!-- ═══ PAGE: MY PAGE ═══ -->
+<!-- ═══ MY PAGE ═══ -->
 <div id="page-mypage" class="page">
   <div class="mypage-wrap">
-    <div class="profile-card" id="profile-card">
+
+    <!-- プロフィールカード -->
+    <div class="profile-card">
       <div class="profile-card-z">
-        <div class="profile-name" id="pc-name">—</div>
-        <div class="profile-email" id="pc-email">—</div>
+        <div class="profile-header">
+          <div class="profile-avatar" id="pc-avatar">山</div>
+          <div class="profile-info">
+            <div class="profile-name" id="pc-name">—</div>
+            <div class="profile-email" id="pc-email">—</div>
+          </div>
+          <button class="profile-edit-btn" data-i18n="mp_edit" onclick="switchMyTab('profile-edit', null)">編集</button>
+        </div>
         <div class="profile-stats">
-          <div><div class="ps-num" id="pc-events">0</div><div class="ps-label">参加回数</div></div>
-          <div><div class="ps-num" id="pc-rank">New</div><div class="ps-label">ランク</div></div>
+          <div class="ps-item">
+            <div class="ps-num" id="pc-events">0</div>
+            <div class="ps-label" data-i18n="mp_events">参加回数</div>
+          </div>
+          <div class="ps-item">
+            <div class="ps-num" id="pc-rank">New</div>
+            <div class="ps-label" data-i18n="mp_rank">ランク</div>
+          </div>
+          <div class="ps-item">
+            <div class="ps-num" id="pc-unread">0</div>
+            <div class="ps-label" data-i18n="mp_unread">未読通知</div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="card">
-      <div class="tabs">
-        <button class="tab-btn active" onclick="switchMyTab('history',this)">📋 履歴</button>
-        <button class="tab-btn" onclick="switchMyTab('survey',this)" id="survey-tab-btn">⭐ 調査</button>
-        <button class="tab-btn" onclick="switchMyTab('notifications',this)" id="notif-tab-btn">🔔 通知</button>
-        <button class="tab-btn" onclick="switchMyTab('chat',this)">💬 メッセージ</button>
-        <button class="tab-btn" onclick="switchMyTab('profile-edit',this)">👤 プロフィール</button>
-        <button class="tab-btn tab-logout" onclick="logout()">ログアウト</button>
+
+    <!-- クイックアクセス -->
+    <div class="card" style="padding:18px;">
+      <div class="quick-grid">
+        <!-- 履歴 -->
+        <button class="quick-btn active-tab" id="qbtn-history" onclick="switchMyTab('history',this)">
+          <div class="quick-icon icon-circle-blue">
+            <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/><polyline points="9 12 11 14 15 10"/></svg>
+          </div>
+          <span class="quick-label" data-i18n="mp_history">参加履歴</span>
+        </button>
+        <!-- アンケート -->
+        <button class="quick-btn" id="qbtn-survey" onclick="switchMyTab('survey',this)">
+          <div class="quick-icon icon-circle-amber">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <span class="quick-label" data-i18n="mp_survey">アンケート</span>
+        </button>
+        <!-- 通知 -->
+        <button class="quick-btn" id="qbtn-notifications" onclick="switchMyTab('notifications',this)">
+          <div class="quick-icon icon-circle-violet" style="position:relative;">
+            <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+          </div>
+          <div class="quick-badge" id="notif-quick-badge">0</div>
+          <span class="quick-label" data-i18n="mp_notif">通知</span>
+        </button>
+        <!-- メッセージ -->
+        <button class="quick-btn" id="qbtn-chat" onclick="switchMyTab('chat',this)">
+          <div class="quick-icon icon-circle-pink">
+            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          </div>
+          <div class="quick-badge" id="chat-quick-badge">0</div>
+          <span class="quick-label" data-i18n="mp_chat">メッセージ</span>
+        </button>
       </div>
-      <div id="tab-history" class="tab-pane active"></div>
-      <div id="tab-survey" class="tab-pane"></div>
-      <div id="tab-notifications" class="tab-pane"></div>
-      <div id="tab-chat" class="tab-pane"></div>
-      <div id="tab-profile-edit" class="tab-pane"></div>
+
+      <!-- タブコンテンツ -->
+      <div style="border-top:1px solid var(--bg2);padding-top:16px;margin-top:4px;">
+        <div id="tab-history" class="tab-pane active"></div>
+        <div id="tab-survey" class="tab-pane"></div>
+        <div id="tab-notifications" class="tab-pane"></div>
+        <div id="tab-chat" class="tab-pane"></div>
+        <div id="tab-profile-edit" class="tab-pane"></div>
+      </div>
     </div>
+
+    <!-- ログアウト -->
+    <div class="logout-row">
+      <button class="btn-logout" data-i18n="mp_logout" onclick="logout()">ログアウト</button>
+    </div>
+
   </div>
 </div>
 
-<!-- ═══ PAGE: PHOTOS ═══ -->
+<!-- ═══ PHOTOS ═══ -->
 <div id="page-photos" class="page">
   <div class="photo-page-wrap">
-    <div class="section-head"><span class="section-head-text">📸 フォト</span><span class="section-head-line"></span></div>
+    <div class="section-head">
+      <span class="section-head-text" style="display:flex;align-items:center;gap:7px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        フォト
+      </span>
+      <span class="section-head-line"></span>
+    </div>
     <div id="photo-event-chips" class="event-chips"></div>
     <div id="photo-content"></div>
   </div>
 </div>
 
-<!-- ═══ PAGE: EVENT REGISTER ═══ -->
+<!-- ═══ EVENT REGISTER ═══ -->
 <div id="page-event-reg" class="page">
   <div class="reg-wrap">
-    <button class="btn-back" onclick="goHome()">← 一覧に戻る</button>
+    <button class="btn-back" data-i18n="ev_reg_back" onclick="goHome()">← 一覧に戻る</button>
     <div id="ev-reg-info"></div>
     <div class="card">
-      <div class="auth-title" style="margin-bottom:16px;">参加登録</div>
+      <div class="auth-title" data-i18n="ev_reg_title" style="margin-bottom:16px;">参加登録</div>
       <div id="ev-reg-alert"></div>
       <div id="ev-reg-form">
         <div class="form-group"><label class="form-label">お名前</label><input id="inp-name" class="form-control" type="text" readonly></div>
@@ -570,13 +641,761 @@
 
 <script>
 // ════════════════════════════════════════════════
-// CONFIG
+// i18n — 翻訳テーブル
 // ════════════════════════════════════════════════
+var I18N = {
+  ja:{
+    // ナビ
+    nav_home:'ホーム',nav_news:'ニュース',nav_photo:'フォト',nav_mypage:'マイページ',
+    // ランディング
+    hero_label:'Events',hero_title_sub:'のイベントへようこそ',
+    hero_desc:'参加したいイベントを選んで、簡単にお申し込みいただけます。',
+    btn_login:'ログイン',btn_register:'新規登録',
+    btn_mypage:'マイページ',btn_logout:'ログアウト',
+    event_list:'イベント一覧',loading:'読み込み中',no_events:'現在公開中のイベントはありません',
+    // イベントカード
+    ev_venue:'会場',ev_fee:'参加費',ev_seats:'残席',ev_full:'満席',ev_free:'無料',
+    ev_registered:'✓ 登録済み',ev_attended:'✓ 参加済み',ev_register_btn:'登録 →',ev_login_btn:'ログイン →',
+    // ログイン
+    login_title:'ログイン',label_email:'メールアドレス',label_pw:'パスワード',
+    ph_email:'example@email.com',ph_pw:'••••••••',ph_name:'山田 太郎',
+    btn_pw_show:'表示',btn_pw_hide:'非表示',
+    login_no_account:'アカウントをお持ちでない方は',link_register:'新規登録',link_back:'← 一覧に戻る',
+    // 登録
+    reg_title:'新規登録',label_name:'お名前',label_pw_confirm:'パスワード（確認）',
+    btn_create:'アカウントを作成',reg_has_account:'すでにアカウントをお持ちの方は',
+    // エラー
+    err_invalid_email:'有効なメールアドレスを入力してください',err_no_pw:'パスワードを入力してください',
+    err_pw_short:'パスワードは8文字以上で入力してください',err_pw_mismatch:'パスワードが一致しません',
+    err_no_name:'お名前を入力してください',err_invalid_creds:'メールアドレスまたはパスワードが正しくありません',
+    err_email_exists:'このメールアドレスはすでに登録されています',
+    err_full:'満席のため登録できません。',err_already:'すでに登録済みです。',
+    // ニュース
+    news_title:'ニュース',news_all:'すべて',news_global:'全体',news_personal:'個別',news_unread:'未読',
+    news_empty:'ニュースはありません',news_close:'閉じる',
+    badge_new:'NEW',badge_global:'全体',badge_personal:'個別',badge_personal_notif:'個別通知',
+    // マイページ
+    mp_edit:'編集',mp_events:'参加回数',mp_rank:'ランク',mp_unread:'未読通知',
+    mp_history:'参加履歴',mp_survey:'アンケート',mp_notif:'通知',mp_chat:'メッセージ',
+    mp_no_history:'まだ参加履歴がありません。',mp_attended:'✓ 参加済み',
+    mp_survey_chart:'イベント別満足度',mp_survey_none:'まだアンケートはありません',
+    mp_survey_submit:'送信する',mp_survey_thanks:'回答ありがとうございました！',
+    mp_survey_placeholder:'一言コメント（任意）',
+    mp_notif_none:'個別の通知はありません',
+    mp_chat_empty:'まだメッセージがありません',mp_chat_sub:'運営へのご質問やご連絡はこちらから',
+    mp_chat_send:'送信',mp_chat_placeholder:'メッセージを入力...',
+    mp_chat_operator:'connec+a 運営',
+    mp_profile_title:'プロフィール編集',mp_lang:'表示言語',btn_save:'変更を保存',
+    msg_profile_saved:'プロフィールを更新しました。',
+    mp_logout:'ログアウト',
+    // イベント登録
+    ev_reg_back:'← 一覧に戻る',ev_reg_title:'参加登録',btn_ev_submit:'登録する',
+    ev_reg_submitting:'登録中...',ev_reg_hint:'登録後、QRチケットをメールでお送りします',
+    ev_reg_ok:'登録完了！チケットをメールで送信しました。',ev_reg_back_list:'← 一覧に戻る',
+    pay_paypay_title:'PayPay',pay_paypay_body:'管理者から別途PayPayのご案内をします。',
+    pay_cash_title:'現金',pay_cash_body:'当日受付にて現金でお支払いください。',
+    pay_cash_alert:'当日受付にて現金でお支払いください。',
+    ticket_label:'— QR チケット —',
+    // フォト
+    photo_title:'フォト',photo_upload:'クリックして写真をアップロード',
+    photo_types:'JPG / PNG / WebP（最大10MB）',
+    photo_locked:'参加済みのイベントがないためフォトページを閲覧できません。イベントに参加するとフォトが解放されます。',
+    photo_empty:'まだ写真はありません。最初の1枚をアップロードしてみましょう！',
+    photo_count_suffix:'枚の写真',
+  },
+  en:{
+    nav_home:'Home',nav_news:'News',nav_photo:'Photos',nav_mypage:'My Page',
+    hero_label:'Events',hero_title_sub:' Events',
+    hero_desc:'Browse events and register easily.',
+    btn_login:'Login',btn_register:'Sign Up',
+    btn_mypage:'My Page',btn_logout:'Logout',
+    event_list:'Events',loading:'Loading...',no_events:'No events available',
+    ev_venue:'Venue',ev_fee:'Fee',ev_seats:'Seats',ev_full:'Full',ev_free:'Free',
+    ev_registered:'✓ Registered',ev_attended:'✓ Attended',ev_register_btn:'Register →',ev_login_btn:'Login →',
+    login_title:'Login',label_email:'Email',label_pw:'Password',
+    ph_email:'example@email.com',ph_pw:'••••••••',ph_name:'John Doe',
+    btn_pw_show:'Show',btn_pw_hide:'Hide',
+    login_no_account:"Don't have an account?",link_register:'Sign Up',link_back:'← Back to list',
+    reg_title:'Sign Up',label_name:'Full Name',label_pw_confirm:'Confirm Password',
+    btn_create:'Create Account',reg_has_account:'Already have an account?',
+    err_invalid_email:'Please enter a valid email address',err_no_pw:'Please enter your password',
+    err_pw_short:'Password must be at least 8 characters',err_pw_mismatch:'Passwords do not match',
+    err_no_name:'Please enter your name',err_invalid_creds:'Invalid email or password',
+    err_email_exists:'This email is already registered',
+    err_full:'Sorry, this event is full.',err_already:'You are already registered.',
+    news_title:'News',news_all:'All',news_global:'Global',news_personal:'Personal',news_unread:'Unread',
+    news_empty:'No news available',news_close:'Close',
+    badge_new:'NEW',badge_global:'Global',badge_personal:'Personal',badge_personal_notif:'Personal Notice',
+    mp_edit:'Edit',mp_events:'Events',mp_rank:'Rank',mp_unread:'Unread',
+    mp_history:'History',mp_survey:'Survey',mp_notif:'Notifications',mp_chat:'Messages',
+    mp_no_history:'No attendance history yet.',mp_attended:'✓ Attended',
+    mp_survey_chart:'Satisfaction by Event',mp_survey_none:'No surveys yet',
+    mp_survey_submit:'Submit',mp_survey_thanks:'Thank you for your feedback!',
+    mp_survey_placeholder:'Comment (optional)',
+    mp_notif_none:'No personal notifications',
+    mp_chat_empty:'No messages yet',mp_chat_sub:'Contact the organizer here',
+    mp_chat_send:'Send',mp_chat_placeholder:'Type a message...',
+    mp_chat_operator:'connec+a Staff',
+    mp_profile_title:'Edit Profile',mp_lang:'Language',btn_save:'Save Changes',
+    msg_profile_saved:'Profile updated successfully.',
+    mp_logout:'Logout',
+    ev_reg_back:'← Back to list',ev_reg_title:'Event Registration',btn_ev_submit:'Register',
+    ev_reg_submitting:'Registering...',ev_reg_hint:'A QR ticket will be sent to your email after registration.',
+    ev_reg_ok:'Registration complete! Your ticket has been sent by email.',ev_reg_back_list:'← Back to list',
+    pay_paypay_title:'PayPay',pay_paypay_body:'The organizer will contact you with PayPay payment details.',
+    pay_cash_title:'Cash',pay_cash_body:'Please pay cash at the reception on the day.',
+    pay_cash_alert:'Please pay cash at the reception on the day.',
+    ticket_label:'— QR Ticket —',
+    photo_title:'Photos',photo_upload:'Click to upload photos',
+    photo_types:'JPG / PNG / WebP (max 10MB)',
+    photo_locked:'Photo gallery is available after attending an event.',
+    photo_empty:'No photos yet. Upload the first one!',
+    photo_count_suffix:' photos',
+  },
+  zh:{
+    nav_home:'首页',nav_news:'新闻',nav_photo:'照片',nav_mypage:'我的主页',
+    hero_label:'活动',hero_title_sub:'的活动欢迎您',
+    hero_desc:'浏览活动，轻松报名参加。',
+    btn_login:'登录',btn_register:'注册',
+    btn_mypage:'我的主页',btn_logout:'退出',
+    event_list:'活动列表',loading:'加载中',no_events:'暂无活动',
+    ev_venue:'地点',ev_fee:'费用',ev_seats:'余位',ev_full:'已满',ev_free:'免费',
+    ev_registered:'✓ 已报名',ev_attended:'✓ 已参加',ev_register_btn:'报名 →',ev_login_btn:'登录 →',
+    login_title:'登录',label_email:'电子邮件',label_pw:'密码',
+    ph_email:'example@email.com',ph_pw:'••••••••',ph_name:'张三',
+    btn_pw_show:'显示',btn_pw_hide:'隐藏',
+    login_no_account:'没有账户？',link_register:'注册',link_back:'← 返回列表',
+    reg_title:'注册',label_name:'姓名',label_pw_confirm:'确认密码',
+    btn_create:'创建账户',reg_has_account:'已有账户？',
+    err_invalid_email:'请输入有效的电子邮件地址',err_no_pw:'请输入密码',
+    err_pw_short:'密码至少需要8个字符',err_pw_mismatch:'密码不匹配',
+    err_no_name:'请输入您的姓名',err_invalid_creds:'电子邮件或密码错误',
+    err_email_exists:'该电子邮件已被注册',
+    err_full:'抱歉，该活动已满员。',err_already:'您已报名参加。',
+    news_title:'新闻',news_all:'全部',news_global:'全体',news_personal:'个人',news_unread:'未读',
+    news_empty:'暂无新闻',news_close:'关闭',
+    badge_new:'新',badge_global:'全体',badge_personal:'个人',badge_personal_notif:'个人通知',
+    mp_edit:'编辑',mp_events:'参加次数',mp_rank:'等级',mp_unread:'未读通知',
+    mp_history:'参加记录',mp_survey:'问卷',mp_notif:'通知',mp_chat:'消息',
+    mp_no_history:'暂无参加记录。',mp_attended:'✓ 已参加',
+    mp_survey_chart:'各活动满意度',mp_survey_none:'暂无问卷',
+    mp_survey_submit:'提交',mp_survey_thanks:'感谢您的反馈！',
+    mp_survey_placeholder:'评论（可选）',
+    mp_notif_none:'暂无个人通知',
+    mp_chat_empty:'暂无消息',mp_chat_sub:'在此联系主办方',
+    mp_chat_send:'发送',mp_chat_placeholder:'输入消息...',
+    mp_chat_operator:'connec+a 运营',
+    mp_profile_title:'编辑资料',mp_lang:'语言',btn_save:'保存更改',
+    msg_profile_saved:'资料已更新。',
+    mp_logout:'退出',
+    ev_reg_back:'← 返回列表',ev_reg_title:'活动报名',btn_ev_submit:'报名',
+    ev_reg_submitting:'报名中...',ev_reg_hint:'报名后将发送QR票至您的邮箱。',
+    ev_reg_ok:'报名成功！票已发送至您的邮箱。',ev_reg_back_list:'← 返回列表',
+    pay_paypay_title:'PayPay',pay_paypay_body:'主办方将另行联系您PayPay付款详情。',
+    pay_cash_title:'现金',pay_cash_body:'请于活动当天在前台以现金支付。',
+    pay_cash_alert:'请于活动当天在前台以现金支付。',
+    ticket_label:'— QR 票 —',
+    photo_title:'照片',photo_upload:'点击上传照片',
+    photo_types:'JPG / PNG / WebP（最大10MB）',
+    photo_locked:'参加活动后可访问照片页面。',
+    photo_empty:'暂无照片，快来上传第一张吧！',
+    photo_count_suffix:'张照片',
+  },
+  ko:{
+    nav_home:'홈',nav_news:'뉴스',nav_photo:'사진',nav_mypage:'마이페이지',
+    hero_label:'이벤트',hero_title_sub:' 이벤트에 오신 것을 환영합니다',
+    hero_desc:'참가하고 싶은 이벤트를 선택하여 간편하게 신청하세요.',
+    btn_login:'로그인',btn_register:'회원가입',
+    btn_mypage:'마이페이지',btn_logout:'로그아웃',
+    event_list:'이벤트 목록',loading:'로딩 중',no_events:'현재 공개 중인 이벤트가 없습니다',
+    ev_venue:'장소',ev_fee:'참가비',ev_seats:'남은 자리',ev_full:'마감',ev_free:'무료',
+    ev_registered:'✓ 등록 완료',ev_attended:'✓ 참가 완료',ev_register_btn:'신청 →',ev_login_btn:'로그인 →',
+    login_title:'로그인',label_email:'이메일',label_pw:'비밀번호',
+    ph_email:'example@email.com',ph_pw:'••••••••',ph_name:'홍길동',
+    btn_pw_show:'표시',btn_pw_hide:'숨기기',
+    login_no_account:'계정이 없으신가요?',link_register:'회원가입',link_back:'← 목록으로',
+    reg_title:'회원가입',label_name:'이름',label_pw_confirm:'비밀번호 확인',
+    btn_create:'계정 만들기',reg_has_account:'이미 계정이 있으신가요?',
+    err_invalid_email:'유효한 이메일 주소를 입력해주세요',err_no_pw:'비밀번호를 입력해주세요',
+    err_pw_short:'비밀번호는 8자 이상이어야 합니다',err_pw_mismatch:'비밀번호가 일치하지 않습니다',
+    err_no_name:'이름을 입력해주세요',err_invalid_creds:'이메일 또는 비밀번호가 올바르지 않습니다',
+    err_email_exists:'이미 등록된 이메일입니다',
+    err_full:'죄송합니다, 이벤트가 마감되었습니다.',err_already:'이미 등록하셨습니다.',
+    news_title:'뉴스',news_all:'전체',news_global:'전체',news_personal:'개인',news_unread:'미확인',
+    news_empty:'뉴스가 없습니다',news_close:'닫기',
+    badge_new:'NEW',badge_global:'전체',badge_personal:'개인',badge_personal_notif:'개인 알림',
+    mp_edit:'편집',mp_events:'참가 횟수',mp_rank:'랭크',mp_unread:'미확인 알림',
+    mp_history:'참가 기록',mp_survey:'설문',mp_notif:'알림',mp_chat:'메시지',
+    mp_no_history:'아직 참가 기록이 없습니다.',mp_attended:'✓ 참가 완료',
+    mp_survey_chart:'이벤트별 만족도',mp_survey_none:'아직 설문이 없습니다',
+    mp_survey_submit:'제출',mp_survey_thanks:'피드백 감사합니다!',
+    mp_survey_placeholder:'한마디 (선택)',
+    mp_notif_none:'개인 알림이 없습니다',
+    mp_chat_empty:'아직 메시지가 없습니다',mp_chat_sub:'운영자에게 문의하세요',
+    mp_chat_send:'보내기',mp_chat_placeholder:'메시지 입력...',
+    mp_chat_operator:'connec+a 운영',
+    mp_profile_title:'프로필 편집',mp_lang:'언어',btn_save:'변경 저장',
+    msg_profile_saved:'프로필이 업데이트되었습니다.',
+    mp_logout:'로그아웃',
+    ev_reg_back:'← 목록으로',ev_reg_title:'이벤트 신청',btn_ev_submit:'신청하기',
+    ev_reg_submitting:'신청 중...',ev_reg_hint:'신청 후 QR 티켓을 이메일로 보내드립니다.',
+    ev_reg_ok:'신청 완료! 티켓이 이메일로 전송되었습니다.',ev_reg_back_list:'← 목록으로',
+    pay_paypay_title:'PayPay',pay_paypay_body:'운영자가 PayPay 결제 안내를 드릴 예정입니다.',
+    pay_cash_title:'현금',pay_cash_body:'당일 접수처에서 현금으로 결제해주세요.',
+    pay_cash_alert:'당일 접수처에서 현금으로 결제해주세요.',
+    ticket_label:'— QR 티켓 —',
+    photo_title:'사진',photo_upload:'클릭하여 사진 업로드',
+    photo_types:'JPG / PNG / WebP (최대 10MB)',
+    photo_locked:'이벤트 참가 후 사진 페이지를 이용할 수 있습니다.',
+    photo_empty:'아직 사진이 없습니다. 첫 번째 사진을 올려보세요!',
+    photo_count_suffix:'장',
+  },
+  es:{
+    nav_home:'Inicio',nav_news:'Noticias',nav_photo:'Fotos',nav_mypage:'Mi Página',
+    hero_label:'Eventos',hero_title_sub:' Bienvenido/a',
+    hero_desc:'Explora eventos y regístrate fácilmente.',
+    btn_login:'Iniciar sesión',btn_register:'Registrarse',
+    btn_mypage:'Mi Página',btn_logout:'Cerrar sesión',
+    event_list:'Lista de eventos',loading:'Cargando...',no_events:'No hay eventos disponibles',
+    ev_venue:'Lugar',ev_fee:'Tarifa',ev_seats:'Lugares',ev_full:'Lleno',ev_free:'Gratis',
+    ev_registered:'✓ Registrado',ev_attended:'✓ Asistido',ev_register_btn:'Registrar →',ev_login_btn:'Iniciar sesión →',
+    login_title:'Iniciar sesión',label_email:'Correo electrónico',label_pw:'Contraseña',
+    ph_email:'ejemplo@correo.com',ph_pw:'••••••••',ph_name:'Juan García',
+    btn_pw_show:'Mostrar',btn_pw_hide:'Ocultar',
+    login_no_account:'¿No tienes cuenta?',link_register:'Regístrate',link_back:'← Volver a la lista',
+    reg_title:'Registrarse',label_name:'Nombre completo',label_pw_confirm:'Confirmar contraseña',
+    btn_create:'Crear cuenta',reg_has_account:'¿Ya tienes cuenta?',
+    err_invalid_email:'Por favor ingresa un correo válido',err_no_pw:'Por favor ingresa tu contraseña',
+    err_pw_short:'La contraseña debe tener al menos 8 caracteres',err_pw_mismatch:'Las contraseñas no coinciden',
+    err_no_name:'Por favor ingresa tu nombre',err_invalid_creds:'Correo o contraseña incorrectos',
+    err_email_exists:'Este correo ya está registrado',
+    err_full:'Lo sentimos, el evento está lleno.',err_already:'Ya estás registrado/a.',
+    news_title:'Noticias',news_all:'Todo',news_global:'General',news_personal:'Personal',news_unread:'No leído',
+    news_empty:'No hay noticias',news_close:'Cerrar',
+    badge_new:'NUEVO',badge_global:'General',badge_personal:'Personal',badge_personal_notif:'Aviso Personal',
+    mp_edit:'Editar',mp_events:'Eventos',mp_rank:'Rango',mp_unread:'No leídos',
+    mp_history:'Historial',mp_survey:'Encuesta',mp_notif:'Notificaciones',mp_chat:'Mensajes',
+    mp_no_history:'Sin historial de asistencia aún.',mp_attended:'✓ Asistido',
+    mp_survey_chart:'Satisfacción por evento',mp_survey_none:'Sin encuestas aún',
+    mp_survey_submit:'Enviar',mp_survey_thanks:'¡Gracias por tu opinión!',
+    mp_survey_placeholder:'Comentario (opcional)',
+    mp_notif_none:'Sin notificaciones personales',
+    mp_chat_empty:'Sin mensajes aún',mp_chat_sub:'Contacta al organizador aquí',
+    mp_chat_send:'Enviar',mp_chat_placeholder:'Escribe un mensaje...',
+    mp_chat_operator:'connec+a Staff',
+    mp_profile_title:'Editar Perfil',mp_lang:'Idioma',btn_save:'Guardar cambios',
+    msg_profile_saved:'Perfil actualizado correctamente.',
+    mp_logout:'Cerrar sesión',
+    ev_reg_back:'← Volver a la lista',ev_reg_title:'Registro de evento',btn_ev_submit:'Registrarse',
+    ev_reg_submitting:'Registrando...',ev_reg_hint:'Se enviará un ticket QR a tu correo tras el registro.',
+    ev_reg_ok:'¡Registro completo! Tu ticket ha sido enviado por correo.',ev_reg_back_list:'← Volver a la lista',
+    pay_paypay_title:'PayPay',pay_paypay_body:'El organizador te enviará los detalles de pago por PayPay.',
+    pay_cash_title:'Efectivo',pay_cash_body:'Paga en efectivo en recepción el día del evento.',
+    pay_cash_alert:'Paga en efectivo en recepción el día del evento.',
+    ticket_label:'— Ticket QR —',
+    photo_title:'Fotos',photo_upload:'Haz clic para subir fotos',
+    photo_types:'JPG / PNG / WebP (máx 10MB)',
+    photo_locked:'La galería de fotos está disponible tras asistir a un evento.',
+    photo_empty:'Sin fotos aún. ¡Sube la primera!',
+    photo_count_suffix:' fotos',
+  },
+  fr:{
+    nav_home:'Accueil',nav_news:'Actualités',nav_photo:'Photos',nav_mypage:'Mon Profil',
+    hero_label:'Événements',hero_title_sub:' Bienvenue',
+    hero_desc:'Parcourez les événements et inscrivez-vous facilement.',
+    btn_login:'Connexion',btn_register:"S'inscrire",
+    btn_mypage:'Mon Profil',btn_logout:'Déconnexion',
+    event_list:'Liste des événements',loading:'Chargement...',no_events:'Aucun événement disponible',
+    ev_venue:'Lieu',ev_fee:'Tarif',ev_seats:'Places',ev_full:'Complet',ev_free:'Gratuit',
+    ev_registered:'✓ Inscrit',ev_attended:'✓ Participé',ev_register_btn:"S'inscrire →",ev_login_btn:'Connexion →',
+    login_title:'Connexion',label_email:'Email',label_pw:'Mot de passe',
+    ph_email:'exemple@email.com',ph_pw:'••••••••',ph_name:'Jean Dupont',
+    btn_pw_show:'Afficher',btn_pw_hide:'Masquer',
+    login_no_account:'Pas encore de compte ?',link_register:"S'inscrire",link_back:'← Retour à la liste',
+    reg_title:"S'inscrire",label_name:'Nom complet',label_pw_confirm:'Confirmer le mot de passe',
+    btn_create:'Créer un compte',reg_has_account:'Vous avez déjà un compte ?',
+    err_invalid_email:'Veuillez entrer un email valide',err_no_pw:'Veuillez entrer votre mot de passe',
+    err_pw_short:'Le mot de passe doit contenir au moins 8 caractères',err_pw_mismatch:'Les mots de passe ne correspondent pas',
+    err_no_name:'Veuillez entrer votre nom',err_invalid_creds:'Email ou mot de passe incorrect',
+    err_email_exists:'Cet email est déjà enregistré',
+    err_full:"Désolé, l'événement est complet.",err_already:'Vous êtes déjà inscrit(e).',
+    news_title:'Actualités',news_all:'Tout',news_global:'Global',news_personal:'Personnel',news_unread:'Non lu',
+    news_empty:'Aucune actualité',news_close:'Fermer',
+    badge_new:'NOUVEAU',badge_global:'Global',badge_personal:'Personnel',badge_personal_notif:'Avis Personnel',
+    mp_edit:'Modifier',mp_events:'Événements',mp_rank:'Rang',mp_unread:'Non lus',
+    mp_history:'Historique',mp_survey:'Sondage',mp_notif:'Notifications',mp_chat:'Messages',
+    mp_no_history:"Pas encore d'historique.",mp_attended:'✓ Participé',
+    mp_survey_chart:'Satisfaction par événement',mp_survey_none:'Aucun sondage',
+    mp_survey_submit:'Soumettre',mp_survey_thanks:'Merci pour votre avis !',
+    mp_survey_placeholder:'Commentaire (optionnel)',
+    mp_notif_none:'Aucune notification personnelle',
+    mp_chat_empty:'Aucun message',mp_chat_sub:"Contactez l'organisateur ici",
+    mp_chat_send:'Envoyer',mp_chat_placeholder:'Tapez un message...',
+    mp_chat_operator:'connec+a Staff',
+    mp_profile_title:'Modifier le profil',mp_lang:'Langue',btn_save:'Enregistrer',
+    msg_profile_saved:'Profil mis à jour.',
+    mp_logout:'Déconnexion',
+    ev_reg_back:'← Retour à la liste',ev_reg_title:"Inscription à l'événement",btn_ev_submit:"S'inscrire",
+    ev_reg_submitting:'Inscription...',ev_reg_hint:'Un ticket QR sera envoyé par email après inscription.',
+    ev_reg_ok:'Inscription réussie ! Votre ticket a été envoyé.',ev_reg_back_list:'← Retour à la liste',
+    pay_paypay_title:'PayPay',pay_paypay_body:"L'organisateur vous contactera pour les détails PayPay.",
+    pay_cash_title:'Espèces',pay_cash_body:"Payez en espèces à l'accueil le jour de l'événement.",
+    pay_cash_alert:"Payez en espèces à l'accueil le jour de l'événement.",
+    ticket_label:'— Ticket QR —',
+    photo_title:'Photos',photo_upload:'Cliquez pour uploader des photos',
+    photo_types:'JPG / PNG / WebP (max 10Mo)',
+    photo_locked:"La galerie est disponible après avoir participé à un événement.",
+    photo_empty:'Pas encore de photos. Uploadez la première !',
+    photo_count_suffix:' photos',
+  },
+  pt:{
+    nav_home:'Início',nav_news:'Notícias',nav_photo:'Fotos',nav_mypage:'Minha Página',
+    hero_label:'Eventos',hero_title_sub:' Bem-vindo(a)',
+    hero_desc:'Explore eventos e registre-se facilmente.',
+    btn_login:'Entrar',btn_register:'Cadastrar',
+    btn_mypage:'Minha Página',btn_logout:'Sair',
+    event_list:'Lista de eventos',loading:'Carregando...',no_events:'Nenhum evento disponível',
+    ev_venue:'Local',ev_fee:'Taxa',ev_seats:'Vagas',ev_full:'Esgotado',ev_free:'Grátis',
+    ev_registered:'✓ Inscrito',ev_attended:'✓ Participou',ev_register_btn:'Inscrever →',ev_login_btn:'Entrar →',
+    login_title:'Entrar',label_email:'E-mail',label_pw:'Senha',
+    ph_email:'exemplo@email.com',ph_pw:'••••••••',ph_name:'João Silva',
+    btn_pw_show:'Mostrar',btn_pw_hide:'Ocultar',
+    login_no_account:'Não tem conta?',link_register:'Cadastrar',link_back:'← Voltar à lista',
+    reg_title:'Cadastrar',label_name:'Nome completo',label_pw_confirm:'Confirmar senha',
+    btn_create:'Criar conta',reg_has_account:'Já tem conta?',
+    err_invalid_email:'Por favor, insira um e-mail válido',err_no_pw:'Por favor, insira sua senha',
+    err_pw_short:'A senha deve ter pelo menos 8 caracteres',err_pw_mismatch:'As senhas não coincidem',
+    err_no_name:'Por favor, insira seu nome',err_invalid_creds:'E-mail ou senha incorretos',
+    err_email_exists:'Este e-mail já está cadastrado',
+    err_full:'Desculpe, este evento está esgotado.',err_already:'Você já está inscrito(a).',
+    news_title:'Notícias',news_all:'Tudo',news_global:'Geral',news_personal:'Pessoal',news_unread:'Não lido',
+    news_empty:'Sem notícias',news_close:'Fechar',
+    badge_new:'NOVO',badge_global:'Geral',badge_personal:'Pessoal',badge_personal_notif:'Aviso Pessoal',
+    mp_edit:'Editar',mp_events:'Eventos',mp_rank:'Rank',mp_unread:'Não lidos',
+    mp_history:'Histórico',mp_survey:'Pesquisa',mp_notif:'Notificações',mp_chat:'Mensagens',
+    mp_no_history:'Sem histórico de participação.',mp_attended:'✓ Participou',
+    mp_survey_chart:'Satisfação por evento',mp_survey_none:'Sem pesquisas',
+    mp_survey_submit:'Enviar',mp_survey_thanks:'Obrigado pelo seu feedback!',
+    mp_survey_placeholder:'Comentário (opcional)',
+    mp_notif_none:'Sem notificações pessoais',
+    mp_chat_empty:'Sem mensagens ainda',mp_chat_sub:'Entre em contato com o organizador aqui',
+    mp_chat_send:'Enviar',mp_chat_placeholder:'Digite uma mensagem...',
+    mp_chat_operator:'connec+a Staff',
+    mp_profile_title:'Editar Perfil',mp_lang:'Idioma',btn_save:'Salvar alterações',
+    msg_profile_saved:'Perfil atualizado com sucesso.',
+    mp_logout:'Sair',
+    ev_reg_back:'← Voltar à lista',ev_reg_title:'Inscrição no evento',btn_ev_submit:'Inscrever',
+    ev_reg_submitting:'Inscrevendo...',ev_reg_hint:'Um ticket QR será enviado ao seu e-mail após a inscrição.',
+    ev_reg_ok:'Inscrição concluída! Seu ticket foi enviado por e-mail.',ev_reg_back_list:'← Voltar à lista',
+    pay_paypay_title:'PayPay',pay_paypay_body:'O organizador entrará em contato com detalhes de pagamento PayPay.',
+    pay_cash_title:'Dinheiro',pay_cash_body:'Pague em dinheiro na recepção no dia do evento.',
+    pay_cash_alert:'Pague em dinheiro na recepção no dia do evento.',
+    ticket_label:'— Ticket QR —',
+    photo_title:'Fotos',photo_upload:'Clique para fazer upload de fotos',
+    photo_types:'JPG / PNG / WebP (máx 10MB)',
+    photo_locked:'A galeria de fotos estará disponível após participar de um evento.',
+    photo_empty:'Sem fotos ainda. Faça upload da primeira!',
+    photo_count_suffix:' fotos',
+  },
+  id:{
+    nav_home:'Beranda',nav_news:'Berita',nav_photo:'Foto',nav_mypage:'Halaman Saya',
+    hero_label:'Acara',hero_title_sub:' Selamat Datang',
+    hero_desc:'Temukan acara dan daftar dengan mudah.',
+    btn_login:'Masuk',btn_register:'Daftar',
+    btn_mypage:'Halaman Saya',btn_logout:'Keluar',
+    event_list:'Daftar Acara',loading:'Memuat...',no_events:'Tidak ada acara tersedia',
+    ev_venue:'Tempat',ev_fee:'Biaya',ev_seats:'Kursi',ev_full:'Penuh',ev_free:'Gratis',
+    ev_registered:'✓ Terdaftar',ev_attended:'✓ Hadir',ev_register_btn:'Daftar →',ev_login_btn:'Masuk →',
+    login_title:'Masuk',label_email:'Email',label_pw:'Kata Sandi',
+    ph_email:'contoh@email.com',ph_pw:'••••••••',ph_name:'Budi Santoso',
+    btn_pw_show:'Tampilkan',btn_pw_hide:'Sembunyikan',
+    login_no_account:'Belum punya akun?',link_register:'Daftar',link_back:'← Kembali ke daftar',
+    reg_title:'Daftar',label_name:'Nama Lengkap',label_pw_confirm:'Konfirmasi Kata Sandi',
+    btn_create:'Buat Akun',reg_has_account:'Sudah punya akun?',
+    err_invalid_email:'Masukkan alamat email yang valid',err_no_pw:'Masukkan kata sandi Anda',
+    err_pw_short:'Kata sandi minimal 8 karakter',err_pw_mismatch:'Kata sandi tidak cocok',
+    err_no_name:'Masukkan nama Anda',err_invalid_creds:'Email atau kata sandi salah',
+    err_email_exists:'Email ini sudah terdaftar',
+    err_full:'Maaf, acara ini sudah penuh.',err_already:'Anda sudah terdaftar.',
+    news_title:'Berita',news_all:'Semua',news_global:'Umum',news_personal:'Pribadi',news_unread:'Belum dibaca',
+    news_empty:'Tidak ada berita',news_close:'Tutup',
+    badge_new:'BARU',badge_global:'Umum',badge_personal:'Pribadi',badge_personal_notif:'Notifikasi Pribadi',
+    mp_edit:'Edit',mp_events:'Acara',mp_rank:'Peringkat',mp_unread:'Belum dibaca',
+    mp_history:'Riwayat',mp_survey:'Survei',mp_notif:'Notifikasi',mp_chat:'Pesan',
+    mp_no_history:'Belum ada riwayat kehadiran.',mp_attended:'✓ Hadir',
+    mp_survey_chart:'Kepuasan per Acara',mp_survey_none:'Belum ada survei',
+    mp_survey_submit:'Kirim',mp_survey_thanks:'Terima kasih atas masukan Anda!',
+    mp_survey_placeholder:'Komentar (opsional)',
+    mp_notif_none:'Tidak ada notifikasi pribadi',
+    mp_chat_empty:'Belum ada pesan',mp_chat_sub:'Hubungi penyelenggara di sini',
+    mp_chat_send:'Kirim',mp_chat_placeholder:'Ketik pesan...',
+    mp_chat_operator:'connec+a Staff',
+    mp_profile_title:'Edit Profil',mp_lang:'Bahasa',btn_save:'Simpan Perubahan',
+    msg_profile_saved:'Profil berhasil diperbarui.',
+    mp_logout:'Keluar',
+    ev_reg_back:'← Kembali ke daftar',ev_reg_title:'Pendaftaran Acara',btn_ev_submit:'Daftar',
+    ev_reg_submitting:'Mendaftar...',ev_reg_hint:'Tiket QR akan dikirim ke email Anda setelah pendaftaran.',
+    ev_reg_ok:'Pendaftaran berhasil! Tiket telah dikirim ke email Anda.',ev_reg_back_list:'← Kembali ke daftar',
+    pay_paypay_title:'PayPay',pay_paypay_body:'Penyelenggara akan menghubungi Anda mengenai pembayaran PayPay.',
+    pay_cash_title:'Tunai',pay_cash_body:'Bayar tunai di resepsi pada hari acara.',
+    pay_cash_alert:'Bayar tunai di resepsi pada hari acara.',
+    ticket_label:'— Tiket QR —',
+    photo_title:'Foto',photo_upload:'Klik untuk unggah foto',
+    photo_types:'JPG / PNG / WebP (maks 10MB)',
+    photo_locked:'Galeri foto tersedia setelah menghadiri acara.',
+    photo_empty:'Belum ada foto. Unggah yang pertama!',
+    photo_count_suffix:' foto',
+  },
+  th:{
+    nav_home:'หน้าแรก',nav_news:'ข่าวสาร',nav_photo:'รูปภาพ',nav_mypage:'หน้าของฉัน',
+    hero_label:'อีเวนต์',hero_title_sub:' ยินดีต้อนรับ',
+    hero_desc:'เลือกอีเวนต์และลงทะเบียนได้อย่างง่ายดาย',
+    btn_login:'เข้าสู่ระบบ',btn_register:'สมัครสมาชิก',
+    btn_mypage:'หน้าของฉัน',btn_logout:'ออกจากระบบ',
+    event_list:'รายการอีเวนต์',loading:'กำลังโหลด...',no_events:'ไม่มีอีเวนต์ในขณะนี้',
+    ev_venue:'สถานที่',ev_fee:'ค่าธรรมเนียม',ev_seats:'ที่นั่งคงเหลือ',ev_full:'เต็มแล้ว',ev_free:'ฟรี',
+    ev_registered:'✓ ลงทะเบียนแล้ว',ev_attended:'✓ เข้าร่วมแล้ว',ev_register_btn:'ลงทะเบียน →',ev_login_btn:'เข้าสู่ระบบ →',
+    login_title:'เข้าสู่ระบบ',label_email:'อีเมล',label_pw:'รหัสผ่าน',
+    ph_email:'ตัวอย่าง@email.com',ph_pw:'••••••••',ph_name:'สมชาย ใจดี',
+    btn_pw_show:'แสดง',btn_pw_hide:'ซ่อน',
+    login_no_account:'ยังไม่มีบัญชี?',link_register:'สมัครสมาชิก',link_back:'← กลับไปยังรายการ',
+    reg_title:'สมัครสมาชิก',label_name:'ชื่อ-นามสกุล',label_pw_confirm:'ยืนยันรหัสผ่าน',
+    btn_create:'สร้างบัญชี',reg_has_account:'มีบัญชีแล้ว?',
+    err_invalid_email:'กรุณาใส่อีเมลที่ถูกต้อง',err_no_pw:'กรุณาใส่รหัสผ่าน',
+    err_pw_short:'รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร',err_pw_mismatch:'รหัสผ่านไม่ตรงกัน',
+    err_no_name:'กรุณาใส่ชื่อของคุณ',err_invalid_creds:'อีเมลหรือรหัสผ่านไม่ถูกต้อง',
+    err_email_exists:'อีเมลนี้ถูกลงทะเบียนแล้ว',
+    err_full:'ขออภัย อีเวนต์นี้เต็มแล้ว',err_already:'คุณลงทะเบียนแล้ว',
+    news_title:'ข่าวสาร',news_all:'ทั้งหมด',news_global:'ทั่วไป',news_personal:'ส่วนตัว',news_unread:'ยังไม่อ่าน',
+    news_empty:'ไม่มีข่าวสาร',news_close:'ปิด',
+    badge_new:'ใหม่',badge_global:'ทั่วไป',badge_personal:'ส่วนตัว',badge_personal_notif:'แจ้งเตือนส่วนตัว',
+    mp_edit:'แก้ไข',mp_events:'อีเวนต์',mp_rank:'อันดับ',mp_unread:'ยังไม่อ่าน',
+    mp_history:'ประวัติ',mp_survey:'แบบสอบถาม',mp_notif:'การแจ้งเตือน',mp_chat:'ข้อความ',
+    mp_no_history:'ยังไม่มีประวัติการเข้าร่วม',mp_attended:'✓ เข้าร่วมแล้ว',
+    mp_survey_chart:'ความพึงพอใจต่ออีเวนต์',mp_survey_none:'ยังไม่มีแบบสอบถาม',
+    mp_survey_submit:'ส่ง',mp_survey_thanks:'ขอบคุณสำหรับความคิดเห็น!',
+    mp_survey_placeholder:'ความคิดเห็น (ไม่บังคับ)',
+    mp_notif_none:'ไม่มีการแจ้งเตือนส่วนตัว',
+    mp_chat_empty:'ยังไม่มีข้อความ',mp_chat_sub:'ติดต่อผู้จัดงานที่นี่',
+    mp_chat_send:'ส่ง',mp_chat_placeholder:'พิมพ์ข้อความ...',
+    mp_chat_operator:'connec+a Staff',
+    mp_profile_title:'แก้ไขโปรไฟล์',mp_lang:'ภาษา',btn_save:'บันทึกการเปลี่ยนแปลง',
+    msg_profile_saved:'อัปเดตโปรไฟล์เรียบร้อยแล้ว',
+    mp_logout:'ออกจากระบบ',
+    ev_reg_back:'← กลับไปยังรายการ',ev_reg_title:'ลงทะเบียนอีเวนต์',btn_ev_submit:'ลงทะเบียน',
+    ev_reg_submitting:'กำลังลงทะเบียน...',ev_reg_hint:'ตั๋ว QR จะถูกส่งไปยังอีเมลของคุณหลังลงทะเบียน',
+    ev_reg_ok:'ลงทะเบียนสำเร็จ! ตั๋วถูกส่งไปยังอีเมลของคุณแล้ว',ev_reg_back_list:'← กลับไปยังรายการ',
+    pay_paypay_title:'PayPay',pay_paypay_body:'ผู้จัดงานจะติดต่อคุณเกี่ยวกับรายละเอียดการชำระเงิน PayPay',
+    pay_cash_title:'เงินสด',pay_cash_body:'ชำระเงินสดที่เคาน์เตอร์ในวันงาน',
+    pay_cash_alert:'ชำระเงินสดที่เคาน์เตอร์ในวันงาน',
+    ticket_label:'— ตั๋ว QR —',
+    photo_title:'รูปภาพ',photo_upload:'คลิกเพื่ออัปโหลดรูปภาพ',
+    photo_types:'JPG / PNG / WebP (สูงสุด 10MB)',
+    photo_locked:'แกลเลอรีรูปภาพจะเปิดให้ใช้งานได้หลังจากเข้าร่วมอีเวนต์',
+    photo_empty:'ยังไม่มีรูปภาพ อัปโหลดรูปแรกของคุณ!',
+    photo_count_suffix:' รูป',
+  },
+  vi:{
+    nav_home:'Trang chủ',nav_news:'Tin tức',nav_photo:'Ảnh',nav_mypage:'Trang của tôi',
+    hero_label:'Sự kiện',hero_title_sub:' Chào mừng bạn',
+    hero_desc:'Khám phá sự kiện và đăng ký dễ dàng.',
+    btn_login:'Đăng nhập',btn_register:'Đăng ký',
+    btn_mypage:'Trang của tôi',btn_logout:'Đăng xuất',
+    event_list:'Danh sách sự kiện',loading:'Đang tải...',no_events:'Không có sự kiện nào',
+    ev_venue:'Địa điểm',ev_fee:'Phí',ev_seats:'Còn chỗ',ev_full:'Hết chỗ',ev_free:'Miễn phí',
+    ev_registered:'✓ Đã đăng ký',ev_attended:'✓ Đã tham dự',ev_register_btn:'Đăng ký →',ev_login_btn:'Đăng nhập →',
+    login_title:'Đăng nhập',label_email:'Email',label_pw:'Mật khẩu',
+    ph_email:'vi_du@email.com',ph_pw:'••••••••',ph_name:'Nguyễn Văn A',
+    btn_pw_show:'Hiện',btn_pw_hide:'Ẩn',
+    login_no_account:'Chưa có tài khoản?',link_register:'Đăng ký',link_back:'← Quay lại danh sách',
+    reg_title:'Đăng ký',label_name:'Họ và tên',label_pw_confirm:'Xác nhận mật khẩu',
+    btn_create:'Tạo tài khoản',reg_has_account:'Đã có tài khoản?',
+    err_invalid_email:'Vui lòng nhập email hợp lệ',err_no_pw:'Vui lòng nhập mật khẩu',
+    err_pw_short:'Mật khẩu phải có ít nhất 8 ký tự',err_pw_mismatch:'Mật khẩu không khớp',
+    err_no_name:'Vui lòng nhập tên của bạn',err_invalid_creds:'Email hoặc mật khẩu không đúng',
+    err_email_exists:'Email này đã được đăng ký',
+    err_full:'Xin lỗi, sự kiện này đã hết chỗ.',err_already:'Bạn đã đăng ký rồi.',
+    news_title:'Tin tức',news_all:'Tất cả',news_global:'Chung',news_personal:'Cá nhân',news_unread:'Chưa đọc',
+    news_empty:'Không có tin tức',news_close:'Đóng',
+    badge_new:'MỚI',badge_global:'Chung',badge_personal:'Cá nhân',badge_personal_notif:'Thông báo Cá nhân',
+    mp_edit:'Sửa',mp_events:'Sự kiện',mp_rank:'Xếp hạng',mp_unread:'Chưa đọc',
+    mp_history:'Lịch sử',mp_survey:'Khảo sát',mp_notif:'Thông báo',mp_chat:'Tin nhắn',
+    mp_no_history:'Chưa có lịch sử tham dự.',mp_attended:'✓ Đã tham dự',
+    mp_survey_chart:'Mức độ hài lòng theo sự kiện',mp_survey_none:'Chưa có khảo sát',
+    mp_survey_submit:'Gửi',mp_survey_thanks:'Cảm ơn phản hồi của bạn!',
+    mp_survey_placeholder:'Nhận xét (tùy chọn)',
+    mp_notif_none:'Không có thông báo cá nhân',
+    mp_chat_empty:'Chưa có tin nhắn',mp_chat_sub:'Liên hệ ban tổ chức tại đây',
+    mp_chat_send:'Gửi',mp_chat_placeholder:'Nhập tin nhắn...',
+    mp_chat_operator:'connec+a Staff',
+    mp_profile_title:'Chỉnh sửa hồ sơ',mp_lang:'Ngôn ngữ',btn_save:'Lưu thay đổi',
+    msg_profile_saved:'Hồ sơ đã được cập nhật.',
+    mp_logout:'Đăng xuất',
+    ev_reg_back:'← Quay lại danh sách',ev_reg_title:'Đăng ký sự kiện',btn_ev_submit:'Đăng ký',
+    ev_reg_submitting:'Đang đăng ký...',ev_reg_hint:'Vé QR sẽ được gửi đến email của bạn sau khi đăng ký.',
+    ev_reg_ok:'Đăng ký thành công! Vé đã được gửi đến email của bạn.',ev_reg_back_list:'← Quay lại danh sách',
+    pay_paypay_title:'PayPay',pay_paypay_body:'Ban tổ chức sẽ liên hệ để hướng dẫn thanh toán PayPay.',
+    pay_cash_title:'Tiền mặt',pay_cash_body:'Thanh toán tiền mặt tại quầy lễ tân vào ngày sự kiện.',
+    pay_cash_alert:'Thanh toán tiền mặt tại quầy lễ tân vào ngày sự kiện.',
+    ticket_label:'— Vé QR —',
+    photo_title:'Ảnh',photo_upload:'Nhấp để tải ảnh lên',
+    photo_types:'JPG / PNG / WebP (tối đa 10MB)',
+    photo_locked:'Thư viện ảnh sẽ mở sau khi bạn tham dự sự kiện.',
+    photo_empty:'Chưa có ảnh. Hãy tải lên ảnh đầu tiên!',
+    photo_count_suffix:' ảnh',
+  },
+  ar:{
+    nav_home:'الرئيسية',nav_news:'الأخبار',nav_photo:'الصور',nav_mypage:'صفحتي',
+    hero_label:'الفعاليات',hero_title_sub:' مرحباً بك',
+    hero_desc:'تصفح الفعاليات وسجّل بسهولة.',
+    btn_login:'تسجيل الدخول',btn_register:'إنشاء حساب',
+    btn_mypage:'صفحتي',btn_logout:'تسجيل الخروج',
+    event_list:'قائمة الفعاليات',loading:'جارٍ التحميل...',no_events:'لا توجد فعاليات متاحة',
+    ev_venue:'المكان',ev_fee:'الرسوم',ev_seats:'المقاعد',ev_full:'مكتمل',ev_free:'مجاني',
+    ev_registered:'✓ مسجّل',ev_attended:'✓ حضر',ev_register_btn:'تسجيل →',ev_login_btn:'دخول →',
+    login_title:'تسجيل الدخول',label_email:'البريد الإلكتروني',label_pw:'كلمة المرور',
+    ph_email:'مثال@email.com',ph_pw:'••••••••',ph_name:'محمد أحمد',
+    btn_pw_show:'إظهار',btn_pw_hide:'إخفاء',
+    login_no_account:'ليس لديك حساب؟',link_register:'إنشاء حساب',link_back:'← العودة للقائمة',
+    reg_title:'إنشاء حساب',label_name:'الاسم الكامل',label_pw_confirm:'تأكيد كلمة المرور',
+    btn_create:'إنشاء الحساب',reg_has_account:'لديك حساب بالفعل؟',
+    err_invalid_email:'يرجى إدخال بريد إلكتروني صحيح',err_no_pw:'يرجى إدخال كلمة المرور',
+    err_pw_short:'يجب أن تتكون كلمة المرور من 8 أحرف على الأقل',err_pw_mismatch:'كلمتا المرور غير متطابقتين',
+    err_no_name:'يرجى إدخال اسمك',err_invalid_creds:'البريد الإلكتروني أو كلمة المرور غير صحيحة',
+    err_email_exists:'هذا البريد الإلكتروني مسجّل بالفعل',
+    err_full:'عذراً، الفعالية مكتملة.',err_already:'أنت مسجّل بالفعل.',
+    news_title:'الأخبار',news_all:'الكل',news_global:'عام',news_personal:'شخصي',news_unread:'غير مقروء',
+    news_empty:'لا توجد أخبار',news_close:'إغلاق',
+    badge_new:'جديد',badge_global:'عام',badge_personal:'شخصي',badge_personal_notif:'إشعار شخصي',
+    mp_edit:'تعديل',mp_events:'الفعاليات',mp_rank:'المستوى',mp_unread:'غير مقروء',
+    mp_history:'السجل',mp_survey:'الاستبيان',mp_notif:'الإشعارات',mp_chat:'الرسائل',
+    mp_no_history:'لا يوجد سجل حضور بعد.',mp_attended:'✓ حضر',
+    mp_survey_chart:'الرضا حسب الفعالية',mp_survey_none:'لا توجد استبيانات بعد',
+    mp_survey_submit:'إرسال',mp_survey_thanks:'شكراً على تقييمك!',
+    mp_survey_placeholder:'تعليق (اختياري)',
+    mp_notif_none:'لا توجد إشعارات شخصية',
+    mp_chat_empty:'لا توجد رسائل بعد',mp_chat_sub:'تواصل مع المنظمين هنا',
+    mp_chat_send:'إرسال',mp_chat_placeholder:'اكتب رسالة...',
+    mp_chat_operator:'connec+a Staff',
+    mp_profile_title:'تعديل الملف الشخصي',mp_lang:'اللغة',btn_save:'حفظ التغييرات',
+    msg_profile_saved:'تم تحديث الملف الشخصي.',
+    mp_logout:'تسجيل الخروج',
+    ev_reg_back:'← العودة للقائمة',ev_reg_title:'تسجيل في الفعالية',btn_ev_submit:'تسجيل',
+    ev_reg_submitting:'جارٍ التسجيل...',ev_reg_hint:'سيتم إرسال تذكرة QR إلى بريدك الإلكتروني بعد التسجيل.',
+    ev_reg_ok:'اكتمل التسجيل! تم إرسال التذكرة إلى بريدك الإلكتروني.',ev_reg_back_list:'← العودة للقائمة',
+    pay_paypay_title:'PayPay',pay_paypay_body:'سيتواصل معك المنظم بتفاصيل الدفع عبر PayPay.',
+    pay_cash_title:'نقداً',pay_cash_body:'يرجى الدفع نقداً عند الاستقبال يوم الفعالية.',
+    pay_cash_alert:'يرجى الدفع نقداً عند الاستقبال يوم الفعالية.',
+    ticket_label:'— تذكرة QR —',
+    photo_title:'الصور',photo_upload:'انقر لرفع الصور',
+    photo_types:'JPG / PNG / WebP (الحد الأقصى 10MB)',
+    photo_locked:'معرض الصور متاح بعد حضور فعالية.',
+    photo_empty:'لا توجد صور بعد. ارفع أولى صورك!',
+    photo_count_suffix:' صور',
+  },
+  hi:{
+    nav_home:'होम',nav_news:'समाचार',nav_photo:'फ़ोटो',nav_mypage:'मेरा पेज',
+    hero_label:'इवेंट',hero_title_sub:' में आपका स्वागत है',
+    hero_desc:'इवेंट देखें और आसानी से पंजीकरण करें।',
+    btn_login:'लॉगिन',btn_register:'साइन अप',
+    btn_mypage:'मेरा पेज',btn_logout:'लॉगआउट',
+    event_list:'इवेंट सूची',loading:'लोड हो रहा है...',no_events:'कोई इवेंट उपलब्ध नहीं',
+    ev_venue:'स्थान',ev_fee:'शुल्क',ev_seats:'सीटें',ev_full:'भरा हुआ',ev_free:'निःशुल्क',
+    ev_registered:'✓ पंजीकृत',ev_attended:'✓ उपस्थित',ev_register_btn:'पंजीकरण →',ev_login_btn:'लॉगिन →',
+    login_title:'लॉगिन',label_email:'ईमेल',label_pw:'पासवर्ड',
+    ph_email:'उदाहरण@email.com',ph_pw:'••••••••',ph_name:'राम कुमार',
+    btn_pw_show:'दिखाएं',btn_pw_hide:'छुपाएं',
+    login_no_account:'खाता नहीं है?',link_register:'साइन अप',link_back:'← सूची पर वापस',
+    reg_title:'साइन अप',label_name:'पूरा नाम',label_pw_confirm:'पासवर्ड की पुष्टि करें',
+    btn_create:'खाता बनाएं',reg_has_account:'पहले से खाता है?',
+    err_invalid_email:'कृपया मान्य ईमेल दर्ज करें',err_no_pw:'कृपया पासवर्ड दर्ज करें',
+    err_pw_short:'पासवर्ड कम से कम 8 अक्षर का होना चाहिए',err_pw_mismatch:'पासवर्ड मेल नहीं खाते',
+    err_no_name:'कृपया अपना नाम दर्ज करें',err_invalid_creds:'ईमेल या पासवर्ड गलत है',
+    err_email_exists:'यह ईमेल पहले से पंजीकृत है',
+    err_full:'क्षमा करें, यह इवेंट भर चुका है।',err_already:'आप पहले से पंजीकृत हैं।',
+    news_title:'समाचार',news_all:'सभी',news_global:'सार्वजनिक',news_personal:'व्यक्तिगत',news_unread:'अपठित',
+    news_empty:'कोई समाचार नहीं',news_close:'बंद करें',
+    badge_new:'नया',badge_global:'सार्वजनिक',badge_personal:'व्यक्तिगत',badge_personal_notif:'व्यक्तिगत सूचना',
+    mp_edit:'संपादित करें',mp_events:'इवेंट',mp_rank:'रैंक',mp_unread:'अपठित',
+    mp_history:'इतिहास',mp_survey:'सर्वेक्षण',mp_notif:'सूचनाएं',mp_chat:'संदेश',
+    mp_no_history:'अभी तक कोई उपस्थिति इतिहास नहीं।',mp_attended:'✓ उपस्थित',
+    mp_survey_chart:'इवेंट अनुसार संतुष्टि',mp_survey_none:'अभी कोई सर्वेक्षण नहीं',
+    mp_survey_submit:'सबमिट करें',mp_survey_thanks:'आपकी प्रतिक्रिया के लिए धन्यवाद!',
+    mp_survey_placeholder:'टिप्पणी (वैकल्पिक)',
+    mp_notif_none:'कोई व्यक्तिगत सूचना नहीं',
+    mp_chat_empty:'अभी कोई संदेश नहीं',mp_chat_sub:'यहाँ आयोजक से संपर्क करें',
+    mp_chat_send:'भेजें',mp_chat_placeholder:'संदेश लिखें...',
+    mp_chat_operator:'connec+a Staff',
+    mp_profile_title:'प्रोफ़ाइल संपादित करें',mp_lang:'भाषा',btn_save:'परिवर्तन सहेजें',
+    msg_profile_saved:'प्रोफ़ाइल सफलतापूर्वक अपडेट हुई।',
+    mp_logout:'लॉगआउट',
+    ev_reg_back:'← सूची पर वापस',ev_reg_title:'इवेंट पंजीकरण',btn_ev_submit:'पंजीकरण करें',
+    ev_reg_submitting:'पंजीकरण हो रहा है...',ev_reg_hint:'पंजीकरण के बाद QR टिकट आपके ईमेल पर भेजा जाएगा।',
+    ev_reg_ok:'पंजीकरण पूरा! टिकट आपके ईमेल पर भेज दिया गया है।',ev_reg_back_list:'← सूची पर वापस',
+    pay_paypay_title:'PayPay',pay_paypay_body:'आयोजक PayPay भुगतान विवरण के साथ संपर्क करेगा।',
+    pay_cash_title:'नकद',pay_cash_body:'इवेंट के दिन रिसेप्शन पर नकद भुगतान करें।',
+    pay_cash_alert:'इवेंट के दिन रिसेप्शन पर नकद भुगतान करें।',
+    ticket_label:'— QR टिकट —',
+    photo_title:'फ़ोटो',photo_upload:'फ़ोटो अपलोड करने के लिए क्लिक करें',
+    photo_types:'JPG / PNG / WebP (अधिकतम 10MB)',
+    photo_locked:'इवेंट में भाग लेने के बाद फ़ोटो गैलरी उपलब्ध होगी।',
+    photo_empty:'अभी कोई फ़ोटो नहीं। पहली फ़ोटो अपलोड करें!',
+    photo_count_suffix:' फ़ोटो',
+  },
+  de:{
+    nav_home:'Startseite',nav_news:'Neuigkeiten',nav_photo:'Fotos',nav_mypage:'Mein Bereich',
+    hero_label:'Veranstaltungen',hero_title_sub:' Willkommen',
+    hero_desc:'Veranstaltungen entdecken und einfach anmelden.',
+    btn_login:'Anmelden',btn_register:'Registrieren',
+    btn_mypage:'Mein Bereich',btn_logout:'Abmelden',
+    event_list:'Veranstaltungsliste',loading:'Laden...',no_events:'Keine Veranstaltungen verfügbar',
+    ev_venue:'Ort',ev_fee:'Gebühr',ev_seats:'Plätze',ev_full:'Ausgebucht',ev_free:'Kostenlos',
+    ev_registered:'✓ Angemeldet',ev_attended:'✓ Teilgenommen',ev_register_btn:'Anmelden →',ev_login_btn:'Anmelden →',
+    login_title:'Anmelden',label_email:'E-Mail',label_pw:'Passwort',
+    ph_email:'beispiel@email.com',ph_pw:'••••••••',ph_name:'Max Mustermann',
+    btn_pw_show:'Anzeigen',btn_pw_hide:'Verbergen',
+    login_no_account:'Noch kein Konto?',link_register:'Registrieren',link_back:'← Zurück zur Liste',
+    reg_title:'Registrieren',label_name:'Vollständiger Name',label_pw_confirm:'Passwort bestätigen',
+    btn_create:'Konto erstellen',reg_has_account:'Bereits ein Konto?',
+    err_invalid_email:'Bitte gültige E-Mail-Adresse eingeben',err_no_pw:'Bitte Passwort eingeben',
+    err_pw_short:'Passwort muss mindestens 8 Zeichen haben',err_pw_mismatch:'Passwörter stimmen nicht überein',
+    err_no_name:'Bitte Namen eingeben',err_invalid_creds:'E-Mail oder Passwort falsch',
+    err_email_exists:'Diese E-Mail ist bereits registriert',
+    err_full:'Entschuldigung, die Veranstaltung ist ausgebucht.',err_already:'Sie sind bereits angemeldet.',
+    news_title:'Neuigkeiten',news_all:'Alle',news_global:'Allgemein',news_personal:'Persönlich',news_unread:'Ungelesen',
+    news_empty:'Keine Neuigkeiten',news_close:'Schließen',
+    badge_new:'NEU',badge_global:'Allgemein',badge_personal:'Persönlich',badge_personal_notif:'Persönliche Benachrichtigung',
+    mp_edit:'Bearbeiten',mp_events:'Veranstaltungen',mp_rank:'Rang',mp_unread:'Ungelesen',
+    mp_history:'Verlauf',mp_survey:'Umfrage',mp_notif:'Benachrichtigungen',mp_chat:'Nachrichten',
+    mp_no_history:'Noch kein Teilnahmeverlauf.',mp_attended:'✓ Teilgenommen',
+    mp_survey_chart:'Zufriedenheit je Veranstaltung',mp_survey_none:'Noch keine Umfragen',
+    mp_survey_submit:'Absenden',mp_survey_thanks:'Vielen Dank für Ihr Feedback!',
+    mp_survey_placeholder:'Kommentar (optional)',
+    mp_notif_none:'Keine persönlichen Benachrichtigungen',
+    mp_chat_empty:'Noch keine Nachrichten',mp_chat_sub:'Kontaktieren Sie den Veranstalter hier',
+    mp_chat_send:'Senden',mp_chat_placeholder:'Nachricht eingeben...',
+    mp_chat_operator:'connec+a Team',
+    mp_profile_title:'Profil bearbeiten',mp_lang:'Sprache',btn_save:'Änderungen speichern',
+    msg_profile_saved:'Profil erfolgreich aktualisiert.',
+    mp_logout:'Abmelden',
+    ev_reg_back:'← Zurück zur Liste',ev_reg_title:'Veranstaltungsanmeldung',btn_ev_submit:'Anmelden',
+    ev_reg_submitting:'Wird angemeldet...',ev_reg_hint:'Nach der Anmeldung erhalten Sie ein QR-Ticket per E-Mail.',
+    ev_reg_ok:'Anmeldung abgeschlossen! Ihr Ticket wurde per E-Mail gesendet.',ev_reg_back_list:'← Zurück zur Liste',
+    pay_paypay_title:'PayPay',pay_paypay_body:'Der Veranstalter wird Sie bezüglich der PayPay-Zahlung kontaktieren.',
+    pay_cash_title:'Bar',pay_cash_body:'Bitte zahlen Sie am Veranstaltungstag bar an der Rezeption.',
+    pay_cash_alert:'Bitte zahlen Sie am Veranstaltungstag bar an der Rezeption.',
+    ticket_label:'— QR-Ticket —',
+    photo_title:'Fotos',photo_upload:'Klicken um Fotos hochzuladen',
+    photo_types:'JPG / PNG / WebP (max. 10MB)',
+    photo_locked:'Die Fotogalerie ist nach der Teilnahme an einer Veranstaltung verfügbar.',
+    photo_empty:'Noch keine Fotos. Laden Sie das erste hoch!',
+    photo_count_suffix:' Fotos',
+  },
+  it:{
+    nav_home:'Home',nav_news:'Notizie',nav_photo:'Foto',nav_mypage:'Il Mio Profilo',
+    hero_label:'Eventi',hero_title_sub:' Benvenuto/a',
+    hero_desc:'Esplora eventi e registrati facilmente.',
+    btn_login:'Accedi',btn_register:'Registrati',
+    btn_mypage:'Il Mio Profilo',btn_logout:'Esci',
+    event_list:'Lista eventi',loading:'Caricamento...',no_events:'Nessun evento disponibile',
+    ev_venue:'Luogo',ev_fee:'Tariffa',ev_seats:'Posti',ev_full:'Esaurito',ev_free:'Gratuito',
+    ev_registered:'✓ Iscritto',ev_attended:'✓ Partecipato',ev_register_btn:'Iscriviti →',ev_login_btn:'Accedi →',
+    login_title:'Accedi',label_email:'Email',label_pw:'Password',
+    ph_email:'esempio@email.com',ph_pw:'••••••••',ph_name:'Mario Rossi',
+    btn_pw_show:'Mostra',btn_pw_hide:'Nascondi',
+    login_no_account:'Non hai un account?',link_register:'Registrati',link_back:'← Torna alla lista',
+    reg_title:'Registrati',label_name:'Nome completo',label_pw_confirm:'Conferma password',
+    btn_create:'Crea account',reg_has_account:'Hai già un account?',
+    err_invalid_email:'Inserisci un indirizzo email valido',err_no_pw:'Inserisci la password',
+    err_pw_short:'La password deve avere almeno 8 caratteri',err_pw_mismatch:'Le password non corrispondono',
+    err_no_name:'Inserisci il tuo nome',err_invalid_creds:'Email o password non corretti',
+    err_email_exists:'Questa email è già registrata',
+    err_full:"Spiacente, l'evento è esaurito.",err_already:'Sei già iscritto/a.',
+    news_title:'Notizie',news_all:'Tutti',news_global:'Generale',news_personal:'Personale',news_unread:'Non letto',
+    news_empty:'Nessuna notizia',news_close:'Chiudi',
+    badge_new:'NUOVO',badge_global:'Generale',badge_personal:'Personale',badge_personal_notif:'Avviso Personale',
+    mp_edit:'Modifica',mp_events:'Eventi',mp_rank:'Rango',mp_unread:'Non letti',
+    mp_history:'Cronologia',mp_survey:'Sondaggio',mp_notif:'Notifiche',mp_chat:'Messaggi',
+    mp_no_history:'Nessuna cronologia di partecipazione.',mp_attended:'✓ Partecipato',
+    mp_survey_chart:'Soddisfazione per evento',mp_survey_none:'Nessun sondaggio',
+    mp_survey_submit:'Invia',mp_survey_thanks:'Grazie per il tuo feedback!',
+    mp_survey_placeholder:'Commento (opzionale)',
+    mp_notif_none:'Nessuna notifica personale',
+    mp_chat_empty:'Nessun messaggio',mp_chat_sub:"Contatta l'organizzatore qui",
+    mp_chat_send:'Invia',mp_chat_placeholder:'Scrivi un messaggio...',
+    mp_chat_operator:'connec+a Staff',
+    mp_profile_title:'Modifica Profilo',mp_lang:'Lingua',btn_save:'Salva modifiche',
+    msg_profile_saved:'Profilo aggiornato con successo.',
+    mp_logout:'Esci',
+    ev_reg_back:'← Torna alla lista',ev_reg_title:"Iscrizione all'evento",btn_ev_submit:'Iscriviti',
+    ev_reg_submitting:'Iscrizione in corso...',ev_reg_hint:"Un ticket QR verrà inviato alla tua email dopo l'iscrizione.",
+    ev_reg_ok:"Iscrizione completata! Il ticket è stato inviato alla tua email.",ev_reg_back_list:'← Torna alla lista',
+    pay_paypay_title:'PayPay',pay_paypay_body:"L'organizzatore ti contatterà con i dettagli di pagamento PayPay.",
+    pay_cash_title:'Contanti',pay_cash_body:"Paga in contanti alla reception il giorno dell'evento.",
+    pay_cash_alert:"Paga in contanti alla reception il giorno dell'evento.",
+    ticket_label:'— Ticket QR —',
+    photo_title:'Foto',photo_upload:'Clicca per caricare foto',
+    photo_types:'JPG / PNG / WebP (max 10MB)',
+    photo_locked:'La galleria foto è disponibile dopo aver partecipato a un evento.',
+    photo_empty:'Nessuna foto ancora. Carica la prima!',
+    photo_count_suffix:' foto',
+  },
+  ru:{
+    nav_home:'Главная',nav_news:'Новости',nav_photo:'Фото',nav_mypage:'Мой профиль',
+    hero_label:'Мероприятия',hero_title_sub:' Добро пожаловать',
+    hero_desc:'Просматривайте мероприятия и регистрируйтесь легко.',
+    btn_login:'Войти',btn_register:'Зарегистрироваться',
+    btn_mypage:'Мой профиль',btn_logout:'Выйти',
+    event_list:'Список мероприятий',loading:'Загрузка...',no_events:'Нет доступных мероприятий',
+    ev_venue:'Место',ev_fee:'Взнос',ev_seats:'Места',ev_full:'Мест нет',ev_free:'Бесплатно',
+    ev_registered:'✓ Зарегистрирован',ev_attended:'✓ Посетил',ev_register_btn:'Зарегистрироваться →',ev_login_btn:'Войти →',
+    login_title:'Войти',label_email:'Email',label_pw:'Пароль',
+    ph_email:'пример@email.com',ph_pw:'••••••••',ph_name:'Иван Иванов',
+    btn_pw_show:'Показать',btn_pw_hide:'Скрыть',
+    login_no_account:'Нет аккаунта?',link_register:'Зарегистрироваться',link_back:'← Назад к списку',
+    reg_title:'Регистрация',label_name:'Полное имя',label_pw_confirm:'Подтвердите пароль',
+    btn_create:'Создать аккаунт',reg_has_account:'Уже есть аккаунт?',
+    err_invalid_email:'Пожалуйста, введите корректный email',err_no_pw:'Пожалуйста, введите пароль',
+    err_pw_short:'Пароль должен содержать не менее 8 символов',err_pw_mismatch:'Пароли не совпадают',
+    err_no_name:'Пожалуйста, введите ваше имя',err_invalid_creds:'Неверный email или пароль',
+    err_email_exists:'Этот email уже зарегистрирован',
+    err_full:'К сожалению, мест больше нет.',err_already:'Вы уже зарегистрированы.',
+    news_title:'Новости',news_all:'Все',news_global:'Общее',news_personal:'Личное',news_unread:'Непрочитанное',
+    news_empty:'Нет новостей',news_close:'Закрыть',
+    badge_new:'НОВОЕ',badge_global:'Общее',badge_personal:'Личное',badge_personal_notif:'Личное уведомление',
+    mp_edit:'Редактировать',mp_events:'Мероприятия',mp_rank:'Ранг',mp_unread:'Непрочитанное',
+    mp_history:'История',mp_survey:'Опрос',mp_notif:'Уведомления',mp_chat:'Сообщения',
+    mp_no_history:'Нет истории посещений.',mp_attended:'✓ Посетил',
+    mp_survey_chart:'Удовлетворённость по мероприятию',mp_survey_none:'Нет опросов',
+    mp_survey_submit:'Отправить',mp_survey_thanks:'Спасибо за ваш отзыв!',
+    mp_survey_placeholder:'Комментарий (необязательно)',
+    mp_notif_none:'Нет личных уведомлений',
+    mp_chat_empty:'Нет сообщений',mp_chat_sub:'Свяжитесь с организатором здесь',
+    mp_chat_send:'Отправить',mp_chat_placeholder:'Введите сообщение...',
+    mp_chat_operator:'connec+a Staff',
+    mp_profile_title:'Редактировать профиль',mp_lang:'Язык',btn_save:'Сохранить изменения',
+    msg_profile_saved:'Профиль успешно обновлён.',
+    mp_logout:'Выйти',
+    ev_reg_back:'← Назад к списку',ev_reg_title:'Регистрация на мероприятие',btn_ev_submit:'Зарегистрироваться',
+    ev_reg_submitting:'Регистрация...',ev_reg_hint:'QR-билет будет отправлен на ваш email после регистрации.',
+    ev_reg_ok:'Регистрация завершена! Билет отправлен на ваш email.',ev_reg_back_list:'← Назад к списку',
+    pay_paypay_title:'PayPay',pay_paypay_body:'Организатор свяжется с вами для PayPay оплаты.',
+    pay_cash_title:'Наличные',pay_cash_body:'Пожалуйста, оплатите наличными на стойке регистрации в день мероприятия.',
+    pay_cash_alert:'Пожалуйста, оплатите наличными на стойке регистрации в день мероприятия.',
+    ticket_label:'— QR-билет —',
+    photo_title:'Фото',photo_upload:'Нажмите, чтобы загрузить фото',
+    photo_types:'JPG / PNG / WebP (макс. 10MB)',
+    photo_locked:'Фотогалерея доступна после посещения мероприятия.',
+    photo_empty:'Фото пока нет. Загрузите первое!',
+    photo_count_suffix:' фото',
+  },
+};
+
+var RTL_LANGS = ['ar'];
+var currentLang = localStorage.getItem('lang') || 'ja';
+
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbw94iJOYloTfXOeOONgwyP3MlTXOBolUdSCFO57NyfYDr-0ISYMTLwntsQxinj5c8CsFA/exec';
 
-// ════════════════════════════════════════════════
-// API helper
-// ════════════════════════════════════════════════
 async function api(action, params) {
   params = params || {};
   const res = await fetch(GAS_URL, {
@@ -590,14 +1409,9 @@ async function api(action, params) {
 }
 function esc(s){ return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-// ════════════════════════════════════════════════
-// LOCAL STORAGE stubs for News / Chat / Photos
-// (GAS functions not yet deployed → use localStorage)
-// ════════════════════════════════════════════════
 function lsGet(k){ try{ return JSON.parse(localStorage.getItem(k)||'null'); }catch(e){ return null; } }
 function lsSet(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
 
-// News helpers
 function getNewsItems(participantId){
   const all = lsGet('connecplus_news') || [];
   return all.filter(n => !n.userId || n.userId === participantId);
@@ -611,7 +1425,6 @@ function isNewsRead(id){
   return read.includes(id);
 }
 
-// Chat helpers
 function getChatMessages(participantId){
   const all = lsGet('connecplus_chat') || [];
   return all.filter(m => m.senderId === participantId || m.receiverId === participantId);
@@ -620,51 +1433,142 @@ function sendChatMessage(participantId, senderName, text){
   const all = lsGet('connecplus_chat') || [];
   const msg = {
     id: Date.now()+'_'+Math.random().toString(36).slice(2,6),
-    senderId: participantId,
-    receiverId: 'ADMIN',
-    senderName, text,
-    createdAt: new Date().toISOString(),
-    isRead: false
+    senderId: participantId, receiverId: 'ADMIN', senderName, text,
+    createdAt: new Date().toISOString(), isRead: false
   };
-  all.push(msg);
-  lsSet('connecplus_chat', all);
-  return msg;
+  all.push(msg); lsSet('connecplus_chat', all); return msg;
 }
 
-// Photo helpers (base64 stored)
-function getPhotos(eventId){
-  return (lsGet('connecplus_photos') || []).filter(p => p.eventId === eventId);
-}
+function getPhotos(eventId){ return (lsGet('connecplus_photos') || []).filter(p => p.eventId === eventId); }
 function addPhoto(eventId, name, dataUrl){
   const all = lsGet('connecplus_photos') || [];
   all.push({ id: Date.now(), eventId, name, url: dataUrl, uploadedAt: new Date().toISOString() });
   lsSet('connecplus_photos', all);
 }
-function deletePhoto(id){
-  const all = (lsGet('connecplus_photos') || []).filter(p => p.id !== id);
-  lsSet('connecplus_photos', all);
-}
 
-// Seed demo news if empty
 (function seedDemoNews(){
   if(lsGet('connecplus_news')) return;
   lsSet('connecplus_news', [
-    { id:'news1', title:'🌸 春のイベント開催のお知らせ', body:'来月、新しいconnec+aイベントを開催します。ぜひご参加ください！', type:'global', userId:null, createdAt: new Date(Date.now()-86400000*2).toISOString() },
-    { id:'news2', title:'⚠️ 会場変更のお知らせ', body:'次回イベントの会場が変更になりました。新しい会場は「東京カルチャーセンター」となります。ご不便をおかけしますが、よろしくお願いいたします。', type:'global', userId:null, createdAt: new Date(Date.now()-86400000*5).toISOString() },
-    { id:'news3', title:'📸 フォトギャラリー公開中', body:'先日開催したイベントのお写真をフォトページにアップロードしました。ぜひご覧ください。', type:'global', userId:null, createdAt: new Date(Date.now()-86400000*10).toISOString() },
+    { id:'news1', title:'春のイベント開催のお知らせ', body:'来月、新しいconnec+aイベントを開催します。ぜひご参加ください！', type:'global', userId:null, createdAt: new Date(Date.now()-86400000*2).toISOString() },
+    { id:'news2', title:'会場変更のお知らせ', body:'次回イベントの会場が変更になりました。新しい会場は「東京カルチャーセンター」となります。', type:'global', userId:null, createdAt: new Date(Date.now()-86400000*5).toISOString() },
+    { id:'news3', title:'フォトギャラリー公開中', body:'先日開催したイベントのお写真をフォトページにアップロードしました。', type:'global', userId:null, createdAt: new Date(Date.now()-86400000*10).toISOString() },
   ]);
 })();
 
-// ════════════════════════════════════════════════
-// i18n (simplified – ja/en keys)
-// ════════════════════════════════════════════════
-let currentLang = localStorage.getItem('lang') || 'ja';
-function setLang(l){ currentLang=l; localStorage.setItem('lang',l); document.getElementById('lang-sel').value=l; }
-document.getElementById('lang-sel').value = currentLang;
+// RTL対応言語
+// 翻訳ヘルパー
+function t(key){ try { return (I18N[currentLang]||I18N['ja'])[key] || I18N['ja'][key] || key || ''; } catch(e){ return key||''; } }
 
-// ════════════════════════════════════════════════
-// State
-// ════════════════════════════════════════════════
+
+function setLang(l){
+  currentLang = l;
+  localStorage.setItem('lang', l);
+  document.getElementById('lang-sel').value = l;
+  // RTL切り替え
+  document.documentElement.dir = RTL_LANGS.includes(l) ? 'rtl' : 'ltr';
+  document.documentElement.lang = l;
+  // 静的UIを更新
+  applyI18n();
+}
+
+function applyI18n(){
+  // data-i18n 属性の自動適用
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    const translated = t(key);
+    if(translated) el.textContent = translated;
+  });
+
+  const $ = id => document.getElementById(id);
+  // ナビ
+  const bnavSpans = document.querySelectorAll('.bnav-item span');
+  const bnavKeys = ['nav_home','nav_news','nav_photo','nav_mypage'];
+  bnavSpans.forEach((s,i) => { if(bnavKeys[i]) s.textContent = t(bnavKeys[i]); });
+  // ランディング
+  const heroSub = document.querySelector('.hero-title span');
+  if(heroSub) heroSub.textContent = t('hero_title_sub');
+  const heroDesc = document.querySelector('.hero-desc');
+  if(heroDesc) heroDesc.textContent = t('hero_desc');
+  const btnLogin = document.querySelector('#guest-cta .btn-cta-primary');
+  if(btnLogin) btnLogin.textContent = t('btn_login');
+  const btnReg = document.querySelector('#guest-cta .btn-cta-outline');
+  if(btnReg) btnReg.textContent = t('btn_register');
+  const ubMypage = document.querySelector('.user-bar-right .btn-ev-violet');
+  if(ubMypage) ubMypage.textContent = t('btn_mypage');
+  const ubLogout = document.querySelector('.user-bar-right .btn-ev-outline');
+  if(ubLogout) ubLogout.textContent = t('btn_logout');
+  const evListHead = document.querySelector('#page-landing .section-head-text');
+  if(evListHead) evListHead.textContent = t('event_list');
+  // ログインページ
+  const loginTitle = document.querySelector('#page-login .auth-title');
+  if(loginTitle) loginTitle.textContent = t('login_title');
+  document.querySelectorAll('#page-login .form-label').forEach((l,i) => {
+    l.textContent = [t('label_email'), t('label_pw')][i] ?? l.textContent;
+  });
+  const loginEmail = $('login-email'); if(loginEmail) loginEmail.placeholder = t('ph_email');
+  const loginPw = $('login-pw'); if(loginPw) loginPw.placeholder = t('ph_pw');
+  const loginBtn = document.querySelector('#page-login .btn-primary');
+  if(loginBtn && loginBtn.textContent !== '...') loginBtn.textContent = t('btn_login');
+  const loginPwToggle = document.querySelector('#page-login .pw-toggle');
+  if(loginPwToggle) loginPwToggle.textContent = $('login-pw')?.type==='text' ? t('btn_pw_hide') : t('btn_pw_show');
+  const loginFooter1 = document.querySelector('#page-login .auth-footer:nth-of-type(1)');
+  if(loginFooter1) loginFooter1.innerHTML = t('login_no_account')+' <a class="auth-link" onclick="showPage(\'page-register-account\')">'+t('link_register')+'</a>';
+  const loginFooter2 = document.querySelector('#page-login .auth-footer:nth-of-type(2)');
+  if(loginFooter2) loginFooter2.innerHTML = '<a class="auth-link" onclick="showPage(\'page-landing\')">'+t('link_back')+'</a>';
+  // 登録ページ
+  const regTitle = document.querySelector('#page-register-account .auth-title');
+  if(regTitle) regTitle.textContent = t('reg_title');
+  document.querySelectorAll('#page-register-account .form-label').forEach((l,i) => {
+    l.textContent = [t('label_name'), t('label_email'), t('label_pw'), t('label_pw_confirm')][i] ?? l.textContent;
+  });
+  const raName = $('ra-name'); if(raName) raName.placeholder = t('ph_name');
+  const raEmail = $('ra-email'); if(raEmail) raEmail.placeholder = t('ph_email');
+  const regBtn = document.querySelector('#page-register-account .btn-primary');
+  if(regBtn && regBtn.textContent !== '...') regBtn.textContent = t('btn_create');
+  const regFooter1 = document.querySelector('#page-register-account .auth-footer:nth-of-type(1)');
+  if(regFooter1) regFooter1.innerHTML = t('reg_has_account')+' <a class="auth-link" onclick="showPage(\'page-login\')">'+t('btn_login')+'</a>';
+  const regFooter2 = document.querySelector('#page-register-account .auth-footer:nth-of-type(2)');
+  if(regFooter2) regFooter2.innerHTML = '<a class="auth-link" onclick="showPage(\'page-landing\')">'+t('link_back')+'</a>';
+  // ニュースフィルター
+  const newsFilters = document.querySelectorAll('.filter-chip');
+  const newsKeys = ['news_all','news_global','news_personal','news_unread'];
+  newsFilters.forEach((b,i) => { if(newsKeys[i]) b.textContent = t(newsKeys[i]); });
+  // マイページ固定テキスト
+  const editBtn = document.querySelector('.profile-edit-btn');
+  if(editBtn) editBtn.textContent = t('mp_edit');
+  document.querySelectorAll('.ps-label').forEach((l,i) => {
+    l.textContent = [t('mp_events'), t('mp_rank'), t('mp_unread')][i] ?? l.textContent;
+  });
+  const qLabels = document.querySelectorAll('.quick-label');
+  const qKeys = ['mp_history','mp_survey','mp_notif','mp_chat'];
+  qLabels.forEach((l,i) => { if(qKeys[i]) l.textContent = t(qKeys[i]); });
+  const logoutBtn = document.querySelector('.btn-logout');
+  if(logoutBtn) logoutBtn.textContent = t('mp_logout');
+  // イベント登録ページ固定
+  const evRegBack = document.querySelector('#page-event-reg .btn-back');
+  if(evRegBack) evRegBack.textContent = t('ev_reg_back');
+  const evRegTitle = document.querySelector('#page-event-reg .auth-title');
+  if(evRegTitle) evRegTitle.textContent = t('ev_reg_title');
+  document.querySelectorAll('#page-event-reg .form-label').forEach((l,i) => {
+    l.textContent = [t('label_name'), t('label_email')][i] ?? l.textContent;
+  });
+  const evSubmit = $('btn-ev-submit');
+  if(evSubmit && evSubmit.textContent !== t('ev_reg_submitting')) evSubmit.textContent = t('btn_ev_submit');
+  const evHint = document.querySelector('#ev-reg-form > p');
+  if(evHint) evHint.textContent = t('ev_reg_hint');
+  // フォトページ
+  const photoHead = document.querySelector('#page-photos .section-head-text');
+  if(photoHead) photoHead.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg> `+t('photo_title');
+  // ニュースページ見出し
+  const newsHead = document.querySelector('#page-news .section-head-text');
+  if(newsHead) newsHead.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h10M7 13h6"/></svg> `+t('news_title');
+  // モーダルの閉じるボタン
+  document.querySelectorAll('.modal-close').forEach(b => b.textContent = t('news_close'));
+  // イベントリスト再描画（翻訳が必要なテキスト含むため）
+  const evList = $('event-list');
+  if(evList && !evList.querySelector('.spinner')) loadEvents();
+}
+
 let currentUser = null, currentEvent = null, currentEventIdx = 0, myRegistrations = [];
 const EV_BTN  = ['btn-ev-rose','btn-ev-violet','btn-ev-amber','btn-ev-sky'];
 const REG_BTN = ['btn-season-rose','btn-season-violet','btn-season-amber','btn-season-sky'];
@@ -679,27 +1583,16 @@ let chartInstances = {};
 let newsFilter = 'all';
 let activePhotoEventId = null;
 
-// ════════════════════════════════════════════════
-// Page system
-// ════════════════════════════════════════════════
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo({top:0,behavior:'smooth'});
-  // update bottom nav
   const map = {'page-landing':'bnav-home','page-news':'bnav-news','page-photos':'bnav-photo','page-mypage':'bnav-mypage'};
   document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('active'));
   if(map[id]) document.getElementById(map[id])?.classList.add('active');
 }
+function goHome(){ showPage('page-landing'); loadEvents(); }
 
-function goHome(){
-  showPage('page-landing');
-  loadEvents();
-}
-
-// ════════════════════════════════════════════════
-// Header / Bottom nav
-// ════════════════════════════════════════════════
 function updateHeader(user){
   if(user){
     document.getElementById('avatar-btn').style.display='flex';
@@ -718,31 +1611,28 @@ function updateHeader(user){
   }
 }
 
-// ════════════════════════════════════════════════
-// Auth
-// ════════════════════════════════════════════════
 function togglePw(id, btn){
   const el=document.getElementById(id);
   const show=el.type==='password';
   el.type=show?'text':'password';
-  btn.textContent=show?'非表示':'表示';
+  btn.textContent=show?t('btn_pw_hide'):t('btn_pw_show');
 }
 
 async function doLogin(){
   const alertEl=document.getElementById('login-alert'); alertEl.innerHTML='';
   const email=document.getElementById('login-email').value.trim();
   const pw=document.getElementById('login-pw').value;
-  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){alertEl.innerHTML='<div class="alert alert-err">有効なメールアドレスを入力してください</div>';return;}
-  if(!pw){alertEl.innerHTML='<div class="alert alert-err">パスワードを入力してください</div>';return;}
+  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){alertEl.innerHTML='<div class="alert alert-err">'+t('err_invalid_email')+'</div>';return;}
+  if(!pw){alertEl.innerHTML='<div class="alert alert-err">'+t('err_no_pw')+'</div>';return;}
   const btn=document.querySelector('#page-login .btn-primary'); btn.disabled=true; btn.textContent='...';
   try{
     const user=await api('loginWithPassword',{email,password:pw});
     currentUser=user; sessionStorage.setItem('auth_user',JSON.stringify(user));
     updateHeader(user); showPage('page-landing'); await loadEvents();
   }catch(err){
-    alertEl.innerHTML='<div class="alert alert-err">'+(err.message==='INVALID_CREDENTIALS'?'メールアドレスまたはパスワードが正しくありません':esc(err.message))+'</div>';
+    alertEl.innerHTML='<div class="alert alert-err">'+(err.message==='INVALID_CREDENTIALS'?t('err_invalid_creds'):esc(err.message))+'</div>';
   }
-  btn.disabled=false; btn.textContent='ログイン';
+  btn.disabled=false; btn.textContent=t('btn_login');
 }
 
 async function doRegister(){
@@ -751,19 +1641,19 @@ async function doRegister(){
   const email=document.getElementById('ra-email').value.trim();
   const pw=document.getElementById('ra-pw').value;
   const pw2=document.getElementById('ra-pw2').value;
-  if(!name){alertEl.innerHTML='<div class="alert alert-err">お名前を入力してください</div>';return;}
-  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){alertEl.innerHTML='<div class="alert alert-err">有効なメールアドレスを入力してください</div>';return;}
-  if(!pw||pw.length<8){alertEl.innerHTML='<div class="alert alert-err">パスワードは8文字以上で入力してください</div>';return;}
-  if(pw!==pw2){alertEl.innerHTML='<div class="alert alert-err">パスワードが一致しません</div>';return;}
+  if(!name){alertEl.innerHTML='<div class="alert alert-err">'+t('err_no_name')+'</div>';return;}
+  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){alertEl.innerHTML='<div class="alert alert-err">'+t('err_invalid_email')+'</div>';return;}
+  if(!pw||pw.length<8){alertEl.innerHTML='<div class="alert alert-err">'+t('err_pw_short')+'</div>';return;}
+  if(pw!==pw2){alertEl.innerHTML='<div class="alert alert-err">'+t('err_pw_mismatch')+'</div>';return;}
   const btn=document.querySelector('#page-register-account .btn-primary'); btn.disabled=true; btn.textContent='...';
   try{
     const user=await api('registerWithPassword',{name,email,password:pw});
     currentUser=user; sessionStorage.setItem('auth_user',JSON.stringify(user));
     updateHeader(user); showPage('page-landing'); await loadEvents();
   }catch(err){
-    alertEl.innerHTML='<div class="alert alert-err">'+(err.message==='EMAIL_EXISTS'?'このメールアドレスはすでに登録されています':esc(err.message))+'</div>';
+    alertEl.innerHTML='<div class="alert alert-err">'+(err.message==='EMAIL_EXISTS'?t('err_email_exists'):esc(err.message))+'</div>';
   }
-  btn.disabled=false; btn.textContent='アカウントを作成';
+  btn.disabled=false; btn.textContent=t('btn_create');
 }
 
 function logout(){
@@ -775,9 +1665,6 @@ function logout(){
 ['login-email','login-pw'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});});
 ['ra-name','ra-email','ra-pw','ra-pw2'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('keydown',e=>{if(e.key==='Enter')doRegister();});});
 
-// ════════════════════════════════════════════════
-// Petals
-// ════════════════════════════════════════════════
 (function(){
   const bg=document.getElementById('petals');
   const symbols=['🌸','🌸','🌸','🍂','🍁'];
@@ -788,24 +1675,21 @@ function logout(){
   }
 })();
 
-// ════════════════════════════════════════════════
-// Event List
-// ════════════════════════════════════════════════
 function formatPrice(p,tp){
-  if(tp==='FREE'||Number(p)===0) return '<span class="badge badge-free">無料</span>';
+  if(tp==='FREE'||Number(p)===0) return '<span class="badge badge-free">'+t('ev_free')+'</span>';
   return '<span class="badge badge-paid">¥'+Number(p).toLocaleString()+'</span>';
 }
 
 async function loadEvents(){
   const listEl=document.getElementById('event-list');
-  listEl.innerHTML='<div class="spinner"></div><p class="loading-text">読み込み中</p>';
+  listEl.innerHTML='<div class="spinner"></div><p class="loading-text">'+t('loading')+'</p>';
   try{
     const [events, allRegs]=await Promise.all([
       api('getEvents'),
       currentUser?api('getAllRegistrations',{}):Promise.resolve([])
     ]);
     myRegistrations=currentUser?allRegs.filter(r=>r.ParticipantID===currentUser.ParticipantID):[];
-    if(!events||!events.length){listEl.innerHTML='<div class="alert alert-info">現在公開中のイベントはありません</div>';return;}
+    if(!events||!events.length){listEl.innerHTML='<div class="alert alert-info">'+t('no_events')+'</div>';return;}
     const grid=document.createElement('div'); grid.className='event-grid';
     events.forEach((ev,i)=>{
       const isFull=Number(ev.registrationCount||0)>=Number(ev.Capacity);
@@ -815,22 +1699,21 @@ async function loadEvents(){
       const card=document.createElement('div'); card.className='event-card';
       let actHtml='';
       if(myReg){
-        actHtml='<div class="ev-actions"><div class="reg-badge '+(isChecked?'reg-badge-checked':'reg-badge-pending')+'" style="cursor:pointer;">'+(isChecked?'✓ 参加済み':'✓ 登録済み')+'</div></div>';
+        actHtml='<div class="ev-actions"><div class="reg-badge '+(isChecked?'reg-badge-checked':'reg-badge-pending')+'" style="cursor:pointer;">'+(isChecked?t('ev_attended'):t('ev_registered'))+'</div></div>';
       } else if(isFull){
-        actHtml='<div class="ev-actions"><div class="btn-ev-outline">満席</div></div>';
+        actHtml='<div class="ev-actions"><div class="btn-ev-outline">'+t('ev_full')+'</div></div>';
       } else if(currentUser){
-        actHtml='<div class="ev-actions"><button class="btn-ev '+EV_BTN[si]+' reg-btn">登録 →</button></div>';
+        actHtml='<div class="ev-actions"><button class="btn-ev '+EV_BTN[si]+' reg-btn">'+t('ev_register_btn')+'</button></div>';
       } else {
-        actHtml='<div class="ev-actions"><button class="btn-ev '+EV_BTN[si]+' login-btn">ログイン →</button></div>';
+        actHtml='<div class="ev-actions"><button class="btn-ev '+EV_BTN[si]+' login-btn">'+t('ev_login_btn')+'</button></div>';
       }
-      card.innerHTML='<div class="ev-accent"></div><div class="ev-body"><div class="ev-season">'+SEASONS[si]+'</div><div class="ev-name">'+esc(ev.EventName)+'</div><div class="ev-date">'+esc(ev.Date)+'</div><div class="ev-meta"><div class="ev-kv"><span class="ev-k">会場</span><span class="ev-v">'+esc(ev.Location)+'</span></div><div class="ev-kv"><span class="ev-k">参加費</span><span class="ev-v">'+formatPrice(ev.Price,ev.PaymentType)+'</span></div>'+((!myReg)?'<div class="ev-kv"><span class="ev-k">残席</span><span class="ev-v">'+(isFull?'<span class="badge badge-full">満席</span>':(Number(ev.Capacity)-Number(ev.registrationCount||0))+' 席')+'</span></div>':'')+'</div></div>'+actHtml;
+      card.innerHTML='<div class="ev-accent"></div><div class="ev-body"><div class="ev-season">'+SEASONS[si]+'</div><div class="ev-name">'+esc(ev.EventName)+'</div><div class="ev-date">'+esc(ev.Date)+'</div><div class="ev-meta"><div class="ev-kv"><span class=\"ev-k\">'+t('ev_venue')+'</span><span class="ev-v">'+esc(ev.Location)+'</span></div><div class="ev-kv"><span class=\"ev-k\">'+t('ev_fee')+'</span><span class="ev-v">'+formatPrice(ev.Price,ev.PaymentType)+'</span></div>'+((!myReg)?'<div class="ev-kv"><span class=\"ev-k\">'+t('ev_seats')+'</span><span class="ev-v">'+(isFull?'<span class="badge badge-full">'+t('ev_full')+'</span>':(Number(ev.Capacity)-Number(ev.registrationCount||0))+' ')+'</span></div>':'')+'</div></div>'+actHtml;
       if(myReg) card.querySelector('.reg-badge').addEventListener('click',()=>openQR(ev.EventName,ev.Date,myReg.QR||'',myReg.RegistrationID));
       if(!myReg&&!isFull&&currentUser) card.querySelector('.reg-btn').addEventListener('click',()=>showEventReg(ev,i));
       if(!currentUser&&card.querySelector('.login-btn')) card.querySelector('.login-btn').addEventListener('click',()=>showPage('page-login'));
       grid.appendChild(card);
     });
     listEl.innerHTML=''; listEl.appendChild(grid);
-    // badge
     if(currentUser) updateBadges();
   }catch(err){listEl.innerHTML='<div class="alert alert-err">'+esc(err.message)+'</div>';}
 }
@@ -845,11 +1728,16 @@ function updateBadges(){
   document.getElementById('chat-dot').classList.toggle('show', unreadChat.length>0);
   const avatarBadge = document.getElementById('avatar-badge');
   if(avatarBadge) avatarBadge.style.display = (unreadNews.length>0||unreadChat.length>0)?'block':'none';
+  // mypage badges
+  const notifBadge = document.getElementById('notif-quick-badge');
+  if(notifBadge){ notifBadge.textContent=unreadNews.length; notifBadge.classList.toggle('show',unreadNews.length>0); }
+  const chatBadge = document.getElementById('chat-quick-badge');
+  if(chatBadge){ chatBadge.textContent=unreadChat.length; chatBadge.classList.toggle('show',unreadChat.length>0); }
+  // profile card unread count
+  const pcUnread = document.getElementById('pc-unread');
+  if(pcUnread) pcUnread.textContent = unreadNews.length + unreadChat.length;
 }
 
-// ════════════════════════════════════════════════
-// QR Modal
-// ════════════════════════════════════════════════
 function openQR(name,date,qr,id){
   document.getElementById('qr-modal-title').textContent=name;
   document.getElementById('qr-modal-sub').textContent=date;
@@ -859,22 +1747,19 @@ function openQR(name,date,qr,id){
   document.getElementById('qr-modal').style.display='block';
 }
 
-// ════════════════════════════════════════════════
-// Event Registration
-// ════════════════════════════════════════════════
 function showEventReg(ev,idx){
   if(!currentUser){showPage('page-login');return;}
   currentEvent=ev; currentEventIdx=idx;
   showPage('page-event-reg');
   const si=idx%4;
-  document.getElementById('ev-reg-info').innerHTML='<div class="ev-hero-block" style="'+EV_THEME[si]+'"><div class="ev-hero-name">'+esc(ev.EventName)+'</div><div class="ev-hero-meta">'+esc(ev.Date)+'　'+esc(ev.Location)+'　'+(Number(ev.Price)===0?'無料':'¥'+Number(ev.Price).toLocaleString())+'</div></div>';
+  document.getElementById('ev-reg-info').innerHTML='<div class="ev-hero-block" style="'+EV_THEME[si]+'"><div class="ev-hero-name">'+esc(ev.EventName)+'</div><div class="ev-hero-meta">'+esc(ev.Date)+'　'+esc(ev.Location)+'　'+(Number(ev.Price)===0?t('ev_free'):'¥'+Number(ev.Price).toLocaleString())+'</div></div>';
   document.getElementById('inp-name').value=currentUser.Name;
   document.getElementById('inp-email').value=currentUser.Email;
   const payEl=document.getElementById('payment-info-box'); payEl.innerHTML='';
   if(ev.PaymentType!=='FREE'){
     let h='<div class="payment-box">';
-    if(ev.PaymentType==='PAYPAY'||ev.PaymentType==='PAYPAY_OR_CASH') h+='<h4>PayPay</h4><p>管理者から別途PayPayのご案内をします。</p>';
-    if(ev.PaymentType==='CASH') h+='<h4>Cash</h4><p>当日受付にて現金でお支払いください。</p>';
+    if(ev.PaymentType==='PAYPAY'||ev.PaymentType==='PAYPAY_OR_CASH') h+='<h4>'+t('pay_paypay_title')+'</h4><p>'+t('pay_paypay_body')+'</p>';
+    if(ev.PaymentType==='CASH') h+='<h4>'+t('pay_cash_title')+'</h4><p>'+t('pay_cash_body')+'</p>';
     h+='</div>'; payEl.innerHTML=h;
   }
   document.getElementById('ev-reg-alert').innerHTML='';
@@ -882,53 +1767,48 @@ function showEventReg(ev,idx){
   document.getElementById('ev-reg-result').style.display='none';
   const btn=document.getElementById('btn-ev-submit');
   btn.className=REG_BTN[si]; btn.style.cssText='width:100%;padding:12px;border-radius:99px;font-size:.9rem;font-weight:700;border:none;cursor:pointer;font-family:"Noto Sans JP",sans-serif;transition:all .25s;';
-  btn.textContent='登録する'; btn.disabled=false;
+  btn.textContent=t('btn_ev_submit'); btn.disabled=false;
 }
 
 document.getElementById('btn-ev-submit').addEventListener('click',async()=>{
   if(!currentUser){showPage('page-login');return;}
   const alertEl=document.getElementById('ev-reg-alert'); alertEl.innerHTML='';
-  const btn=document.getElementById('btn-ev-submit'); btn.disabled=true; btn.textContent='登録中...';
+  const btn=document.getElementById('btn-ev-submit'); btn.disabled=true; btn.textContent=t('ev_reg_submitting');
   try{
     const result=await api('registerParticipant',{name:currentUser.Name,email:currentUser.Email,phone:'',eventId:currentEvent.EventID});
     document.getElementById('ev-reg-form').style.display='none';
     document.getElementById('ev-reg-result').style.display='block';
     let payHtml='';
-    if(result.paymentStatus==='PAYPAY_PENDING') payHtml='<div class="payment-box"><h4>PayPay</h4><p>管理者から別途PayPayのご案内をします。</p></div>';
-    else if(result.paymentStatus==='CASH') payHtml='<div class="alert alert-info">当日受付にて現金でお支払いください。</div>';
+    if(result.paymentStatus==='PAYPAY_PENDING') payHtml='<div class="payment-box"><h4>'+t('pay_paypay_title')+'</h4><p>'+t('pay_paypay_body')+'</p></div>';
+    else if(result.paymentStatus==='CASH') payHtml='<div class="alert alert-info">'+t('pay_cash_alert')+'</div>';
     document.getElementById('ev-reg-result').innerHTML=
-      '<div style="text-align:center;padding:14px 0 4px;font-size:2rem;">🎉</div>'+
-      '<div class="alert alert-ok">登録完了！チケットをメールで送信しました。</div>'+
-      '<div class="ticket-box"><div class="ticket-label">— QR チケット —</div>'+
+      '<div style="text-align:center;padding:14px 0 4px;"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#3d6640" stroke-width="1.5" stroke-linecap="round" style="margin:0 auto;display:block;"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg></div>'+
+      '<div class="alert alert-ok">'+t('ev_reg_ok')+'</div>'+
+      '<div class="ticket-box"><div class="ticket-label">— QR '+t('ticket_label')+'</div>'+
       '<div id="qr-reg-canvas" style="display:flex;justify-content:center;margin:0 auto 10px;"></div>'+
       '<div class="ticket-id">'+esc(result.qrData)+'</div></div>'+payHtml+
-      '<button class="btn-outline" onclick="goHome()" style="display:block;width:100%;margin-top:10px;padding:10px;text-align:center;border-radius:99px;border:1.5px solid var(--border);background:transparent;color:var(--ink-soft);cursor:pointer;font-family:\'Noto Sans JP\',sans-serif;font-size:.86rem;font-weight:700;">← 一覧に戻る</button>';
+      '<button class="btn-outline" onclick="goHome()" style="display:block;width:100%;margin-top:10px;padding:10px;text-align:center;border-radius:99px;border:1.5px solid var(--border);background:transparent;color:var(--ink-soft);cursor:pointer;font-family:\'Noto Sans JP\',sans-serif;font-size:.86rem;font-weight:700;">'+t('ev_reg_back_list')+'</button>';
     new QRCode(document.getElementById('qr-reg-canvas'),{text:result.qrData,width:176,height:176,colorDark:'#1c2340',colorLight:'#f7f8fc'});
     myRegistrations.push({EventID:currentEvent.EventID,ParticipantID:currentUser.ParticipantID,QR:result.qrData,RegistrationID:result.registrationId,CheckinStatus:false});
   }catch(err){
-    btn.disabled=false; btn.textContent='登録する';
-    if(err.message==='FULL') alertEl.innerHTML='<div class="alert alert-err">満席のため登録できません。</div>';
-    else if(err.message==='ALREADY_REGISTERED') alertEl.innerHTML='<div class="alert alert-info">すでに登録済みです。</div>';
+    btn.disabled=false; btn.textContent=t('btn_ev_submit');
+    if(err.message==='FULL') alertEl.innerHTML='<div class="alert alert-err">'+t('err_full')+'</div>';
+    else if(err.message==='ALREADY_REGISTERED') alertEl.innerHTML='<div class="alert alert-info">'+t('err_already')+'</div>';
     else alertEl.innerHTML='<div class="alert alert-err">'+esc(err.message)+'</div>';
   }
 });
 
-// ════════════════════════════════════════════════
-// NEWS PAGE
-// ════════════════════════════════════════════════
+// ── NEWS ──
 function showNewsPage(){
   if(!currentUser){showPage('page-login');return;}
-  showPage('page-news');
-  renderNews();
+  showPage('page-news'); renderNews();
 }
-
 function filterNews(f, btn){
   newsFilter = f;
   document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
   if(btn) btn.classList.add('active');
   renderNews();
 }
-
 function renderNews(){
   if(!currentUser) return;
   const el = document.getElementById('news-list');
@@ -938,7 +1818,7 @@ function renderNews(){
   else if(newsFilter==='unread') items = items.filter(n=>!isNewsRead(n.id));
   items = items.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
   if(!items.length){
-    el.innerHTML='<div class="news-empty"><div class="news-empty-icon">📭</div><p>ニュースはありません</p></div>';
+    el.innerHTML='<div class="news-empty"><div style="display:flex;justify-content:center;margin-bottom:12px;"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" style="color:var(--ink-pale);"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h10M7 13h6"/></svg></div><p>'+t('news_empty')+'</p></div>';
     return;
   }
   el.innerHTML = items.map((n,i)=>{
@@ -949,7 +1829,7 @@ function renderNews(){
       <div class="news-card-head">
         <div class="news-card-badges">
           ${!read?'<span class="badge badge-new">NEW</span>':''}
-          ${isPersonal?'<span class="badge badge-personal">個別</span>':'<span class="badge badge-global">全体</span>'}
+          ${isPersonal?'<span class="badge badge-personal">'+t('badge_personal')+'</span>':'<span class="badge badge-global">'+t('badge_global')+'</span>'}
         </div>
         <span class="news-card-date">${date}</span>
       </div>
@@ -959,7 +1839,6 @@ function renderNews(){
   }).join('');
   updateBadges();
 }
-
 function openNewsDetail(id){
   markNewsRead(id);
   const items = getNewsItems(currentUser.ParticipantID);
@@ -969,18 +1848,15 @@ function openNewsDetail(id){
   const isPersonal = n.userId && n.userId===currentUser.ParticipantID;
   document.getElementById('nm-title').textContent = n.title;
   document.getElementById('nm-meta').innerHTML =
-    (isPersonal?'<span class="badge badge-personal">個別通知</span>':'<span class="badge badge-global">全体</span>')+
+    (isPersonal?'<span class="badge badge-personal">'+t('badge_personal_notif')+'</span>':'<span class="badge badge-global">'+t('badge_global')+'</span>')+
     `<span style="font-size:.74rem;color:var(--ink-soft);">${date}</span>`;
   document.getElementById('nm-body').textContent = n.body;
   document.getElementById('news-modal').style.display='flex';
-  // re-render to update read state
   setTimeout(renderNews, 100);
   updateBadges();
 }
 
-// ════════════════════════════════════════════════
-// MY PAGE
-// ════════════════════════════════════════════════
+// ── MY PAGE ──
 function showMyPage(){
   if(!currentUser){showPage('page-login');return;}
   showPage('page-mypage');
@@ -994,18 +1870,23 @@ async function loadMyPageData(){
     if(ps&&ps.length){const f=ps.find(p=>p.Email===currentUser.Email)||ps[0]; currentUser=Object.assign({},currentUser,{TotalEvents:f.TotalEvents,Rank:f.Rank,Name:f.Name}); sessionStorage.setItem('auth_user',JSON.stringify(currentUser));}
   }catch(e){}
   const p = currentUser;
+  const initial = (p.Name||'U').charAt(0).toUpperCase();
+  document.getElementById('pc-avatar').textContent = initial;
   document.getElementById('pc-name').textContent = p.Name||'';
   document.getElementById('pc-email').textContent = p.Email||'';
   document.getElementById('pc-events').textContent = p.TotalEvents||0;
   document.getElementById('pc-rank').textContent = p.Rank||'New';
-  // load history tab by default
+  updateBadges();
   loadHistoryTab();
 }
 
 function switchMyTab(tab, btn){
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  // ボタンのactive状態を更新
+  document.querySelectorAll('.quick-btn').forEach(b=>b.classList.remove('active-tab'));
+  const qbtn = document.getElementById('qbtn-'+tab);
+  if(qbtn) qbtn.classList.add('active-tab');
+  // タブペインを切り替え
   document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
-  if(btn) btn.classList.add('active');
   const pane = document.getElementById('tab-'+tab);
   if(pane) pane.classList.add('active');
   if(tab==='history') loadHistoryTab();
@@ -1015,7 +1896,6 @@ function switchMyTab(tab, btn){
   else if(tab==='profile-edit') renderProfileEdit();
 }
 
-// ── History Tab ──
 async function loadHistoryTab(){
   const el = document.getElementById('tab-history');
   el.innerHTML='<div class="spinner"></div>';
@@ -1025,47 +1905,41 @@ async function loadHistoryTab(){
     const myRegs = allRegs.filter(r=>r.ParticipantID===currentUser.ParticipantID);
     const checked = myRegs.filter(r=>r.CheckinStatus===true||r.CheckinStatus==='TRUE'||r.CheckinStatus==='true');
     if(!checked.length){
-      el.innerHTML='<div class="alert alert-info" style="margin-top:8px;">まだ参加履歴がありません。</div>';
+      el.innerHTML='<div class="alert alert-info" style="margin-top:8px;">'+t('mp_no_history')+'</div>';
       return;
     }
     el.innerHTML='<div class="timeline">'+checked.map((r,i)=>{
       const ev=events.find(e=>e.EventID===r.EventID);
       const hasMore = i < checked.length-1;
-      return `<div class="tl-item"><div class="tl-left"><div class="tl-dot"><div class="tl-dot-inner"></div></div>${hasMore?'<div class="tl-line"></div>':''}</div><div class="tl-body"><div class="tl-event">${esc(ev?ev.EventName:r.EventID)}</div><div class="tl-date">${esc(ev?ev.Date:'—')}</div><div class="tl-badge-done">✓ 参加済み</div></div></div>`;
+      return `<div class="tl-item"><div class="tl-left"><div class="tl-dot"><div class="tl-dot-inner"></div></div>${hasMore?'<div class="tl-line"></div>':''}</div><div class="tl-body"><div class="tl-event">${esc(ev?ev.EventName:r.EventID)}</div><div class="tl-date">${esc(ev?ev.Date:'—')}</div><div class=\"tl-badge-done\">'+t('mp_attended')+'</div></div></div>`;
     }).join('')+'</div>';
   }catch(err){el.innerHTML='<div class="alert alert-err">'+esc(err.message)+'</div>';}
 }
 
-// ── Survey Tab ──
 async function loadSurveyTab(){
   const el = document.getElementById('tab-survey');
   el.innerHTML='<div class="spinner"></div>';
   try{
     const mySurveys = await api('getMySurveys',{participantId:currentUser.ParticipantID});
     if(!mySurveys||!mySurveys.length){
-      el.innerHTML='<div class="alert alert-info">まだアンケートはありません</div>';
-      return;
+      el.innerHTML='<div class="alert alert-info">'+t('mp_survey_none')+'</div>'; return;
     }
     const answered = mySurveys.filter(s=>s.Rating&&Number(s.Rating)>0);
     const unanswered = mySurveys.filter(s=>!s.Rating||s.Rating==='');
     let html='';
-    // Chart
     if(answered.length>0){
-      html+=`<div class="card" style="padding:16px;"><h4 style="font-family:'Noto Serif JP',serif;font-size:.88rem;font-weight:700;color:var(--ink);margin-bottom:4px;">📊 イベント別満足度</h4><div class="chart-wrap"><canvas id="survey-chart"></canvas></div></div>`;
+      html+=`<div class="card" style="padding:16px;"><h4 style="font-family:'Noto Serif JP',serif;font-size:.88rem;font-weight:700;color:var(--ink);margin-bottom:4px;">'+t('mp_survey_chart')+'</h4><div class="chart-wrap"><canvas id="survey-chart"></canvas></div></div>`;
     }
-    // Answered
     answered.forEach(s=>{
       html+=`<div class="survey-done"><strong>${esc(s.EventName)}</strong><div class="star-display">${'★'.repeat(Number(s.Rating))}${'☆'.repeat(5-Number(s.Rating))} ${s.Rating}/5</div>${s.Comment?'<div style="font-size:.76rem;margin-top:2px;">'+esc(s.Comment)+'</div>':''}</div>`;
     });
-    // Unanswered forms
     unanswered.forEach(s=>{
       const sid='srv_'+s.SurveyID;
-      html+=`<div class="survey-form" id="sf-${esc(s.SurveyID)}"><h4>${esc(s.EventName)}　満足度アンケート</h4><div class="star-rating">`;
+      html+=`<div class="survey-form" id="sf-${esc(s.SurveyID)}"><h4>${esc(s.EventName)}　'+t('mp_survey')+'</h4><div class="star-rating">`;
       for(let i=5;i>=1;i--) html+=`<input type="radio" id="${sid}_${i}" name="${sid}" value="${i}"><label for="${sid}_${i}">★</label>`;
-      html+=`</div><textarea id="cmt-${esc(s.SurveyID)}" class="form-control" rows="2" placeholder="一言コメント（任意）" style="margin-bottom:8px;resize:none;"></textarea><button class="btn-primary" style="padding:10px;" onclick="submitSurvey('${esc(s.SurveyID)}','${esc(s.EventID)}','${esc(currentUser.ParticipantID)}')">送信する</button></div>`;
+      html+=`</div><textarea id="cmt-${esc(s.SurveyID)}" class="form-control" rows="2" placeholder=\"'+t('mp_survey_placeholder')+'\" style="margin-bottom:8px;resize:none;"></textarea><button class="btn-primary" style="padding:10px;" onclick="submitSurvey('${esc(s.SurveyID)}','${esc(s.EventID)}','${esc(currentUser.ParticipantID)}')">'+t('mp_survey_submit')+'</button></div>`;
     });
     el.innerHTML=html;
-    // Draw chart
     if(answered.length>0){
       const ctx=document.getElementById('survey-chart');
       if(ctx){
@@ -1074,7 +1948,7 @@ async function loadSurveyTab(){
           type:'bar',
           data:{
             labels:answered.map(s=>s.EventName.length>10?s.EventName.slice(0,10)+'…':s.EventName),
-            datasets:[{label:'満足度',data:answered.map(s=>Number(s.Rating)),backgroundColor:['rgba(232,160,184,.7)','rgba(112,96,168,.7)','rgba(200,90,32,.7)','rgba(122,168,204,.7)'],borderRadius:8,borderSkipped:false}]
+            datasets:[{label:t('mp_survey'),data:answered.map(s=>Number(s.Rating)),backgroundColor:['rgba(232,160,184,.7)','rgba(112,96,168,.7)','rgba(200,90,32,.7)','rgba(122,168,204,.7)'],borderRadius:8,borderSkipped:false}]
           },
           options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:5,ticks:{stepSize:1}}}}
         });
@@ -1094,7 +1968,6 @@ async function submitSurvey(surveyId, eventId, participantId){
   }catch(err){alert(esc(err.message));}
 }
 
-// ── Notifications Tab ──
 function loadNotificationsTab(){
   const el = document.getElementById('tab-notifications');
   if(!currentUser){ el.innerHTML=''; return; }
@@ -1102,8 +1975,7 @@ function loadNotificationsTab(){
     .filter(n=>n.userId===currentUser.ParticipantID)
     .sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
   if(!items.length){
-    el.innerHTML='<div class="alert alert-info" style="margin-top:8px;">個別の通知はありません</div>';
-    return;
+    el.innerHTML='<div class="alert alert-info" style="margin-top:8px;">'+t('mp_notif_none')+'</div>'; return;
   }
   el.innerHTML=items.map(n=>{
     const read=isNewsRead(n.id);
@@ -1114,30 +1986,27 @@ function loadNotificationsTab(){
         <span style="font-size:.68rem;color:var(--ink-soft);">${date}</span>
       </div>
       <div style="font-size:.8rem;color:var(--ink-soft);line-height:1.7;">${esc(n.body.slice(0,80))}${n.body.length>80?'…':''}</div>
-      ${!read?'<span class="badge badge-new" style="margin-top:6px;">未読</span>':''}
+      ${!read?'<span class="badge badge-new" style="margin-top:6px;">'+t('badge_new')+'</span>':''}
     </div>`;
   }).join('');
 }
 
-// ── Chat Tab ──
 function loadChatTab(){
   const el = document.getElementById('tab-chat');
   if(!currentUser){ el.innerHTML=''; return; }
   const msgs = getChatMessages(currentUser.ParticipantID);
-  // mark admin messages as read
   const all = lsGet('connecplus_chat')||[];
   let changed=false;
   all.forEach(m=>{if(m.receiverId===currentUser.ParticipantID&&!m.isRead){m.isRead=true;changed=true;}});
   if(changed){lsSet('connecplus_chat',all);updateBadges();}
   el.innerHTML=`
     <div class="chat-area">
-      <div class="chat-messages" id="chat-msg-list">${msgs.length?msgs.map(m=>renderBubble(m)).join(''):'<div class="chat-empty"><span>💬</span><p>まだメッセージがありません<br><small>運営へのご質問や<br>ご連絡はこちらから</small></p></div>'}</div>
+      <div class="chat-messages" id="chat-msg-list">${msgs.length?msgs.map(m=>renderBubble(m)).join(''):'<div class="chat-empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" style="color:var(--ink-pale);"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><p>'+t('mp_chat_empty')+'<br><small>'+t('mp_chat_sub')+'</small></p></div>'}</div>
       <div class="chat-input-row">
-        <textarea class="chat-input" id="chat-input" placeholder="メッセージを入力..." rows="1" onkeydown="handleChatKey(event)"></textarea>
-        <button class="chat-send" onclick="doSendChat()">送信</button>
+        <textarea class="chat-input" id="chat-input" placeholder='+t('mp_chat_placeholder')+' rows="1" onkeydown="handleChatKey(event)"></textarea>
+        <button class="chat-send" onclick="doSendChat()">'+t('mp_chat_send')+'</button>
       </div>
     </div>`;
-  // scroll to bottom
   setTimeout(()=>{const cm=document.getElementById('chat-msg-list');if(cm)cm.scrollTop=cm.scrollHeight;},100);
 }
 
@@ -1146,15 +2015,13 @@ function renderBubble(m){
   const time = new Date(m.createdAt).toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'});
   const date = new Date(m.createdAt).toLocaleDateString('ja-JP',{month:'short',day:'numeric'});
   return `<div class="chat-bubble ${isMine?'mine':'theirs'}">
-    ${!isMine?`<div class="bubble-sender">connec+a 運営</div>`:''}
+    ${!isMine?`<div class="bubble-sender">${t('mp_chat_operator')}</div>`:''}
     <div class="bubble-text">${esc(m.text)}</div>
     <div class="bubble-meta">${date} ${time}${isMine&&m.isRead?' ✓✓':''}</div>
   </div>`;
 }
 
-function handleChatKey(e){
-  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();doSendChat();}
-}
+function handleChatKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();doSendChat();} }
 
 function doSendChat(){
   const input=document.getElementById('chat-input');
@@ -1162,7 +2029,6 @@ function doSendChat(){
   if(!text||!currentUser) return;
   const msg=sendChatMessage(currentUser.ParticipantID, currentUser.Name, text);
   input.value='';
-  // append bubble
   const cm=document.getElementById('chat-msg-list');
   const empty=cm.querySelector('.chat-empty');
   if(empty) empty.remove();
@@ -1172,7 +2038,6 @@ function doSendChat(){
   cm.scrollTop=cm.scrollHeight;
 }
 
-// ── Profile Edit Tab ──
 function renderProfileEdit(){
   if(!currentUser) return;
   const p=currentUser;
@@ -1180,35 +2045,33 @@ function renderProfileEdit(){
   const langNames={ja:'日本語',en:'English',zh:'中文',ko:'한국어',es:'Español',fr:'Français',pt:'Português',id:'Bahasa Indonesia',th:'ภาษาไทย',vi:'Tiếng Việt',ar:'العربية',hi:'हिन्दी',de:'Deutsch',it:'Italiano',ru:'Русский'};
   document.getElementById('tab-profile-edit').innerHTML=
     '<div id="pe-alert"></div>'+
-    '<div class="form-group"><label class="form-label">お名前</label><input id="pe-name" class="form-control" type="text" value="'+esc(p.Name||'')+'"></div>'+
-    '<div class="form-group"><label class="form-label">メールアドレス</label><input id="pe-email" class="form-control" type="email" value="'+esc(p.Email||'')+'"><p style="font-size:.7rem;color:var(--ink-soft);margin-top:5px;line-height:1.6;">メールアドレスを変更すると次回ログイン時に新しいアドレスが必要になります</p></div>'+
-    '<div class="form-group"><label class="form-label">表示言語</label><select id="pe-lang" class="form-control" onchange="setLang(this.value)">'+
+    '<div class="form-group"><label class="form-label">'+t('label_name')+'</label><input id="pe-name" class="form-control" type="text" value="'+esc(p.Name||'')+'"></div>'+
+    '<div class="form-group"><label class="form-label">'+t('label_email')+'</label><input id="pe-email" class="form-control" type="email" value="'+esc(p.Email||'')+'"><p style="font-size:.7rem;color:var(--ink-soft);margin-top:5px;line-height:1.6;"></p></div>'+
+    '<div class="form-group"><label class="form-label">'+t('mp_lang')+'</label><select id="pe-lang" class="form-control" onchange="setLang(this.value)">'+
     langOptions.map(l=>'<option value="'+l+'"'+(currentLang===l?' selected':'')+'>'+langNames[l]+'</option>').join('')+
     '</select></div>'+
-    '<button class="btn-primary" onclick="saveProfile()">変更を保存</button>';
+    '<button class="btn-primary" onclick="saveProfile()">'+t('btn_save')+'</button>';
 }
 
 async function saveProfile(){
   const alertEl=document.getElementById('pe-alert'); alertEl.innerHTML='';
   const newName=document.getElementById('pe-name').value.trim();
   const newEmail=document.getElementById('pe-email').value.trim();
-  if(!newName){alertEl.innerHTML='<div class="alert alert-err">お名前を入力してください</div>';return;}
-  if(!newEmail||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)){alertEl.innerHTML='<div class="alert alert-err">有効なメールアドレスを入力してください</div>';return;}
-  const btn=document.querySelector('#tab-profile-edit .btn-primary'); btn.disabled=true; btn.textContent='保存中...';
+  if(!newName){alertEl.innerHTML='<div class="alert alert-err">'+t('err_no_name')+'</div>';return;}
+  if(!newEmail||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)){alertEl.innerHTML='<div class="alert alert-err">'+t('err_invalid_email')+'</div>';return;}
+  const btn=document.querySelector('#tab-profile-edit .btn-primary'); btn.disabled=true; btn.textContent=t('btn_save')+'...';
   try{
     const updated=await api('updateParticipantProfile',{participantId:currentUser.ParticipantID,name:newName,email:newEmail});
     currentUser=Object.assign({},currentUser,{Name:updated.Name||newName,Email:updated.Email||newEmail});
     sessionStorage.setItem('auth_user',JSON.stringify(currentUser));
     document.getElementById('avatar-initial').textContent=currentUser.Name.charAt(0).toUpperCase();
     updateHeader(currentUser);
-    alertEl.innerHTML='<div class="alert alert-ok">プロフィールを更新しました！</div>';
+    alertEl.innerHTML='<div class="alert alert-ok">'+t('msg_profile_saved')+'</div>';
   }catch(err){alertEl.innerHTML='<div class="alert alert-err">'+esc(err.message)+'</div>';}
-  btn.disabled=false; btn.textContent='変更を保存';
+  btn.disabled=false; btn.textContent=t('btn_save');
 }
 
-// ════════════════════════════════════════════════
-// PHOTOS PAGE
-// ════════════════════════════════════════════════
+// ── PHOTOS ──
 async function showPhotoPage(){
   if(!currentUser){showPage('page-login');return;}
   showPage('page-photos');
@@ -1227,10 +2090,9 @@ async function loadPhotoPage(){
     const events = (stats.eventStats||[]).filter(ev=>myRegs.some(r=>r.EventID===ev.EventID));
     if(!events.length){
       chipsEl.innerHTML='';
-      contentEl.innerHTML='<div class="photo-locked"><div class="photo-locked-icon">🔒</div><div class="photo-locked-text">参加済みのイベントがないため<br>フォトページを閲覧できません。<br>イベントに参加するとフォトが解放されます。</div></div>';
+      contentEl.innerHTML='<div class="photo-locked"><div style="display:flex;justify-content:center;margin-bottom:14px;"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" style="color:var(--ink-pale);"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div><div class="photo-locked-text">'+t('photo_locked')+'</div></div>';
       return;
     }
-    // chips
     chipsEl.innerHTML=events.map((ev,i)=>`<button class="event-chip${i===0?' active':''}" onclick="selectPhotoEvent('${esc(ev.EventID)}',this)">${esc(ev.EventName)}</button>`).join('');
     activePhotoEventId = events[0].EventID;
     renderPhotoGrid(events[0].EventID, events[0].EventName);
@@ -1244,8 +2106,7 @@ function selectPhotoEvent(eventId, btn){
   document.querySelectorAll('.event-chip').forEach(c=>c.classList.remove('active'));
   if(btn) btn.classList.add('active');
   activePhotoEventId = eventId;
-  const name = btn ? btn.textContent : eventId;
-  renderPhotoGrid(eventId, name);
+  renderPhotoGrid(eventId, '');
 }
 
 function renderPhotoGrid(eventId, eventName){
@@ -1253,20 +2114,22 @@ function renderPhotoGrid(eventId, eventName){
   const photos = getPhotos(eventId);
   let html=`
     <div class="upload-zone" onclick="document.getElementById('photo-file-input').click()">
-      <div class="upload-icon">📷</div>
-      <div class="upload-text">クリックして写真をアップロード<br><strong>JPG / PNG / WebP</strong>（最大10MB）</div>
+      <div class="upload-icon">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ink-pale);margin:0 auto;display:block;"><rect x="3" y="5" width="18" height="16" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5L5 21"/><path d="M16 3l2 2-8 8"/></svg>
+      </div>
+      <div class="upload-text">'+t('photo_upload')+'<br><strong>JPG / PNG / WebP</strong> '+t('photo_types')+'</div>
     </div>
     <input type="file" id="photo-file-input" accept="image/*" multiple style="display:none;" onchange="handlePhotoUpload(this,'${esc(eventId)}')">
   `;
   if(photos.length){
-    html+=`<div style="margin-bottom:8px;font-size:.78rem;color:var(--ink-soft);">${photos.length}枚の写真</div>`;
+    html+=`<div style="margin-bottom:8px;font-size:.78rem;color:var(--ink-soft);">${photos.length}'+t('photo_count_suffix')</div>`;
     html+=`<div class="photo-grid">${photos.map(p=>`
       <div class="photo-item" onclick="openPhotoViewer('${p.url.replace(/'/g,"\\'")}')">
         <img src="${p.url}" alt="${esc(p.name)}" loading="lazy">
         <div class="photo-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></div>
       </div>`).join('')}</div>`;
   } else {
-    html+=`<div style="text-align:center;padding:40px 20px;color:var(--ink-soft);font-size:.85rem;">まだ写真はありません。<br>最初の1枚をアップロードしてみましょう！</div>`;
+    html+=`<div style="text-align:center;padding:40px 20px;color:var(--ink-soft);font-size:.85rem;">'+t('photo_empty')+'</div>`;
   }
   el.innerHTML=html;
 }
@@ -1277,7 +2140,7 @@ function handlePhotoUpload(input, eventId){
   const MAX=10*1024*1024;
   let count=0;
   files.forEach(file=>{
-    if(file.size>MAX){alert(file.name+' は10MBを超えています');return;}
+    if(file.size>MAX){alert(file.name+' > 10MB');return;}
     const reader=new FileReader();
     reader.onload=e=>{
       addPhoto(eventId, file.name, e.target.result);
@@ -1294,14 +2157,12 @@ function openPhotoViewer(url){
   document.getElementById('photo-viewer').style.display='flex';
 }
 
-// ════════════════════════════════════════════════
-// INIT
-// ════════════════════════════════════════════════
 (async function init(){
   const saved=sessionStorage.getItem('auth_user');
   if(saved){try{currentUser=JSON.parse(saved);updateHeader(currentUser);}catch(e){sessionStorage.clear();updateHeader(null);}}
   else{updateHeader(null);}
   await loadEvents();
+applyI18n();
 })();
 </script>
 </body>
