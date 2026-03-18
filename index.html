@@ -1784,7 +1784,7 @@ document.getElementById('btn-ev-submit').addEventListener('click',async()=>{
     document.getElementById('ev-reg-result').innerHTML=
       '<div style="text-align:center;padding:14px 0 4px;"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#3d6640" stroke-width="1.5" stroke-linecap="round" style="margin:0 auto;display:block;"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg></div>'+
       '<div class="alert alert-ok">'+t('ev_reg_ok')+'</div>'+
-      '<div class="ticket-box"><div class="ticket-label">— QR '+t('ticket_label')+'</div>'+
+      '<div class="ticket-box"><div class="ticket-label">'+t('ticket_label')+'</div>'+
       '<div id="qr-reg-canvas" style="display:flex;justify-content:center;margin:0 auto 10px;"></div>'+
       '<div class="ticket-id">'+esc(result.qrData)+'</div></div>'+payHtml+
       '<button class="btn-outline" onclick="goHome()" style="display:block;width:100%;margin-top:10px;padding:10px;text-align:center;border-radius:99px;border:1.5px solid var(--border);background:transparent;color:var(--ink-soft);cursor:pointer;font-family:\'Noto Sans JP\',sans-serif;font-size:.86rem;font-weight:700;">'+t('ev_reg_back_list')+'</button>';
@@ -1829,7 +1829,7 @@ function renderNews(){
       <div class="news-card-head">
         <div class="news-card-badges">
           ${!read?'<span class="badge badge-new">NEW</span>':''}
-          ${isPersonal?'<span class="badge badge-personal">'+t('badge_personal')+'</span>':'<span class="badge badge-global">'+t('badge_global')+'</span>'}
+          ${isPersonal?('<span class="badge badge-personal">'+t('badge_personal')+'</span>'):('<span class="badge badge-global">'+t('badge_global')+'</span>')}
         </div>
         <span class="news-card-date">${date}</span>
       </div>
@@ -1911,7 +1911,7 @@ async function loadHistoryTab(){
     el.innerHTML='<div class="timeline">'+checked.map((r,i)=>{
       const ev=events.find(e=>e.EventID===r.EventID);
       const hasMore = i < checked.length-1;
-      return `<div class="tl-item"><div class="tl-left"><div class="tl-dot"><div class="tl-dot-inner"></div></div>${hasMore?'<div class="tl-line"></div>':''}</div><div class="tl-body"><div class="tl-event">${esc(ev?ev.EventName:r.EventID)}</div><div class="tl-date">${esc(ev?ev.Date:'—')}</div><div class=\"tl-badge-done\">'+t('mp_attended')+'</div></div></div>`;
+      return `<div class="tl-item"><div class="tl-left"><div class="tl-dot"><div class="tl-dot-inner"></div></div>${hasMore?'<div class="tl-line"></div>':''}</div><div class="tl-body"><div class="tl-event">${esc(ev?ev.EventName:r.EventID)}</div><div class="tl-date">${esc(ev?ev.Date:'—')}</div><div class=\"tl-badge-done\">${t('mp_attended')}</div></div></div>`;
     }).join('')+'</div>';
   }catch(err){el.innerHTML='<div class="alert alert-err">'+esc(err.message)+'</div>';}
 }
@@ -1928,16 +1928,16 @@ async function loadSurveyTab(){
     const unanswered = mySurveys.filter(s=>!s.Rating||s.Rating==='');
     let html='';
     if(answered.length>0){
-      html+=`<div class="card" style="padding:16px;"><h4 style="font-family:'Noto Serif JP',serif;font-size:.88rem;font-weight:700;color:var(--ink);margin-bottom:4px;">'+t('mp_survey_chart')+'</h4><div class="chart-wrap"><canvas id="survey-chart"></canvas></div></div>`;
+      html+=`<div class="card" style="padding:16px;"><h4 style="font-family:'Noto Serif JP',serif;font-size:.88rem;font-weight:700;color:var(--ink);margin-bottom:4px;">${t('mp_survey_chart')}</h4><div class="chart-wrap"><canvas id="survey-chart"></canvas></div></div>`;
     }
     answered.forEach(s=>{
       html+=`<div class="survey-done"><strong>${esc(s.EventName)}</strong><div class="star-display">${'★'.repeat(Number(s.Rating))}${'☆'.repeat(5-Number(s.Rating))} ${s.Rating}/5</div>${s.Comment?'<div style="font-size:.76rem;margin-top:2px;">'+esc(s.Comment)+'</div>':''}</div>`;
     });
     unanswered.forEach(s=>{
       const sid='srv_'+s.SurveyID;
-      html+=`<div class="survey-form" id="sf-${esc(s.SurveyID)}"><h4>${esc(s.EventName)}　'+t('mp_survey')+'</h4><div class="star-rating">`;
+      html+=`<div class="survey-form" id="sf-${esc(s.SurveyID)}"><h4>${esc(s.EventName)}　${t('mp_survey')}</h4><div class="star-rating">`;
       for(let i=5;i>=1;i--) html+=`<input type="radio" id="${sid}_${i}" name="${sid}" value="${i}"><label for="${sid}_${i}">★</label>`;
-      html+=`</div><textarea id="cmt-${esc(s.SurveyID)}" class="form-control" rows="2" placeholder=\"'+t('mp_survey_placeholder')+'\" style="margin-bottom:8px;resize:none;"></textarea><button class="btn-primary" style="padding:10px;" onclick="submitSurvey('${esc(s.SurveyID)}','${esc(s.EventID)}','${esc(currentUser.ParticipantID)}')">'+t('mp_survey_submit')+'</button></div>`;
+      html+=`</div><textarea id="cmt-${esc(s.SurveyID)}" class="form-control" rows="2" placeholder=\"${t('mp_survey_placeholder')}\" style="margin-bottom:8px;resize:none;"></textarea><button class="btn-primary" style="padding:10px;" onclick="submitSurvey('${esc(s.SurveyID)}','${esc(s.EventID)}','${esc(currentUser.ParticipantID)}')">${t('mp_survey_submit')}</button></div>`;
     });
     el.innerHTML=html;
     if(answered.length>0){
@@ -1959,12 +1959,12 @@ async function loadSurveyTab(){
 
 async function submitSurvey(surveyId, eventId, participantId){
   const rEl=document.querySelector('input[name="srv_'+surveyId+'"]:checked');
-  if(!rEl){alert('評価を選択してください');return;}
+  if(!rEl){alert(t('mp_survey'));return;}
   const rating=rEl.value; const comment=document.getElementById('cmt-'+surveyId).value.trim();
   try{
     await api('submitSurvey',{surveyId,eventId,participantId,rating,comment});
     const f=document.getElementById('sf-'+surveyId);
-    if(f) f.outerHTML='<div class="survey-done">回答ありがとうございました！<div class="star-display">'+'★'.repeat(Number(rating))+'☆'.repeat(5-Number(rating))+'</div></div>';
+    if(f) f.outerHTML='<div class="survey-done">'+t('mp_survey_thanks')+'<div class="star-display">'+'★'.repeat(Number(rating))+'☆'.repeat(5-Number(rating))+'</div></div>';
   }catch(err){alert(esc(err.message));}
 }
 
@@ -1986,7 +1986,7 @@ function loadNotificationsTab(){
         <span style="font-size:.68rem;color:var(--ink-soft);">${date}</span>
       </div>
       <div style="font-size:.8rem;color:var(--ink-soft);line-height:1.7;">${esc(n.body.slice(0,80))}${n.body.length>80?'…':''}</div>
-      ${!read?'<span class="badge badge-new" style="margin-top:6px;">'+t('badge_new')+'</span>':''}
+      ${!read?('<span class="badge badge-new" style="margin-top:6px;">'+t('badge_new')+'</span>'):''}
     </div>`;
   }).join('');
 }
@@ -1999,14 +1999,14 @@ function loadChatTab(){
   let changed=false;
   all.forEach(m=>{if(m.receiverId===currentUser.ParticipantID&&!m.isRead){m.isRead=true;changed=true;}});
   if(changed){lsSet('connecplus_chat',all);updateBadges();}
-  el.innerHTML=`
-    <div class="chat-area">
-      <div class="chat-messages" id="chat-msg-list">${msgs.length?msgs.map(m=>renderBubble(m)).join(''):'<div class="chat-empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" style="color:var(--ink-pale);"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><p>'+t('mp_chat_empty')+'<br><small>'+t('mp_chat_sub')+'</small></p></div>'}</div>
-      <div class="chat-input-row">
-        <textarea class="chat-input" id="chat-input" placeholder='+t('mp_chat_placeholder')+' rows="1" onkeydown="handleChatKey(event)"></textarea>
-        <button class="chat-send" onclick="doSendChat()">'+t('mp_chat_send')+'</button>
-      </div>
-    </div>`;
+  const emptyHtml='<div class="chat-empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" style="color:var(--ink-pale);"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><p>'+t('mp_chat_empty')+'<br><small>'+t('mp_chat_sub')+'</small></p></div>';
+  el.innerHTML=
+    '<div class="chat-area">'+
+    '<div class="chat-messages" id="chat-msg-list">'+(msgs.length?msgs.map(m=>renderBubble(m)).join(''):emptyHtml)+'</div>'+
+    '<div class="chat-input-row">'+
+    '<textarea class="chat-input" id="chat-input" placeholder="'+t('mp_chat_placeholder')+'" rows="1" onkeydown="handleChatKey(event)"></textarea>'+
+    '<button class="chat-send" onclick="doSendChat()">'+t('mp_chat_send')+'</button>'+
+    '</div></div>';
   setTimeout(()=>{const cm=document.getElementById('chat-msg-list');if(cm)cm.scrollTop=cm.scrollHeight;},100);
 }
 
@@ -2117,19 +2117,19 @@ function renderPhotoGrid(eventId, eventName){
       <div class="upload-icon">
         <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ink-pale);margin:0 auto;display:block;"><rect x="3" y="5" width="18" height="16" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5L5 21"/><path d="M16 3l2 2-8 8"/></svg>
       </div>
-      <div class="upload-text">'+t('photo_upload')+'<br><strong>JPG / PNG / WebP</strong> '+t('photo_types')+'</div>
+      <div class="upload-text">${t('photo_upload')}<br><strong>JPG / PNG / WebP</strong> ${t('photo_types')}</div>
     </div>
     <input type="file" id="photo-file-input" accept="image/*" multiple style="display:none;" onchange="handlePhotoUpload(this,'${esc(eventId)}')">
   `;
   if(photos.length){
-    html+=`<div style="margin-bottom:8px;font-size:.78rem;color:var(--ink-soft);">${photos.length}'+t('photo_count_suffix')</div>`;
+    html+=`<div style="margin-bottom:8px;font-size:.78rem;color:var(--ink-soft);">${photos.length}${t('photo_count_suffix')}</div>`;
     html+=`<div class="photo-grid">${photos.map(p=>`
       <div class="photo-item" onclick="openPhotoViewer('${p.url.replace(/'/g,"\\'")}')">
         <img src="${p.url}" alt="${esc(p.name)}" loading="lazy">
         <div class="photo-overlay"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></div>
       </div>`).join('')}</div>`;
   } else {
-    html+=`<div style="text-align:center;padding:40px 20px;color:var(--ink-soft);font-size:.85rem;">'+t('photo_empty')+'</div>`;
+    html+=`<div style="text-align:center;padding:40px 20px;color:var(--ink-soft);font-size:.85rem;">${t('photo_empty')}</div>`;
   }
   el.innerHTML=html;
 }
@@ -2162,7 +2162,12 @@ function openPhotoViewer(url){
   if(saved){try{currentUser=JSON.parse(saved);updateHeader(currentUser);}catch(e){sessionStorage.clear();updateHeader(null);}}
   else{updateHeader(null);}
   await loadEvents();
-applyI18n();
+  applyI18n();
+  // 30秒ごとに自動更新
+  setInterval(async()=>{
+    await loadEvents();
+    if(currentUser) updateBadges();
+  }, 30000);
 })();
 </script>
 </body>
