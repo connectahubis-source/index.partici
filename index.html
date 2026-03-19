@@ -77,8 +77,10 @@
     .alert-ok{background:#f0fdf4;border-left:3px solid #22c55e;color:#15803d;}
     .alert-err{background:rgba(200,90,32,.06);border-left:3px solid var(--amber);color:#7a2010;}
     .alert-info{background:rgba(112,96,168,.07);border-left:3px solid var(--violet);color:var(--ink-mid);}
+    .alert-warn{background:rgba(200,160,32,.08);border-left:3px solid #d4a010;color:#7a5800;}
     .form-group{margin-bottom:16px;}
     .form-label{display:block;font-size:.74rem;font-weight:700;color:var(--ink-mid);margin-bottom:6px;letter-spacing:.04em;}
+    .form-label-opt{font-size:.68rem;font-weight:400;color:var(--ink-soft);margin-left:6px;}
     .form-control{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:.9rem;color:var(--ink);background:var(--bg);outline:none;transition:all .2s;font-family:'Noto Sans JP',sans-serif;}
     .form-control:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(112,96,168,.12);background:var(--white);}
     .form-control::placeholder{color:rgba(90,106,154,.4);}
@@ -91,6 +93,12 @@
     .pw-wrap{position:relative;}
     .pw-toggle{position:absolute;right:11px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--ink-soft);font-size:.7rem;padding:2px 4px;font-family:'Noto Sans JP',sans-serif;}
     .auth-divider{border:none;border-top:1px solid var(--border);margin:20px 0;}
+
+    /* メールなし警告ボックス */
+    .no-email-notice{background:rgba(200,160,32,.07);border:1.5px solid rgba(200,160,32,.28);border-radius:var(--rs);padding:14px 16px;margin-bottom:4px;display:none;}
+    .no-email-notice.show{display:block;}
+    .no-email-notice-icon{font-size:1.1rem;margin-right:6px;}
+    .no-email-notice-text{font-size:.8rem;color:#6b4a00;line-height:1.8;}
 
     .modal-overlay{position:fixed;inset:0;background:rgba(28,35,64,.6);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px);animation:mfade .2s ease;}
     @keyframes mfade{from{opacity:0;}to{opacity:1;}}
@@ -486,10 +494,38 @@
         </div>
         <div class="auth-title">新規登録</div>
         <div id="reg-account-alert"></div>
-        <div class="form-group"><label class="form-label">お名前</label><input id="ra-name" class="form-control" type="text" placeholder="山田 太郎"></div>
-        <div class="form-group"><label class="form-label">メールアドレス</label><input id="ra-email" class="form-control" type="email" placeholder="example@email.com"></div>
-        <div class="form-group"><label class="form-label">パスワード</label><div class="pw-wrap"><input id="ra-pw" class="form-control" type="password" placeholder="••••••••" style="padding-right:50px;"><button class="pw-toggle" type="button" onclick="togglePw('ra-pw',this)">表示</button></div></div>
-        <div class="form-group"><label class="form-label">パスワード（確認）</label><div class="pw-wrap"><input id="ra-pw2" class="form-control" type="password" placeholder="••••••••" style="padding-right:50px;"><button class="pw-toggle" type="button" onclick="togglePw('ra-pw2',this)">表示</button></div></div>
+        <div class="form-group">
+          <label class="form-label">お名前</label>
+          <input id="ra-name" class="form-control" type="text" placeholder="山田 太郎">
+        </div>
+        <div class="form-group">
+          <label class="form-label">
+            メールアドレス
+            <span class="form-label-opt" data-i18n="label_optional">（任意）</span>
+          </label>
+          <input id="ra-email" class="form-control" type="email" placeholder="example@email.com" oninput="handleEmailInput(this.value)">
+          <!-- メールなし時の注意書き -->
+          <div class="no-email-notice" id="no-email-notice">
+            <div class="no-email-notice-text">
+              <span class="no-email-notice-icon">⚠️</span>
+              <span data-i18n="notice_no_email">メールアドレスを登録しないと、QRチケットやお知らせのメールが届きません。登録後はこのサイト（マイページ）からQRチケットの確認をお願いします。</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">パスワード</label>
+          <div class="pw-wrap">
+            <input id="ra-pw" class="form-control" type="password" placeholder="••••••••" style="padding-right:50px;">
+            <button class="pw-toggle" type="button" onclick="togglePw('ra-pw',this)">表示</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">パスワード（確認）</label>
+          <div class="pw-wrap">
+            <input id="ra-pw2" class="form-control" type="password" placeholder="••••••••" style="padding-right:50px;">
+            <button class="pw-toggle" type="button" onclick="togglePw('ra-pw2',this)">表示</button>
+          </div>
+        </div>
         <button class="btn-primary" onclick="doRegister()">アカウントを作成</button>
         <hr class="auth-divider">
         <p class="auth-footer">すでにアカウントをお持ちの方は <a class="auth-link" onclick="showPage('page-login')">ログイン</a></p>
@@ -554,21 +590,18 @@
     <!-- クイックアクセス -->
     <div class="card" style="padding:18px;">
       <div class="quick-grid">
-        <!-- 履歴 -->
         <button class="quick-btn active-tab" id="qbtn-history" onclick="switchMyTab('history',this)">
           <div class="quick-icon icon-circle-blue">
             <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/><polyline points="9 12 11 14 15 10"/></svg>
           </div>
           <span class="quick-label" data-i18n="mp_history">参加履歴</span>
         </button>
-        <!-- アンケート -->
         <button class="quick-btn" id="qbtn-survey" onclick="switchMyTab('survey',this)">
           <div class="quick-icon icon-circle-amber">
             <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
           </div>
           <span class="quick-label" data-i18n="mp_survey">アンケート</span>
         </button>
-        <!-- 通知 -->
         <button class="quick-btn" id="qbtn-notifications" onclick="switchMyTab('notifications',this)">
           <div class="quick-icon icon-circle-violet" style="position:relative;">
             <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
@@ -576,7 +609,6 @@
           <div class="quick-badge" id="notif-quick-badge">0</div>
           <span class="quick-label" data-i18n="mp_notif">通知</span>
         </button>
-        <!-- メッセージ -->
         <button class="quick-btn" id="qbtn-chat" onclick="switchMyTab('chat',this)">
           <div class="quick-icon icon-circle-pink">
             <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
@@ -586,7 +618,6 @@
         </button>
       </div>
 
-      <!-- タブコンテンツ -->
       <div style="border-top:1px solid var(--bg2);padding-top:16px;margin-top:4px;">
         <div id="tab-history" class="tab-pane active"></div>
         <div id="tab-survey" class="tab-pane"></div>
@@ -596,7 +627,6 @@
       </div>
     </div>
 
-    <!-- ログアウト -->
     <div class="logout-row">
       <button class="btn-logout" data-i18n="mp_logout" onclick="logout()">ログアウト</button>
     </div>
@@ -630,9 +660,16 @@
       <div id="ev-reg-form">
         <div class="form-group"><label class="form-label">お名前</label><input id="inp-name" class="form-control" type="text" readonly></div>
         <div class="form-group"><label class="form-label">メールアドレス</label><input id="inp-email" class="form-control" type="email" readonly></div>
+        <!-- メールなしユーザー向け注意 -->
+        <div class="no-email-notice" id="ev-reg-no-email-notice">
+          <div class="no-email-notice-text">
+            <span class="no-email-notice-icon">⚠️</span>
+            <span data-i18n="notice_no_email_ticket">メールアドレスが未登録のため、QRチケットはメールで送られません。このページ（マイページ）からいつでもQRチケットをご確認いただけます。</span>
+          </div>
+        </div>
         <div id="payment-info-box"></div>
         <button id="btn-ev-submit" class="btn-primary">登録する</button>
-        <p style="font-size:.7rem;color:var(--ink-soft);text-align:center;margin-top:9px;">登録後、QRチケットをメールでお送りします</p>
+        <p style="font-size:.7rem;color:var(--ink-soft);text-align:center;margin-top:9px;" id="ev-reg-hint-text">登録後、QRチケットをメールでお送りします</p>
       </div>
       <div id="ev-reg-result" style="display:none;"></div>
     </div>
@@ -645,36 +682,32 @@
 // ════════════════════════════════════════════════
 var I18N = {
   ja:{
-    // ナビ
     nav_home:'ホーム',nav_news:'ニュース',nav_photo:'フォト',nav_mypage:'マイページ',
-    // ランディング
     hero_label:'Events',hero_title_sub:'のイベントへようこそ',
     hero_desc:'参加したいイベントを選んで、簡単にお申し込みいただけます。',
     btn_login:'ログイン',btn_register:'新規登録',
     btn_mypage:'マイページ',btn_logout:'ログアウト',
     event_list:'イベント一覧',loading:'読み込み中',no_events:'現在公開中のイベントはありません',
-    // イベントカード
     ev_venue:'会場',ev_fee:'参加費',ev_seats:'残席',ev_full:'満席',ev_free:'無料',
     ev_registered:'✓ 登録済み',ev_attended:'✓ 参加済み',ev_register_btn:'登録 →',ev_login_btn:'ログイン →',
-    // ログイン
     login_title:'ログイン',label_email:'メールアドレス',label_pw:'パスワード',
     ph_email:'example@email.com',ph_pw:'••••••••',ph_name:'山田 太郎',
     btn_pw_show:'表示',btn_pw_hide:'非表示',
+    label_optional:'（任意）',
     login_no_account:'アカウントをお持ちでない方は',link_register:'新規登録',link_back:'← 一覧に戻る',
-    // 登録
     reg_title:'新規登録',label_name:'お名前',label_pw_confirm:'パスワード（確認）',
     btn_create:'アカウントを作成',reg_has_account:'すでにアカウントをお持ちの方は',
-    // エラー
     err_invalid_email:'有効なメールアドレスを入力してください',err_no_pw:'パスワードを入力してください',
     err_pw_short:'パスワードは8文字以上で入力してください',err_pw_mismatch:'パスワードが一致しません',
     err_no_name:'お名前を入力してください',err_invalid_creds:'メールアドレスまたはパスワードが正しくありません',
     err_email_exists:'このメールアドレスはすでに登録されています',
     err_full:'満席のため登録できません。',err_already:'すでに登録済みです。',
-    // ニュース
+    // メールなし通知
+    notice_no_email:'メールアドレスを登録しないと、QRチケットやお知らせのメールが届きません。登録後はこのサイト（マイページ）からQRチケットの確認をお願いします。',
+    notice_no_email_ticket:'メールアドレスが未登録のため、QRチケットはメールで送られません。このページ（マイページ）からいつでもQRチケットをご確認いただけます。',
     news_title:'ニュース',news_all:'すべて',news_global:'全体',news_personal:'個別',news_unread:'未読',
     news_empty:'ニュースはありません',news_close:'閉じる',
     badge_new:'NEW',badge_global:'全体',badge_personal:'個別',badge_personal_notif:'個別通知',
-    // マイページ
     mp_edit:'編集',mp_events:'参加回数',mp_rank:'ランク',mp_unread:'未読通知',
     mp_history:'参加履歴',mp_survey:'アンケート',mp_notif:'通知',mp_chat:'メッセージ',
     mp_no_history:'まだ参加履歴がありません。',mp_attended:'✓ 参加済み',
@@ -688,15 +721,16 @@ var I18N = {
     mp_profile_title:'プロフィール編集',mp_lang:'表示言語',btn_save:'変更を保存',
     msg_profile_saved:'プロフィールを更新しました。',
     mp_logout:'ログアウト',
-    // イベント登録
     ev_reg_back:'← 一覧に戻る',ev_reg_title:'参加登録',btn_ev_submit:'登録する',
     ev_reg_submitting:'登録中...',ev_reg_hint:'登録後、QRチケットをメールでお送りします',
-    ev_reg_ok:'登録完了！チケットをメールで送信しました。',ev_reg_back_list:'← 一覧に戻る',
+    ev_reg_hint_no_email:'登録後、マイページからQRチケットをご確認いただけます',
+    ev_reg_ok:'登録完了！チケットをメールで送信しました。',
+    ev_reg_ok_no_email:'登録完了！マイページからQRチケットをご確認いただけます。',
+    ev_reg_back_list:'← 一覧に戻る',
     pay_paypay_title:'PayPay',pay_paypay_body:'管理者から別途PayPayのご案内をします。',
     pay_cash_title:'現金',pay_cash_body:'当日受付にて現金でお支払いください。',
     pay_cash_alert:'当日受付にて現金でお支払いください。',
     ticket_label:'— QR チケット —',
-    // フォト
     photo_title:'フォト',photo_upload:'クリックして写真をアップロード',
     photo_types:'JPG / PNG / WebP（最大10MB）',
     photo_locked:'参加済みのイベントがないためフォトページを閲覧できません。イベントに参加するとフォトが解放されます。',
@@ -715,6 +749,7 @@ var I18N = {
     login_title:'Login',label_email:'Email',label_pw:'Password',
     ph_email:'example@email.com',ph_pw:'••••••••',ph_name:'John Doe',
     btn_pw_show:'Show',btn_pw_hide:'Hide',
+    label_optional:'(optional)',
     login_no_account:"Don't have an account?",link_register:'Sign Up',link_back:'← Back to list',
     reg_title:'Sign Up',label_name:'Full Name',label_pw_confirm:'Confirm Password',
     btn_create:'Create Account',reg_has_account:'Already have an account?',
@@ -723,6 +758,8 @@ var I18N = {
     err_no_name:'Please enter your name',err_invalid_creds:'Invalid email or password',
     err_email_exists:'This email is already registered',
     err_full:'Sorry, this event is full.',err_already:'You are already registered.',
+    notice_no_email:'Without an email address, QR tickets and notifications cannot be sent to you. Please check your QR ticket from My Page on this site after registration.',
+    notice_no_email_ticket:'No email address registered, so QR tickets will not be sent by email. You can always check your QR ticket from My Page.',
     news_title:'News',news_all:'All',news_global:'Global',news_personal:'Personal',news_unread:'Unread',
     news_empty:'No news available',news_close:'Close',
     badge_new:'NEW',badge_global:'Global',badge_personal:'Personal',badge_personal_notif:'Personal Notice',
@@ -741,7 +778,10 @@ var I18N = {
     mp_logout:'Logout',
     ev_reg_back:'← Back to list',ev_reg_title:'Event Registration',btn_ev_submit:'Register',
     ev_reg_submitting:'Registering...',ev_reg_hint:'A QR ticket will be sent to your email after registration.',
-    ev_reg_ok:'Registration complete! Your ticket has been sent by email.',ev_reg_back_list:'← Back to list',
+    ev_reg_hint_no_email:'After registration, you can check your QR ticket from My Page.',
+    ev_reg_ok:'Registration complete! Your ticket has been sent by email.',
+    ev_reg_ok_no_email:'Registration complete! Check your QR ticket from My Page.',
+    ev_reg_back_list:'← Back to list',
     pay_paypay_title:'PayPay',pay_paypay_body:'The organizer will contact you with PayPay payment details.',
     pay_cash_title:'Cash',pay_cash_body:'Please pay cash at the reception on the day.',
     pay_cash_alert:'Please pay cash at the reception on the day.',
@@ -764,6 +804,7 @@ var I18N = {
     login_title:'登录',label_email:'电子邮件',label_pw:'密码',
     ph_email:'example@email.com',ph_pw:'••••••••',ph_name:'张三',
     btn_pw_show:'显示',btn_pw_hide:'隐藏',
+    label_optional:'（可选）',
     login_no_account:'没有账户？',link_register:'注册',link_back:'← 返回列表',
     reg_title:'注册',label_name:'姓名',label_pw_confirm:'确认密码',
     btn_create:'创建账户',reg_has_account:'已有账户？',
@@ -772,6 +813,8 @@ var I18N = {
     err_no_name:'请输入您的姓名',err_invalid_creds:'电子邮件或密码错误',
     err_email_exists:'该电子邮件已被注册',
     err_full:'抱歉，该活动已满员。',err_already:'您已报名参加。',
+    notice_no_email:'如不填写电子邮件，将无法收到QR票和通知邮件。报名后请从本网站（我的主页）确认QR票。',
+    notice_no_email_ticket:'未注册电子邮件，QR票不会通过邮件发送。您可以随时从"我的主页"查看QR票。',
     news_title:'新闻',news_all:'全部',news_global:'全体',news_personal:'个人',news_unread:'未读',
     news_empty:'暂无新闻',news_close:'关闭',
     badge_new:'新',badge_global:'全体',badge_personal:'个人',badge_personal_notif:'个人通知',
@@ -790,7 +833,10 @@ var I18N = {
     mp_logout:'退出',
     ev_reg_back:'← 返回列表',ev_reg_title:'活动报名',btn_ev_submit:'报名',
     ev_reg_submitting:'报名中...',ev_reg_hint:'报名后将发送QR票至您的邮箱。',
-    ev_reg_ok:'报名成功！票已发送至您的邮箱。',ev_reg_back_list:'← 返回列表',
+    ev_reg_hint_no_email:'报名后，可从"我的主页"确认QR票。',
+    ev_reg_ok:'报名成功！票已发送至您的邮箱。',
+    ev_reg_ok_no_email:'报名成功！请从"我的主页"确认QR票。',
+    ev_reg_back_list:'← 返回列表',
     pay_paypay_title:'PayPay',pay_paypay_body:'主办方将另行联系您PayPay付款详情。',
     pay_cash_title:'现金',pay_cash_body:'请于活动当天在前台以现金支付。',
     pay_cash_alert:'请于活动当天在前台以现金支付。',
@@ -813,6 +859,7 @@ var I18N = {
     login_title:'로그인',label_email:'이메일',label_pw:'비밀번호',
     ph_email:'example@email.com',ph_pw:'••••••••',ph_name:'홍길동',
     btn_pw_show:'표시',btn_pw_hide:'숨기기',
+    label_optional:'(선택)',
     login_no_account:'계정이 없으신가요?',link_register:'회원가입',link_back:'← 목록으로',
     reg_title:'회원가입',label_name:'이름',label_pw_confirm:'비밀번호 확인',
     btn_create:'계정 만들기',reg_has_account:'이미 계정이 있으신가요?',
@@ -821,6 +868,8 @@ var I18N = {
     err_no_name:'이름을 입력해주세요',err_invalid_creds:'이메일 또는 비밀번호가 올바르지 않습니다',
     err_email_exists:'이미 등록된 이메일입니다',
     err_full:'죄송합니다, 이벤트가 마감되었습니다.',err_already:'이미 등록하셨습니다.',
+    notice_no_email:'이메일 주소를 등록하지 않으면 QR 티켓 및 알림 이메일을 받을 수 없습니다. 등록 후 이 사이트(마이페이지)에서 QR 티켓을 확인해 주세요.',
+    notice_no_email_ticket:'이메일 주소가 등록되지 않아 QR 티켓은 이메일로 발송되지 않습니다. 마이페이지에서 언제든지 QR 티켓을 확인할 수 있습니다.',
     news_title:'뉴스',news_all:'전체',news_global:'전체',news_personal:'개인',news_unread:'미확인',
     news_empty:'뉴스가 없습니다',news_close:'닫기',
     badge_new:'NEW',badge_global:'전체',badge_personal:'개인',badge_personal_notif:'개인 알림',
@@ -839,7 +888,10 @@ var I18N = {
     mp_logout:'로그아웃',
     ev_reg_back:'← 목록으로',ev_reg_title:'이벤트 신청',btn_ev_submit:'신청하기',
     ev_reg_submitting:'신청 중...',ev_reg_hint:'신청 후 QR 티켓을 이메일로 보내드립니다.',
-    ev_reg_ok:'신청 완료! 티켓이 이메일로 전송되었습니다.',ev_reg_back_list:'← 목록으로',
+    ev_reg_hint_no_email:'신청 후 마이페이지에서 QR 티켓을 확인하실 수 있습니다.',
+    ev_reg_ok:'신청 완료! 티켓이 이메일로 전송되었습니다.',
+    ev_reg_ok_no_email:'신청 완료! 마이페이지에서 QR 티켓을 확인해 주세요.',
+    ev_reg_back_list:'← 목록으로',
     pay_paypay_title:'PayPay',pay_paypay_body:'운영자가 PayPay 결제 안내를 드릴 예정입니다.',
     pay_cash_title:'현금',pay_cash_body:'당일 접수처에서 현금으로 결제해주세요.',
     pay_cash_alert:'당일 접수처에서 현금으로 결제해주세요.',
@@ -862,6 +914,7 @@ var I18N = {
     login_title:'Iniciar sesión',label_email:'Correo electrónico',label_pw:'Contraseña',
     ph_email:'ejemplo@correo.com',ph_pw:'••••••••',ph_name:'Juan García',
     btn_pw_show:'Mostrar',btn_pw_hide:'Ocultar',
+    label_optional:'(opcional)',
     login_no_account:'¿No tienes cuenta?',link_register:'Regístrate',link_back:'← Volver a la lista',
     reg_title:'Registrarse',label_name:'Nombre completo',label_pw_confirm:'Confirmar contraseña',
     btn_create:'Crear cuenta',reg_has_account:'¿Ya tienes cuenta?',
@@ -870,6 +923,8 @@ var I18N = {
     err_no_name:'Por favor ingresa tu nombre',err_invalid_creds:'Correo o contraseña incorrectos',
     err_email_exists:'Este correo ya está registrado',
     err_full:'Lo sentimos, el evento está lleno.',err_already:'Ya estás registrado/a.',
+    notice_no_email:'Sin correo electrónico, no recibirás tickets QR ni notificaciones. Después del registro, consulta tu ticket QR en Mi Página de este sitio.',
+    notice_no_email_ticket:'Sin correo registrado, el ticket QR no se enviará por email. Puedes consultar tu ticket QR en Mi Página en cualquier momento.',
     news_title:'Noticias',news_all:'Todo',news_global:'General',news_personal:'Personal',news_unread:'No leído',
     news_empty:'No hay noticias',news_close:'Cerrar',
     badge_new:'NUEVO',badge_global:'General',badge_personal:'Personal',badge_personal_notif:'Aviso Personal',
@@ -888,7 +943,10 @@ var I18N = {
     mp_logout:'Cerrar sesión',
     ev_reg_back:'← Volver a la lista',ev_reg_title:'Registro de evento',btn_ev_submit:'Registrarse',
     ev_reg_submitting:'Registrando...',ev_reg_hint:'Se enviará un ticket QR a tu correo tras el registro.',
-    ev_reg_ok:'¡Registro completo! Tu ticket ha sido enviado por correo.',ev_reg_back_list:'← Volver a la lista',
+    ev_reg_hint_no_email:'Tras el registro, puedes ver tu ticket QR en Mi Página.',
+    ev_reg_ok:'¡Registro completo! Tu ticket ha sido enviado por correo.',
+    ev_reg_ok_no_email:'¡Registro completo! Consulta tu ticket QR en Mi Página.',
+    ev_reg_back_list:'← Volver a la lista',
     pay_paypay_title:'PayPay',pay_paypay_body:'El organizador te enviará los detalles de pago por PayPay.',
     pay_cash_title:'Efectivo',pay_cash_body:'Paga en efectivo en recepción el día del evento.',
     pay_cash_alert:'Paga en efectivo en recepción el día del evento.',
@@ -911,6 +969,7 @@ var I18N = {
     login_title:'Connexion',label_email:'Email',label_pw:'Mot de passe',
     ph_email:'exemple@email.com',ph_pw:'••••••••',ph_name:'Jean Dupont',
     btn_pw_show:'Afficher',btn_pw_hide:'Masquer',
+    label_optional:'(optionnel)',
     login_no_account:'Pas encore de compte ?',link_register:"S'inscrire",link_back:'← Retour à la liste',
     reg_title:"S'inscrire",label_name:'Nom complet',label_pw_confirm:'Confirmer le mot de passe',
     btn_create:'Créer un compte',reg_has_account:'Vous avez déjà un compte ?',
@@ -919,6 +978,8 @@ var I18N = {
     err_no_name:'Veuillez entrer votre nom',err_invalid_creds:'Email ou mot de passe incorrect',
     err_email_exists:'Cet email est déjà enregistré',
     err_full:"Désolé, l'événement est complet.",err_already:'Vous êtes déjà inscrit(e).',
+    notice_no_email:"Sans adresse email, vous ne recevrez pas de ticket QR ni de notifications. Après l'inscription, consultez votre ticket QR sur Mon Profil.",
+    notice_no_email_ticket:"Aucun email enregistré, le ticket QR ne sera pas envoyé par email. Vous pouvez consulter votre ticket QR sur Mon Profil à tout moment.",
     news_title:'Actualités',news_all:'Tout',news_global:'Global',news_personal:'Personnel',news_unread:'Non lu',
     news_empty:'Aucune actualité',news_close:'Fermer',
     badge_new:'NOUVEAU',badge_global:'Global',badge_personal:'Personnel',badge_personal_notif:'Avis Personnel',
@@ -937,7 +998,10 @@ var I18N = {
     mp_logout:'Déconnexion',
     ev_reg_back:'← Retour à la liste',ev_reg_title:"Inscription à l'événement",btn_ev_submit:"S'inscrire",
     ev_reg_submitting:'Inscription...',ev_reg_hint:'Un ticket QR sera envoyé par email après inscription.',
-    ev_reg_ok:'Inscription réussie ! Votre ticket a été envoyé.',ev_reg_back_list:'← Retour à la liste',
+    ev_reg_hint_no_email:"Après l'inscription, consultez votre ticket QR sur Mon Profil.",
+    ev_reg_ok:'Inscription réussie ! Votre ticket a été envoyé.',
+    ev_reg_ok_no_email:"Inscription réussie ! Consultez votre ticket QR sur Mon Profil.",
+    ev_reg_back_list:'← Retour à la liste',
     pay_paypay_title:'PayPay',pay_paypay_body:"L'organisateur vous contactera pour les détails PayPay.",
     pay_cash_title:'Espèces',pay_cash_body:"Payez en espèces à l'accueil le jour de l'événement.",
     pay_cash_alert:"Payez en espèces à l'accueil le jour de l'événement.",
@@ -960,6 +1024,7 @@ var I18N = {
     login_title:'Entrar',label_email:'E-mail',label_pw:'Senha',
     ph_email:'exemplo@email.com',ph_pw:'••••••••',ph_name:'João Silva',
     btn_pw_show:'Mostrar',btn_pw_hide:'Ocultar',
+    label_optional:'(opcional)',
     login_no_account:'Não tem conta?',link_register:'Cadastrar',link_back:'← Voltar à lista',
     reg_title:'Cadastrar',label_name:'Nome completo',label_pw_confirm:'Confirmar senha',
     btn_create:'Criar conta',reg_has_account:'Já tem conta?',
@@ -968,6 +1033,8 @@ var I18N = {
     err_no_name:'Por favor, insira seu nome',err_invalid_creds:'E-mail ou senha incorretos',
     err_email_exists:'Este e-mail já está cadastrado',
     err_full:'Desculpe, este evento está esgotado.',err_already:'Você já está inscrito(a).',
+    notice_no_email:'Sem e-mail, você não receberá tickets QR nem notificações. Após o cadastro, confira seu ticket QR em Minha Página.',
+    notice_no_email_ticket:'Sem e-mail cadastrado, o ticket QR não será enviado por e-mail. Você pode verificar seu ticket QR em Minha Página a qualquer momento.',
     news_title:'Notícias',news_all:'Tudo',news_global:'Geral',news_personal:'Pessoal',news_unread:'Não lido',
     news_empty:'Sem notícias',news_close:'Fechar',
     badge_new:'NOVO',badge_global:'Geral',badge_personal:'Pessoal',badge_personal_notif:'Aviso Pessoal',
@@ -986,7 +1053,10 @@ var I18N = {
     mp_logout:'Sair',
     ev_reg_back:'← Voltar à lista',ev_reg_title:'Inscrição no evento',btn_ev_submit:'Inscrever',
     ev_reg_submitting:'Inscrevendo...',ev_reg_hint:'Um ticket QR será enviado ao seu e-mail após a inscrição.',
-    ev_reg_ok:'Inscrição concluída! Seu ticket foi enviado por e-mail.',ev_reg_back_list:'← Voltar à lista',
+    ev_reg_hint_no_email:'Após a inscrição, confira seu ticket QR em Minha Página.',
+    ev_reg_ok:'Inscrição concluída! Seu ticket foi enviado por e-mail.',
+    ev_reg_ok_no_email:'Inscrição concluída! Confira seu ticket QR em Minha Página.',
+    ev_reg_back_list:'← Voltar à lista',
     pay_paypay_title:'PayPay',pay_paypay_body:'O organizador entrará em contato com detalhes de pagamento PayPay.',
     pay_cash_title:'Dinheiro',pay_cash_body:'Pague em dinheiro na recepção no dia do evento.',
     pay_cash_alert:'Pague em dinheiro na recepção no dia do evento.',
@@ -1009,6 +1079,7 @@ var I18N = {
     login_title:'Masuk',label_email:'Email',label_pw:'Kata Sandi',
     ph_email:'contoh@email.com',ph_pw:'••••••••',ph_name:'Budi Santoso',
     btn_pw_show:'Tampilkan',btn_pw_hide:'Sembunyikan',
+    label_optional:'(opsional)',
     login_no_account:'Belum punya akun?',link_register:'Daftar',link_back:'← Kembali ke daftar',
     reg_title:'Daftar',label_name:'Nama Lengkap',label_pw_confirm:'Konfirmasi Kata Sandi',
     btn_create:'Buat Akun',reg_has_account:'Sudah punya akun?',
@@ -1017,6 +1088,8 @@ var I18N = {
     err_no_name:'Masukkan nama Anda',err_invalid_creds:'Email atau kata sandi salah',
     err_email_exists:'Email ini sudah terdaftar',
     err_full:'Maaf, acara ini sudah penuh.',err_already:'Anda sudah terdaftar.',
+    notice_no_email:'Tanpa email, Anda tidak akan menerima tiket QR atau notifikasi. Setelah mendaftar, periksa tiket QR Anda di Halaman Saya.',
+    notice_no_email_ticket:'Tidak ada email terdaftar, tiket QR tidak akan dikirim via email. Anda dapat memeriksa tiket QR di Halaman Saya kapan saja.',
     news_title:'Berita',news_all:'Semua',news_global:'Umum',news_personal:'Pribadi',news_unread:'Belum dibaca',
     news_empty:'Tidak ada berita',news_close:'Tutup',
     badge_new:'BARU',badge_global:'Umum',badge_personal:'Pribadi',badge_personal_notif:'Notifikasi Pribadi',
@@ -1035,7 +1108,10 @@ var I18N = {
     mp_logout:'Keluar',
     ev_reg_back:'← Kembali ke daftar',ev_reg_title:'Pendaftaran Acara',btn_ev_submit:'Daftar',
     ev_reg_submitting:'Mendaftar...',ev_reg_hint:'Tiket QR akan dikirim ke email Anda setelah pendaftaran.',
-    ev_reg_ok:'Pendaftaran berhasil! Tiket telah dikirim ke email Anda.',ev_reg_back_list:'← Kembali ke daftar',
+    ev_reg_hint_no_email:'Setelah mendaftar, periksa tiket QR Anda di Halaman Saya.',
+    ev_reg_ok:'Pendaftaran berhasil! Tiket telah dikirim ke email Anda.',
+    ev_reg_ok_no_email:'Pendaftaran berhasil! Periksa tiket QR Anda di Halaman Saya.',
+    ev_reg_back_list:'← Kembali ke daftar',
     pay_paypay_title:'PayPay',pay_paypay_body:'Penyelenggara akan menghubungi Anda mengenai pembayaran PayPay.',
     pay_cash_title:'Tunai',pay_cash_body:'Bayar tunai di resepsi pada hari acara.',
     pay_cash_alert:'Bayar tunai di resepsi pada hari acara.',
@@ -1058,6 +1134,7 @@ var I18N = {
     login_title:'เข้าสู่ระบบ',label_email:'อีเมล',label_pw:'รหัสผ่าน',
     ph_email:'ตัวอย่าง@email.com',ph_pw:'••••••••',ph_name:'สมชาย ใจดี',
     btn_pw_show:'แสดง',btn_pw_hide:'ซ่อน',
+    label_optional:'(ไม่บังคับ)',
     login_no_account:'ยังไม่มีบัญชี?',link_register:'สมัครสมาชิก',link_back:'← กลับไปยังรายการ',
     reg_title:'สมัครสมาชิก',label_name:'ชื่อ-นามสกุล',label_pw_confirm:'ยืนยันรหัสผ่าน',
     btn_create:'สร้างบัญชี',reg_has_account:'มีบัญชีแล้ว?',
@@ -1066,6 +1143,8 @@ var I18N = {
     err_no_name:'กรุณาใส่ชื่อของคุณ',err_invalid_creds:'อีเมลหรือรหัสผ่านไม่ถูกต้อง',
     err_email_exists:'อีเมลนี้ถูกลงทะเบียนแล้ว',
     err_full:'ขออภัย อีเวนต์นี้เต็มแล้ว',err_already:'คุณลงทะเบียนแล้ว',
+    notice_no_email:'หากไม่มีอีเมล คุณจะไม่ได้รับตั๋ว QR และการแจ้งเตือน หลังลงทะเบียนแล้ว กรุณาตรวจสอบตั๋ว QR ของคุณที่หน้าของฉัน',
+    notice_no_email_ticket:'ไม่มีอีเมลที่ลงทะเบียน ตั๋ว QR จะไม่ถูกส่งทางอีเมล คุณสามารถตรวจสอบตั๋ว QR ได้ที่หน้าของฉันเสมอ',
     news_title:'ข่าวสาร',news_all:'ทั้งหมด',news_global:'ทั่วไป',news_personal:'ส่วนตัว',news_unread:'ยังไม่อ่าน',
     news_empty:'ไม่มีข่าวสาร',news_close:'ปิด',
     badge_new:'ใหม่',badge_global:'ทั่วไป',badge_personal:'ส่วนตัว',badge_personal_notif:'แจ้งเตือนส่วนตัว',
@@ -1084,7 +1163,10 @@ var I18N = {
     mp_logout:'ออกจากระบบ',
     ev_reg_back:'← กลับไปยังรายการ',ev_reg_title:'ลงทะเบียนอีเวนต์',btn_ev_submit:'ลงทะเบียน',
     ev_reg_submitting:'กำลังลงทะเบียน...',ev_reg_hint:'ตั๋ว QR จะถูกส่งไปยังอีเมลของคุณหลังลงทะเบียน',
-    ev_reg_ok:'ลงทะเบียนสำเร็จ! ตั๋วถูกส่งไปยังอีเมลของคุณแล้ว',ev_reg_back_list:'← กลับไปยังรายการ',
+    ev_reg_hint_no_email:'หลังลงทะเบียน คุณสามารถตรวจสอบตั๋ว QR ได้ที่หน้าของฉัน',
+    ev_reg_ok:'ลงทะเบียนสำเร็จ! ตั๋วถูกส่งไปยังอีเมลของคุณแล้ว',
+    ev_reg_ok_no_email:'ลงทะเบียนสำเร็จ! ตรวจสอบตั๋ว QR ได้ที่หน้าของฉัน',
+    ev_reg_back_list:'← กลับไปยังรายการ',
     pay_paypay_title:'PayPay',pay_paypay_body:'ผู้จัดงานจะติดต่อคุณเกี่ยวกับรายละเอียดการชำระเงิน PayPay',
     pay_cash_title:'เงินสด',pay_cash_body:'ชำระเงินสดที่เคาน์เตอร์ในวันงาน',
     pay_cash_alert:'ชำระเงินสดที่เคาน์เตอร์ในวันงาน',
@@ -1107,6 +1189,7 @@ var I18N = {
     login_title:'Đăng nhập',label_email:'Email',label_pw:'Mật khẩu',
     ph_email:'vi_du@email.com',ph_pw:'••••••••',ph_name:'Nguyễn Văn A',
     btn_pw_show:'Hiện',btn_pw_hide:'Ẩn',
+    label_optional:'(tùy chọn)',
     login_no_account:'Chưa có tài khoản?',link_register:'Đăng ký',link_back:'← Quay lại danh sách',
     reg_title:'Đăng ký',label_name:'Họ và tên',label_pw_confirm:'Xác nhận mật khẩu',
     btn_create:'Tạo tài khoản',reg_has_account:'Đã có tài khoản?',
@@ -1115,6 +1198,8 @@ var I18N = {
     err_no_name:'Vui lòng nhập tên của bạn',err_invalid_creds:'Email hoặc mật khẩu không đúng',
     err_email_exists:'Email này đã được đăng ký',
     err_full:'Xin lỗi, sự kiện này đã hết chỗ.',err_already:'Bạn đã đăng ký rồi.',
+    notice_no_email:'Không có email, bạn sẽ không nhận được vé QR và thông báo. Sau khi đăng ký, vui lòng kiểm tra vé QR tại Trang của tôi.',
+    notice_no_email_ticket:'Không có email đăng ký, vé QR sẽ không được gửi qua email. Bạn có thể kiểm tra vé QR tại Trang của tôi bất cứ lúc nào.',
     news_title:'Tin tức',news_all:'Tất cả',news_global:'Chung',news_personal:'Cá nhân',news_unread:'Chưa đọc',
     news_empty:'Không có tin tức',news_close:'Đóng',
     badge_new:'MỚI',badge_global:'Chung',badge_personal:'Cá nhân',badge_personal_notif:'Thông báo Cá nhân',
@@ -1133,7 +1218,10 @@ var I18N = {
     mp_logout:'Đăng xuất',
     ev_reg_back:'← Quay lại danh sách',ev_reg_title:'Đăng ký sự kiện',btn_ev_submit:'Đăng ký',
     ev_reg_submitting:'Đang đăng ký...',ev_reg_hint:'Vé QR sẽ được gửi đến email của bạn sau khi đăng ký.',
-    ev_reg_ok:'Đăng ký thành công! Vé đã được gửi đến email của bạn.',ev_reg_back_list:'← Quay lại danh sách',
+    ev_reg_hint_no_email:'Sau khi đăng ký, bạn có thể xem vé QR tại Trang của tôi.',
+    ev_reg_ok:'Đăng ký thành công! Vé đã được gửi đến email của bạn.',
+    ev_reg_ok_no_email:'Đăng ký thành công! Kiểm tra vé QR tại Trang của tôi.',
+    ev_reg_back_list:'← Quay lại danh sách',
     pay_paypay_title:'PayPay',pay_paypay_body:'Ban tổ chức sẽ liên hệ để hướng dẫn thanh toán PayPay.',
     pay_cash_title:'Tiền mặt',pay_cash_body:'Thanh toán tiền mặt tại quầy lễ tân vào ngày sự kiện.',
     pay_cash_alert:'Thanh toán tiền mặt tại quầy lễ tân vào ngày sự kiện.',
@@ -1156,6 +1244,7 @@ var I18N = {
     login_title:'تسجيل الدخول',label_email:'البريد الإلكتروني',label_pw:'كلمة المرور',
     ph_email:'مثال@email.com',ph_pw:'••••••••',ph_name:'محمد أحمد',
     btn_pw_show:'إظهار',btn_pw_hide:'إخفاء',
+    label_optional:'(اختياري)',
     login_no_account:'ليس لديك حساب؟',link_register:'إنشاء حساب',link_back:'← العودة للقائمة',
     reg_title:'إنشاء حساب',label_name:'الاسم الكامل',label_pw_confirm:'تأكيد كلمة المرور',
     btn_create:'إنشاء الحساب',reg_has_account:'لديك حساب بالفعل؟',
@@ -1164,6 +1253,8 @@ var I18N = {
     err_no_name:'يرجى إدخال اسمك',err_invalid_creds:'البريد الإلكتروني أو كلمة المرور غير صحيحة',
     err_email_exists:'هذا البريد الإلكتروني مسجّل بالفعل',
     err_full:'عذراً، الفعالية مكتملة.',err_already:'أنت مسجّل بالفعل.',
+    notice_no_email:'بدون بريد إلكتروني، لن تتلقى تذكرة QR والإشعارات. بعد التسجيل، تحقق من تذكرة QR الخاصة بك في صفحتي.',
+    notice_no_email_ticket:'لم يتم تسجيل بريد إلكتروني، لن تُرسل تذكرة QR عبر البريد. يمكنك مراجعة تذكرة QR في صفحتي في أي وقت.',
     news_title:'الأخبار',news_all:'الكل',news_global:'عام',news_personal:'شخصي',news_unread:'غير مقروء',
     news_empty:'لا توجد أخبار',news_close:'إغلاق',
     badge_new:'جديد',badge_global:'عام',badge_personal:'شخصي',badge_personal_notif:'إشعار شخصي',
@@ -1182,7 +1273,10 @@ var I18N = {
     mp_logout:'تسجيل الخروج',
     ev_reg_back:'← العودة للقائمة',ev_reg_title:'تسجيل في الفعالية',btn_ev_submit:'تسجيل',
     ev_reg_submitting:'جارٍ التسجيل...',ev_reg_hint:'سيتم إرسال تذكرة QR إلى بريدك الإلكتروني بعد التسجيل.',
-    ev_reg_ok:'اكتمل التسجيل! تم إرسال التذكرة إلى بريدك الإلكتروني.',ev_reg_back_list:'← العودة للقائمة',
+    ev_reg_hint_no_email:'بعد التسجيل، يمكنك مراجعة تذكرة QR في صفحتي.',
+    ev_reg_ok:'اكتمل التسجيل! تم إرسال التذكرة إلى بريدك الإلكتروني.',
+    ev_reg_ok_no_email:'اكتمل التسجيل! راجع تذكرة QR في صفحتي.',
+    ev_reg_back_list:'← العودة للقائمة',
     pay_paypay_title:'PayPay',pay_paypay_body:'سيتواصل معك المنظم بتفاصيل الدفع عبر PayPay.',
     pay_cash_title:'نقداً',pay_cash_body:'يرجى الدفع نقداً عند الاستقبال يوم الفعالية.',
     pay_cash_alert:'يرجى الدفع نقداً عند الاستقبال يوم الفعالية.',
@@ -1205,6 +1299,7 @@ var I18N = {
     login_title:'लॉगिन',label_email:'ईमेल',label_pw:'पासवर्ड',
     ph_email:'उदाहरण@email.com',ph_pw:'••••••••',ph_name:'राम कुमार',
     btn_pw_show:'दिखाएं',btn_pw_hide:'छुपाएं',
+    label_optional:'(वैकल्पिक)',
     login_no_account:'खाता नहीं है?',link_register:'साइन अप',link_back:'← सूची पर वापस',
     reg_title:'साइन अप',label_name:'पूरा नाम',label_pw_confirm:'पासवर्ड की पुष्टि करें',
     btn_create:'खाता बनाएं',reg_has_account:'पहले से खाता है?',
@@ -1213,6 +1308,8 @@ var I18N = {
     err_no_name:'कृपया अपना नाम दर्ज करें',err_invalid_creds:'ईमेल या पासवर्ड गलत है',
     err_email_exists:'यह ईमेल पहले से पंजीकृत है',
     err_full:'क्षमा करें, यह इवेंट भर चुका है।',err_already:'आप पहले से पंजीकृत हैं।',
+    notice_no_email:'ईमेल के बिना, आपको QR टिकट और सूचनाएं नहीं मिलेंगी। पंजीकरण के बाद इस साइट (मेरा पेज) से QR टिकट जांचें।',
+    notice_no_email_ticket:'ईमेल पंजीकृत नहीं है, QR टिकट ईमेल से नहीं भेजा जाएगा। आप मेरा पेज से कभी भी QR टिकट देख सकते हैं।',
     news_title:'समाचार',news_all:'सभी',news_global:'सार्वजनिक',news_personal:'व्यक्तिगत',news_unread:'अपठित',
     news_empty:'कोई समाचार नहीं',news_close:'बंद करें',
     badge_new:'नया',badge_global:'सार्वजनिक',badge_personal:'व्यक्तिगत',badge_personal_notif:'व्यक्तिगत सूचना',
@@ -1231,7 +1328,10 @@ var I18N = {
     mp_logout:'लॉगआउट',
     ev_reg_back:'← सूची पर वापस',ev_reg_title:'इवेंट पंजीकरण',btn_ev_submit:'पंजीकरण करें',
     ev_reg_submitting:'पंजीकरण हो रहा है...',ev_reg_hint:'पंजीकरण के बाद QR टिकट आपके ईमेल पर भेजा जाएगा।',
-    ev_reg_ok:'पंजीकरण पूरा! टिकट आपके ईमेल पर भेज दिया गया है।',ev_reg_back_list:'← सूची पर वापस',
+    ev_reg_hint_no_email:'पंजीकरण के बाद, मेरा पेज से QR टिकट देख सकते हैं।',
+    ev_reg_ok:'पंजीकरण पूरा! टिकट आपके ईमेल पर भेज दिया गया है।',
+    ev_reg_ok_no_email:'पंजीकरण पूरा! मेरा पेज से QR टिकट जांचें।',
+    ev_reg_back_list:'← सूची पर वापस',
     pay_paypay_title:'PayPay',pay_paypay_body:'आयोजक PayPay भुगतान विवरण के साथ संपर्क करेगा।',
     pay_cash_title:'नकद',pay_cash_body:'इवेंट के दिन रिसेप्शन पर नकद भुगतान करें।',
     pay_cash_alert:'इवेंट के दिन रिसेप्शन पर नकद भुगतान करें।',
@@ -1254,6 +1354,7 @@ var I18N = {
     login_title:'Anmelden',label_email:'E-Mail',label_pw:'Passwort',
     ph_email:'beispiel@email.com',ph_pw:'••••••••',ph_name:'Max Mustermann',
     btn_pw_show:'Anzeigen',btn_pw_hide:'Verbergen',
+    label_optional:'(optional)',
     login_no_account:'Noch kein Konto?',link_register:'Registrieren',link_back:'← Zurück zur Liste',
     reg_title:'Registrieren',label_name:'Vollständiger Name',label_pw_confirm:'Passwort bestätigen',
     btn_create:'Konto erstellen',reg_has_account:'Bereits ein Konto?',
@@ -1262,6 +1363,8 @@ var I18N = {
     err_no_name:'Bitte Namen eingeben',err_invalid_creds:'E-Mail oder Passwort falsch',
     err_email_exists:'Diese E-Mail ist bereits registriert',
     err_full:'Entschuldigung, die Veranstaltung ist ausgebucht.',err_already:'Sie sind bereits angemeldet.',
+    notice_no_email:'Ohne E-Mail erhalten Sie keine QR-Tickets und Benachrichtigungen. Bitte überprüfen Sie Ihr QR-Ticket nach der Registrierung in Mein Bereich.',
+    notice_no_email_ticket:'Keine E-Mail registriert, QR-Ticket wird nicht per E-Mail gesendet. Sie können Ihr QR-Ticket jederzeit in Mein Bereich einsehen.',
     news_title:'Neuigkeiten',news_all:'Alle',news_global:'Allgemein',news_personal:'Persönlich',news_unread:'Ungelesen',
     news_empty:'Keine Neuigkeiten',news_close:'Schließen',
     badge_new:'NEU',badge_global:'Allgemein',badge_personal:'Persönlich',badge_personal_notif:'Persönliche Benachrichtigung',
@@ -1280,7 +1383,10 @@ var I18N = {
     mp_logout:'Abmelden',
     ev_reg_back:'← Zurück zur Liste',ev_reg_title:'Veranstaltungsanmeldung',btn_ev_submit:'Anmelden',
     ev_reg_submitting:'Wird angemeldet...',ev_reg_hint:'Nach der Anmeldung erhalten Sie ein QR-Ticket per E-Mail.',
-    ev_reg_ok:'Anmeldung abgeschlossen! Ihr Ticket wurde per E-Mail gesendet.',ev_reg_back_list:'← Zurück zur Liste',
+    ev_reg_hint_no_email:'Nach der Anmeldung können Sie Ihr QR-Ticket in Mein Bereich einsehen.',
+    ev_reg_ok:'Anmeldung abgeschlossen! Ihr Ticket wurde per E-Mail gesendet.',
+    ev_reg_ok_no_email:'Anmeldung abgeschlossen! Ihr QR-Ticket finden Sie in Mein Bereich.',
+    ev_reg_back_list:'← Zurück zur Liste',
     pay_paypay_title:'PayPay',pay_paypay_body:'Der Veranstalter wird Sie bezüglich der PayPay-Zahlung kontaktieren.',
     pay_cash_title:'Bar',pay_cash_body:'Bitte zahlen Sie am Veranstaltungstag bar an der Rezeption.',
     pay_cash_alert:'Bitte zahlen Sie am Veranstaltungstag bar an der Rezeption.',
@@ -1303,6 +1409,7 @@ var I18N = {
     login_title:'Accedi',label_email:'Email',label_pw:'Password',
     ph_email:'esempio@email.com',ph_pw:'••••••••',ph_name:'Mario Rossi',
     btn_pw_show:'Mostra',btn_pw_hide:'Nascondi',
+    label_optional:'(facoltativo)',
     login_no_account:'Non hai un account?',link_register:'Registrati',link_back:'← Torna alla lista',
     reg_title:'Registrati',label_name:'Nome completo',label_pw_confirm:'Conferma password',
     btn_create:'Crea account',reg_has_account:'Hai già un account?',
@@ -1311,6 +1418,8 @@ var I18N = {
     err_no_name:'Inserisci il tuo nome',err_invalid_creds:'Email o password non corretti',
     err_email_exists:'Questa email è già registrata',
     err_full:"Spiacente, l'evento è esaurito.",err_already:'Sei già iscritto/a.',
+    notice_no_email:"Senza email non riceverai ticket QR e notifiche. Dopo la registrazione, controlla il tuo ticket QR nel tuo profilo.",
+    notice_no_email_ticket:"Nessuna email registrata, il ticket QR non verrà inviato via email. Puoi sempre controllare il ticket QR nel tuo profilo.",
     news_title:'Notizie',news_all:'Tutti',news_global:'Generale',news_personal:'Personale',news_unread:'Non letto',
     news_empty:'Nessuna notizia',news_close:'Chiudi',
     badge_new:'NUOVO',badge_global:'Generale',badge_personal:'Personale',badge_personal_notif:'Avviso Personale',
@@ -1329,7 +1438,10 @@ var I18N = {
     mp_logout:'Esci',
     ev_reg_back:'← Torna alla lista',ev_reg_title:"Iscrizione all'evento",btn_ev_submit:'Iscriviti',
     ev_reg_submitting:'Iscrizione in corso...',ev_reg_hint:"Un ticket QR verrà inviato alla tua email dopo l'iscrizione.",
-    ev_reg_ok:"Iscrizione completata! Il ticket è stato inviato alla tua email.",ev_reg_back_list:'← Torna alla lista',
+    ev_reg_hint_no_email:"Dopo l'iscrizione, controlla il tuo ticket QR nel profilo.",
+    ev_reg_ok:"Iscrizione completata! Il ticket è stato inviato alla tua email.",
+    ev_reg_ok_no_email:"Iscrizione completata! Controlla il tuo ticket QR nel profilo.",
+    ev_reg_back_list:'← Torna alla lista',
     pay_paypay_title:'PayPay',pay_paypay_body:"L'organizzatore ti contatterà con i dettagli di pagamento PayPay.",
     pay_cash_title:'Contanti',pay_cash_body:"Paga in contanti alla reception il giorno dell'evento.",
     pay_cash_alert:"Paga in contanti alla reception il giorno dell'evento.",
@@ -1352,6 +1464,7 @@ var I18N = {
     login_title:'Войти',label_email:'Email',label_pw:'Пароль',
     ph_email:'пример@email.com',ph_pw:'••••••••',ph_name:'Иван Иванов',
     btn_pw_show:'Показать',btn_pw_hide:'Скрыть',
+    label_optional:'(необязательно)',
     login_no_account:'Нет аккаунта?',link_register:'Зарегистрироваться',link_back:'← Назад к списку',
     reg_title:'Регистрация',label_name:'Полное имя',label_pw_confirm:'Подтвердите пароль',
     btn_create:'Создать аккаунт',reg_has_account:'Уже есть аккаунт?',
@@ -1360,6 +1473,8 @@ var I18N = {
     err_no_name:'Пожалуйста, введите ваше имя',err_invalid_creds:'Неверный email или пароль',
     err_email_exists:'Этот email уже зарегистрирован',
     err_full:'К сожалению, мест больше нет.',err_already:'Вы уже зарегистрированы.',
+    notice_no_email:'Без email вы не получите QR-билет и уведомления. После регистрации проверьте QR-билет в разделе Мой профиль.',
+    notice_no_email_ticket:'Email не зарегистрирован, QR-билет не будет отправлен. Вы всегда можете проверить QR-билет в Мой профиль.',
     news_title:'Новости',news_all:'Все',news_global:'Общее',news_personal:'Личное',news_unread:'Непрочитанное',
     news_empty:'Нет новостей',news_close:'Закрыть',
     badge_new:'НОВОЕ',badge_global:'Общее',badge_personal:'Личное',badge_personal_notif:'Личное уведомление',
@@ -1378,7 +1493,10 @@ var I18N = {
     mp_logout:'Выйти',
     ev_reg_back:'← Назад к списку',ev_reg_title:'Регистрация на мероприятие',btn_ev_submit:'Зарегистрироваться',
     ev_reg_submitting:'Регистрация...',ev_reg_hint:'QR-билет будет отправлен на ваш email после регистрации.',
-    ev_reg_ok:'Регистрация завершена! Билет отправлен на ваш email.',ev_reg_back_list:'← Назад к списку',
+    ev_reg_hint_no_email:'После регистрации проверьте QR-билет в Мой профиль.',
+    ev_reg_ok:'Регистрация завершена! Билет отправлен на ваш email.',
+    ev_reg_ok_no_email:'Регистрация завершена! Проверьте QR-билет в Мой профиль.',
+    ev_reg_back_list:'← Назад к списку',
     pay_paypay_title:'PayPay',pay_paypay_body:'Организатор свяжется с вами для PayPay оплаты.',
     pay_cash_title:'Наличные',pay_cash_body:'Пожалуйста, оплатите наличными на стойке регистрации в день мероприятия.',
     pay_cash_alert:'Пожалуйста, оплатите наличными на стойке регистрации в день мероприятия.',
@@ -1455,24 +1573,37 @@ function addPhoto(eventId, name, dataUrl){
   ]);
 })();
 
-// RTL対応言語
-// 翻訳ヘルパー
 function t(key){ try { return (I18N[currentLang]||I18N['ja'])[key] || I18N['ja'][key] || key || ''; } catch(e){ return key||''; } }
-
 
 function setLang(l){
   currentLang = l;
   localStorage.setItem('lang', l);
   document.getElementById('lang-sel').value = l;
-  // RTL切り替え
   document.documentElement.dir = RTL_LANGS.includes(l) ? 'rtl' : 'ltr';
   document.documentElement.lang = l;
-  // 静的UIを更新
   applyI18n();
 }
 
+// ── メールアドレス入力ハンドラ ──
+function handleEmailInput(val){
+  const notice = document.getElementById('no-email-notice');
+  if(!notice) return;
+  // 未入力 or 空白のみ → 注意書き表示
+  if(!val || !val.trim()){
+    notice.classList.add('show');
+  } else {
+    notice.classList.remove('show');
+  }
+}
+
+// ダミーメールアドレス生成（メールなし登録用）
+function generateDummyEmail(name){
+  const ts = Date.now();
+  const safe = (name||'user').replace(/[^a-zA-Z0-9]/g,'').toLowerCase() || 'user';
+  return safe + ts + '@no-email.connecplus.local';
+}
+
 function applyI18n(){
-  // data-i18n 属性の自動適用
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     const translated = t(key);
@@ -1480,11 +1611,9 @@ function applyI18n(){
   });
 
   const $ = id => document.getElementById(id);
-  // ナビ
   const bnavSpans = document.querySelectorAll('.bnav-item span');
   const bnavKeys = ['nav_home','nav_news','nav_photo','nav_mypage'];
   bnavSpans.forEach((s,i) => { if(bnavKeys[i]) s.textContent = t(bnavKeys[i]); });
-  // ランディング
   const heroSub = document.querySelector('.hero-title span');
   if(heroSub) heroSub.textContent = t('hero_title_sub');
   const heroDesc = document.querySelector('.hero-desc');
@@ -1499,7 +1628,6 @@ function applyI18n(){
   if(ubLogout) ubLogout.textContent = t('btn_logout');
   const evListHead = document.querySelector('#page-landing .section-head-text');
   if(evListHead) evListHead.textContent = t('event_list');
-  // ログインページ
   const loginTitle = document.querySelector('#page-login .auth-title');
   if(loginTitle) loginTitle.textContent = t('login_title');
   document.querySelectorAll('#page-login .form-label').forEach((l,i) => {
@@ -1518,8 +1646,15 @@ function applyI18n(){
   // 登録ページ
   const regTitle = document.querySelector('#page-register-account .auth-title');
   if(regTitle) regTitle.textContent = t('reg_title');
-  document.querySelectorAll('#page-register-account .form-label').forEach((l,i) => {
-    l.textContent = [t('label_name'), t('label_email'), t('label_pw'), t('label_pw_confirm')][i] ?? l.textContent;
+  // ラベル更新 (メール任意ラベルも含む)
+  const regLabels = document.querySelectorAll('#page-register-account .form-label');
+  const regLabelKeys = [t('label_name'), t('label_email'), t('label_pw'), t('label_pw_confirm')];
+  regLabels.forEach((l,i) => {
+    if(i===1){ // メールラベル
+      l.innerHTML = t('label_email') + ' <span class="form-label-opt">'+t('label_optional')+'</span>';
+    } else {
+      l.textContent = regLabelKeys[i] ?? l.textContent;
+    }
   });
   const raName = $('ra-name'); if(raName) raName.placeholder = t('ph_name');
   const raEmail = $('ra-email'); if(raEmail) raEmail.placeholder = t('ph_email');
@@ -1529,11 +1664,16 @@ function applyI18n(){
   if(regFooter1) regFooter1.innerHTML = t('reg_has_account')+' <a class="auth-link" onclick="showPage(\'page-login\')">'+t('btn_login')+'</a>';
   const regFooter2 = document.querySelector('#page-register-account .auth-footer:nth-of-type(2)');
   if(regFooter2) regFooter2.innerHTML = '<a class="auth-link" onclick="showPage(\'page-landing\')">'+t('link_back')+'</a>';
+  // メールなし注意書きテキスト
+  const noEmailNoticeText = document.querySelector('#no-email-notice [data-i18n="notice_no_email"]');
+  if(noEmailNoticeText) noEmailNoticeText.textContent = t('notice_no_email');
+  const evRegNoEmailText = document.querySelector('#ev-reg-no-email-notice [data-i18n="notice_no_email_ticket"]');
+  if(evRegNoEmailText) evRegNoEmailText.textContent = t('notice_no_email_ticket');
   // ニュースフィルター
   const newsFilters = document.querySelectorAll('.filter-chip');
   const newsKeys = ['news_all','news_global','news_personal','news_unread'];
   newsFilters.forEach((b,i) => { if(newsKeys[i]) b.textContent = t(newsKeys[i]); });
-  // マイページ固定テキスト
+  // マイページ
   const editBtn = document.querySelector('.profile-edit-btn');
   if(editBtn) editBtn.textContent = t('mp_edit');
   document.querySelectorAll('.ps-label').forEach((l,i) => {
@@ -1544,7 +1684,6 @@ function applyI18n(){
   qLabels.forEach((l,i) => { if(qKeys[i]) l.textContent = t(qKeys[i]); });
   const logoutBtn = document.querySelector('.btn-logout');
   if(logoutBtn) logoutBtn.textContent = t('mp_logout');
-  // イベント登録ページ固定
   const evRegBack = document.querySelector('#page-event-reg .btn-back');
   if(evRegBack) evRegBack.textContent = t('ev_reg_back');
   const evRegTitle = document.querySelector('#page-event-reg .auth-title');
@@ -1554,17 +1693,12 @@ function applyI18n(){
   });
   const evSubmit = $('btn-ev-submit');
   if(evSubmit && evSubmit.textContent !== t('ev_reg_submitting')) evSubmit.textContent = t('btn_ev_submit');
-  const evHint = document.querySelector('#ev-reg-form > p');
-  if(evHint) evHint.textContent = t('ev_reg_hint');
   // フォトページ
   const photoHead = document.querySelector('#page-photos .section-head-text');
   if(photoHead) photoHead.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg> `+t('photo_title');
-  // ニュースページ見出し
   const newsHead = document.querySelector('#page-news .section-head-text');
   if(newsHead) newsHead.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h10M7 13h6"/></svg> `+t('news_title');
-  // モーダルの閉じるボタン
   document.querySelectorAll('.modal-close').forEach(b => b.textContent = t('news_close'));
-  // イベントリスト再描画（翻訳が必要なテキスト含むため）
   const evList = $('event-list');
   if(evList && !evList.querySelector('.spinner')) loadEvents();
 }
@@ -1601,7 +1735,9 @@ function updateHeader(user){
     document.getElementById('user-bar').style.display='flex';
     document.getElementById('ub-avatar').textContent=(user.Name||'U').charAt(0).toUpperCase();
     document.getElementById('ub-name').textContent=user.Name||'';
-    document.getElementById('ub-email').textContent=user.Email||'';
+    // メールなしユーザーはダミーアドレスを非表示
+    const displayEmail = (user.Email||'').includes('@no-email.connecplus.local') ? '—' : (user.Email||'');
+    document.getElementById('ub-email').textContent=displayEmail;
     document.getElementById('bottom-nav').style.display='flex';
   } else {
     document.getElementById('avatar-btn').style.display='none';
@@ -1618,6 +1754,7 @@ function togglePw(id, btn){
   btn.textContent=show?t('btn_pw_hide'):t('btn_pw_show');
 }
 
+// ── ログイン（メールなしユーザーはダミーアドレスでも可） ──
 async function doLogin(){
   const alertEl=document.getElementById('login-alert'); alertEl.innerHTML='';
   const email=document.getElementById('login-email').value.trim();
@@ -1635,16 +1772,26 @@ async function doLogin(){
   btn.disabled=false; btn.textContent=t('btn_login');
 }
 
+// ── 登録（メールアドレス任意対応版） ──
 async function doRegister(){
   const alertEl=document.getElementById('reg-account-alert'); alertEl.innerHTML='';
   const name=document.getElementById('ra-name').value.trim();
-  const email=document.getElementById('ra-email').value.trim();
+  const emailRaw=document.getElementById('ra-email').value.trim();
   const pw=document.getElementById('ra-pw').value;
   const pw2=document.getElementById('ra-pw2').value;
+
   if(!name){alertEl.innerHTML='<div class="alert alert-err">'+t('err_no_name')+'</div>';return;}
-  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){alertEl.innerHTML='<div class="alert alert-err">'+t('err_invalid_email')+'</div>';return;}
+  // メール: 入力があれば形式チェック
+  if(emailRaw && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailRaw)){
+    alertEl.innerHTML='<div class="alert alert-err">'+t('err_invalid_email')+'</div>';return;
+  }
   if(!pw||pw.length<8){alertEl.innerHTML='<div class="alert alert-err">'+t('err_pw_short')+'</div>';return;}
   if(pw!==pw2){alertEl.innerHTML='<div class="alert alert-err">'+t('err_pw_mismatch')+'</div>';return;}
+
+  // メールなしの場合はダミーアドレスを生成
+  const email = emailRaw || generateDummyEmail(name);
+  const hasRealEmail = !!emailRaw;
+
   const btn=document.querySelector('#page-register-account .btn-primary'); btn.disabled=true; btn.textContent='...';
   try{
     const user=await api('registerWithPassword',{name,email,password:pw});
@@ -1680,6 +1827,11 @@ function formatPrice(p,tp){
   return '<span class="badge badge-paid">¥'+Number(p).toLocaleString()+'</span>';
 }
 
+// メールなしユーザー判定
+function isNoEmailUser(user){
+  return user && (user.Email||'').includes('@no-email.connecplus.local');
+}
+
 async function loadEvents(){
   const listEl=document.getElementById('event-list');
   listEl.innerHTML='<div class="spinner"></div><p class="loading-text">'+t('loading')+'</p>';
@@ -1707,7 +1859,7 @@ async function loadEvents(){
       } else {
         actHtml='<div class="ev-actions"><button class="btn-ev '+EV_BTN[si]+' login-btn">'+t('ev_login_btn')+'</button></div>';
       }
-      card.innerHTML='<div class="ev-accent"></div><div class="ev-body"><div class="ev-season">'+SEASONS[si]+'</div><div class="ev-name">'+esc(ev.EventName)+'</div><div class="ev-date">'+esc(ev.Date)+'</div><div class="ev-meta"><div class="ev-kv"><span class=\"ev-k\">'+t('ev_venue')+'</span><span class="ev-v">'+esc(ev.Location)+'</span></div><div class="ev-kv"><span class=\"ev-k\">'+t('ev_fee')+'</span><span class="ev-v">'+formatPrice(ev.Price,ev.PaymentType)+'</span></div>'+((!myReg)?'<div class="ev-kv"><span class=\"ev-k\">'+t('ev_seats')+'</span><span class="ev-v">'+(isFull?'<span class="badge badge-full">'+t('ev_full')+'</span>':(Number(ev.Capacity)-Number(ev.registrationCount||0))+' ')+'</span></div>':'')+'</div></div>'+actHtml;
+      card.innerHTML='<div class="ev-accent"></div><div class="ev-body"><div class="ev-season">'+SEASONS[si]+'</div><div class="ev-name">'+esc(ev.EventName)+'</div><div class="ev-date">'+esc(ev.Date)+'</div><div class="ev-meta"><div class="ev-kv"><span class="ev-k">'+t('ev_venue')+'</span><span class="ev-v">'+esc(ev.Location)+'</span></div><div class="ev-kv"><span class="ev-k">'+t('ev_fee')+'</span><span class="ev-v">'+formatPrice(ev.Price,ev.PaymentType)+'</span></div>'+((!myReg)?'<div class="ev-kv"><span class="ev-k">'+t('ev_seats')+'</span><span class="ev-v">'+(isFull?'<span class="badge badge-full">'+t('ev_full')+'</span>':(Number(ev.Capacity)-Number(ev.registrationCount||0))+' ')+'</span></div>':'')+'</div></div>'+actHtml;
       if(myReg) card.querySelector('.reg-badge').addEventListener('click',()=>openQR(ev.EventName,ev.Date,myReg.QR||'',myReg.RegistrationID));
       if(!myReg&&!isFull&&currentUser) card.querySelector('.reg-btn').addEventListener('click',()=>showEventReg(ev,i));
       if(!currentUser&&card.querySelector('.login-btn')) card.querySelector('.login-btn').addEventListener('click',()=>showPage('page-login'));
@@ -1728,12 +1880,10 @@ function updateBadges(){
   document.getElementById('chat-dot').classList.toggle('show', unreadChat.length>0);
   const avatarBadge = document.getElementById('avatar-badge');
   if(avatarBadge) avatarBadge.style.display = (unreadNews.length>0||unreadChat.length>0)?'block':'none';
-  // mypage badges
   const notifBadge = document.getElementById('notif-quick-badge');
   if(notifBadge){ notifBadge.textContent=unreadNews.length; notifBadge.classList.toggle('show',unreadNews.length>0); }
   const chatBadge = document.getElementById('chat-quick-badge');
   if(chatBadge){ chatBadge.textContent=unreadChat.length; chatBadge.classList.toggle('show',unreadChat.length>0); }
-  // profile card unread count
   const pcUnread = document.getElementById('pc-unread');
   if(pcUnread) pcUnread.textContent = unreadNews.length + unreadChat.length;
 }
@@ -1752,9 +1902,17 @@ function showEventReg(ev,idx){
   currentEvent=ev; currentEventIdx=idx;
   showPage('page-event-reg');
   const si=idx%4;
+  const noEmail = isNoEmailUser(currentUser);
   document.getElementById('ev-reg-info').innerHTML='<div class="ev-hero-block" style="'+EV_THEME[si]+'"><div class="ev-hero-name">'+esc(ev.EventName)+'</div><div class="ev-hero-meta">'+esc(ev.Date)+'　'+esc(ev.Location)+'　'+(Number(ev.Price)===0?t('ev_free'):'¥'+Number(ev.Price).toLocaleString())+'</div></div>';
   document.getElementById('inp-name').value=currentUser.Name;
-  document.getElementById('inp-email').value=currentUser.Email;
+  // メールなしユーザーの場合は "—" 表示
+  document.getElementById('inp-email').value=noEmail ? '—' : (currentUser.Email||'');
+  // メールなしユーザー向け注意を表示
+  const noticeEl = document.getElementById('ev-reg-no-email-notice');
+  if(noticeEl) noticeEl.classList.toggle('show', noEmail);
+  // ヒントテキストを切り替え
+  const hintEl = document.getElementById('ev-reg-hint-text');
+  if(hintEl) hintEl.textContent = noEmail ? t('ev_reg_hint_no_email') : t('ev_reg_hint');
   const payEl=document.getElementById('payment-info-box'); payEl.innerHTML='';
   if(ev.PaymentType!=='FREE'){
     let h='<div class="payment-box">';
@@ -1774,6 +1932,7 @@ document.getElementById('btn-ev-submit').addEventListener('click',async()=>{
   if(!currentUser){showPage('page-login');return;}
   const alertEl=document.getElementById('ev-reg-alert'); alertEl.innerHTML='';
   const btn=document.getElementById('btn-ev-submit'); btn.disabled=true; btn.textContent=t('ev_reg_submitting');
+  const noEmail = isNoEmailUser(currentUser);
   try{
     const result=await api('registerParticipant',{name:currentUser.Name,email:currentUser.Email,phone:'',eventId:currentEvent.EventID});
     document.getElementById('ev-reg-form').style.display='none';
@@ -1781,9 +1940,12 @@ document.getElementById('btn-ev-submit').addEventListener('click',async()=>{
     let payHtml='';
     if(result.paymentStatus==='PAYPAY_PENDING') payHtml='<div class="payment-box"><h4>'+t('pay_paypay_title')+'</h4><p>'+t('pay_paypay_body')+'</p></div>';
     else if(result.paymentStatus==='CASH') payHtml='<div class="alert alert-info">'+t('pay_cash_alert')+'</div>';
+    // メールなしユーザー向けメッセージ切り替え
+    const successMsg = noEmail ? t('ev_reg_ok_no_email') : t('ev_reg_ok');
     document.getElementById('ev-reg-result').innerHTML=
       '<div style="text-align:center;padding:14px 0 4px;"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#3d6640" stroke-width="1.5" stroke-linecap="round" style="margin:0 auto;display:block;"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg></div>'+
-      '<div class="alert alert-ok">'+t('ev_reg_ok')+'</div>'+
+      '<div class="alert alert-ok">'+successMsg+'</div>'+
+      (noEmail ? '<div class="alert alert-warn" style="font-size:.8rem;">⚠️ '+t('notice_no_email_ticket')+'</div>' : '')+
       '<div class="ticket-box"><div class="ticket-label">'+t('ticket_label')+'</div>'+
       '<div id="qr-reg-canvas" style="display:flex;justify-content:center;margin:0 auto 10px;"></div>'+
       '<div class="ticket-id">'+esc(result.qrData)+'</div></div>'+payHtml+
@@ -1799,14 +1961,10 @@ document.getElementById('btn-ev-submit').addEventListener('click',async()=>{
 });
 
 // ── NEWS ──
-// ── ニュース翻訳：Admin側で保存済みの翻訳を使用 ──
-// GASのLanguageApp.translate()でAdmin投稿時に翻訳済み
-
 function getNewsTranslated(item){
-  // item.translations = {en:{title,body}, zh:{title,body}, ...}
   if(currentLang === 'ja' || !item.translations) return item;
   const tr = item.translations[currentLang];
-  if(!tr) return item; // 翻訳なければ原文（日本語）を表示
+  if(!tr) return item;
   return Object.assign({}, item, {
     title: tr.title || item.title,
     body:  tr.body  || item.body
@@ -1855,7 +2013,6 @@ function renderNews(){
     el.innerHTML='<div class="news-empty"><div style="display:flex;justify-content:center;margin-bottom:12px;"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" style="color:var(--ink-pale);"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h10M7 13h6"/></svg></div><p>'+t('news_empty')+'</p></div>';
     return;
   }
-  // 保存済み翻訳を使って即座に表示
   el.innerHTML = items.map((n,i) => renderNewsCard(n, getNewsTranslated(n), i)).join('');
   updateBadges();
 }
@@ -1877,7 +2034,6 @@ function openNewsDetail(id){
   updateBadges();
 }
 
-
 // ── MY PAGE ──
 function showMyPage(){
   if(!currentUser){showPage('page-login');return;}
@@ -1895,7 +2051,8 @@ async function loadMyPageData(){
   const initial = (p.Name||'U').charAt(0).toUpperCase();
   document.getElementById('pc-avatar').textContent = initial;
   document.getElementById('pc-name').textContent = p.Name||'';
-  document.getElementById('pc-email').textContent = p.Email||'';
+  // メールなしユーザーは "—" 表示
+  document.getElementById('pc-email').textContent = isNoEmailUser(p) ? '—' : (p.Email||'');
   document.getElementById('pc-events').textContent = p.TotalEvents||0;
   document.getElementById('pc-rank').textContent = p.Rank||'New';
   updateBadges();
@@ -1903,11 +2060,9 @@ async function loadMyPageData(){
 }
 
 function switchMyTab(tab, btn){
-  // ボタンのactive状態を更新
   document.querySelectorAll('.quick-btn').forEach(b=>b.classList.remove('active-tab'));
   const qbtn = document.getElementById('qbtn-'+tab);
   if(qbtn) qbtn.classList.add('active-tab');
-  // タブペインを切り替え
   document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
   const pane = document.getElementById('tab-'+tab);
   if(pane) pane.classList.add('active');
@@ -1933,7 +2088,7 @@ async function loadHistoryTab(){
     el.innerHTML='<div class="timeline">'+checked.map((r,i)=>{
       const ev=events.find(e=>e.EventID===r.EventID);
       const hasMore = i < checked.length-1;
-      return `<div class="tl-item"><div class="tl-left"><div class="tl-dot"><div class="tl-dot-inner"></div></div>${hasMore?'<div class="tl-line"></div>':''}</div><div class="tl-body"><div class="tl-event">${esc(ev?ev.EventName:r.EventID)}</div><div class="tl-date">${esc(ev?ev.Date:'—')}</div><div class=\"tl-badge-done\">${t('mp_attended')}</div></div></div>`;
+      return `<div class="tl-item"><div class="tl-left"><div class="tl-dot"><div class="tl-dot-inner"></div></div>${hasMore?'<div class="tl-line"></div>':''}</div><div class="tl-body"><div class="tl-event">${esc(ev?ev.EventName:r.EventID)}</div><div class="tl-date">${esc(ev?ev.Date:'—')}</div><div class="tl-badge-done">${t('mp_attended')}</div></div></div>`;
     }).join('')+'</div>';
   }catch(err){el.innerHTML='<div class="alert alert-err">'+esc(err.message)+'</div>';}
 }
@@ -1959,7 +2114,7 @@ async function loadSurveyTab(){
       const sid='srv_'+s.SurveyID;
       html+=`<div class="survey-form" id="sf-${esc(s.SurveyID)}"><h4>${esc(s.EventName)}　${t('mp_survey')}</h4><div class="star-rating">`;
       for(let i=5;i>=1;i--) html+=`<input type="radio" id="${sid}_${i}" name="${sid}" value="${i}"><label for="${sid}_${i}">★</label>`;
-      html+=`</div><textarea id="cmt-${esc(s.SurveyID)}" class="form-control" rows="2" placeholder=\"${t('mp_survey_placeholder')}\" style="margin-bottom:8px;resize:none;"></textarea><button class="btn-primary" style="padding:10px;" onclick="submitSurvey('${esc(s.SurveyID)}','${esc(s.EventID)}','${esc(currentUser.ParticipantID)}')">${t('mp_survey_submit')}</button></div>`;
+      html+=`</div><textarea id="cmt-${esc(s.SurveyID)}" class="form-control" rows="2" placeholder="${t('mp_survey_placeholder')}" style="margin-bottom:8px;resize:none;"></textarea><button class="btn-primary" style="padding:10px;" onclick="submitSurvey('${esc(s.SurveyID)}','${esc(s.EventID)}','${esc(currentUser.ParticipantID)}')">${t('mp_survey_submit')}</button></div>`;
     });
     el.innerHTML=html;
     if(answered.length>0){
@@ -2065,10 +2220,12 @@ function renderProfileEdit(){
   const p=currentUser;
   const langOptions=['ja','en','zh','ko','es','fr','pt','id','th','vi','ar','hi','de','it','ru'];
   const langNames={ja:'日本語',en:'English',zh:'中文',ko:'한국어',es:'Español',fr:'Français',pt:'Português',id:'Bahasa Indonesia',th:'ภาษาไทย',vi:'Tiếng Việt',ar:'العربية',hi:'हिन्दी',de:'Deutsch',it:'Italiano',ru:'Русский'};
+  const displayEmail = isNoEmailUser(p) ? '' : (p.Email||'');
   document.getElementById('tab-profile-edit').innerHTML=
     '<div id="pe-alert"></div>'+
     '<div class="form-group"><label class="form-label">'+t('label_name')+'</label><input id="pe-name" class="form-control" type="text" value="'+esc(p.Name||'')+'"></div>'+
-    '<div class="form-group"><label class="form-label">'+t('label_email')+'</label><input id="pe-email" class="form-control" type="email" value="'+esc(p.Email||'')+'"><p style="font-size:.7rem;color:var(--ink-soft);margin-top:5px;line-height:1.6;"></p></div>'+
+    '<div class="form-group"><label class="form-label">'+t('label_email')+'<span class="form-label-opt">'+t('label_optional')+'</span></label>'+
+    '<input id="pe-email" class="form-control" type="email" value="'+esc(displayEmail)+'" placeholder="'+t('ph_email')+'"></div>'+
     '<div class="form-group"><label class="form-label">'+t('mp_lang')+'</label><select id="pe-lang" class="form-control" onchange="setLang(this.value)">'+
     langOptions.map(l=>'<option value="'+l+'"'+(currentLang===l?' selected':'')+'>'+langNames[l]+'</option>').join('')+
     '</select></div>'+
@@ -2078,9 +2235,12 @@ function renderProfileEdit(){
 async function saveProfile(){
   const alertEl=document.getElementById('pe-alert'); alertEl.innerHTML='';
   const newName=document.getElementById('pe-name').value.trim();
-  const newEmail=document.getElementById('pe-email').value.trim();
+  const newEmailRaw=document.getElementById('pe-email').value.trim();
   if(!newName){alertEl.innerHTML='<div class="alert alert-err">'+t('err_no_name')+'</div>';return;}
-  if(!newEmail||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)){alertEl.innerHTML='<div class="alert alert-err">'+t('err_invalid_email')+'</div>';return;}
+  if(newEmailRaw && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmailRaw)){
+    alertEl.innerHTML='<div class="alert alert-err">'+t('err_invalid_email')+'</div>';return;
+  }
+  const newEmail = newEmailRaw || generateDummyEmail(newName);
   const btn=document.querySelector('#tab-profile-edit .btn-primary'); btn.disabled=true; btn.textContent=t('btn_save')+'...';
   try{
     const updated=await api('updateParticipantProfile',{participantId:currentUser.ParticipantID,name:newName,email:newEmail});
@@ -2185,7 +2345,6 @@ function openPhotoViewer(url){
   else{updateHeader(null);}
   await loadEvents();
   applyI18n();
-  // 30秒ごとに自動更新
   setInterval(async()=>{
     await loadEvents();
     if(currentUser) updateBadges();
